@@ -8,7 +8,7 @@
 # Initialiser Git (si pas déjà fait)
 git init
 git add .
-git commit -m "Initial commit: NovaBank ready for deployment"
+git commit -m "Initial commit: Open Banque ready for deployment"
 
 # Créer un repository sur GitHub, puis :
 git remote add origin https://github.com/VOTRE_USERNAME/VOTRE_REPO.git

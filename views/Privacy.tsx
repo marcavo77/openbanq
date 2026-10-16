@@ -100,8 +100,8 @@ const Privacy: React.FC = () => {
             <p className="text-gray-400 mb-6">
                 {t('privacy.dpo.description')}
             </p>
-            <a href="mailto:dpo@novabank.com" className="inline-flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3 px-8 rounded-full transition-all shadow-lg shadow-emerald-500/20">
-                <Mail className="h-5 w-5" /> dpo@novabank.com
+            <a href="mailto:dpo@openbanque.com" className="inline-flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3 px-8 rounded-full transition-all shadow-lg shadow-emerald-500/20">
+                <Mail className="h-5 w-5" /> dpo@openbanque.com
             </a>
          </div>
 

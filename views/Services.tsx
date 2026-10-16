@@ -17,7 +17,7 @@ const Services: React.FC = () => {
       <div className="py-20 px-4 text-center relative">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-emerald-500/10 rounded-full blur-[120px] -z-10"></div>
         <h1 className="text-4xl md:text-7xl font-bold text-white mb-6 tracking-tight">
-          {t('services.title')} <span className="text-emerald-400">NovaBank</span>
+          {t('services.title')} <span className="text-emerald-400">Open Banque</span>
         </h1>
         <p className="text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed">
             {t('services.subtitle')}
@@ -135,7 +135,7 @@ const Services: React.FC = () => {
             <div className="flex-1 grid grid-cols-2 gap-4">
                <div className="bg-gradient-to-br from-slate-700 to-slate-900 rounded-2xl h-48 lg:h-64 shadow-2xl border border-slate-600 p-6 flex flex-col justify-between transform rotate-3 hover:rotate-6 transition-transform">
                   <div className="flex justify-between items-start">
-                     <div className="text-emerald-400 font-bold italic">NovaBank</div>
+                     <div className="text-emerald-400 font-bold italic">Open Banque</div>
                      <Wifi className="text-gray-500 h-6 w-6 rotate-90" />
                   </div>
                   <div className="flex items-center gap-2">
@@ -287,14 +287,14 @@ const Services: React.FC = () => {
       <section className="py-24 px-4">
          <div className="max-w-5xl mx-auto">
             <h2 className="text-3xl md:text-5xl font-bold text-white text-center mb-16">
-               {t('services.comparison.title')} <span className="text-emerald-400">NovaBank</span> ?
+               {t('services.comparison.title')} <span className="text-emerald-400">Open Banque</span> ?
             </h2>
 
             <div className="glass-panel rounded-3xl overflow-hidden border border-slate-700">
                <div className="grid grid-cols-3 bg-slate-800/50 p-6 border-b border-slate-700">
                   <div className="text-gray-400 font-bold uppercase text-xs tracking-wider pt-2">{t('services.comparison.comparison')}</div>
                   <div className="text-center text-xl font-bold text-emerald-400 flex items-center justify-center gap-2">
-                     <Shield className="h-6 w-6" /> NovaBank
+                     <Shield className="h-6 w-6" /> Open Banque
                   </div>
                   <div className="text-center text-xl font-bold text-gray-500">{t('services.comparison.classicBank')}</div>
                </div>

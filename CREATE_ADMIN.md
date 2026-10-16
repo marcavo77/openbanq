@@ -1,7 +1,7 @@
 # Création de l'utilisateur Admin
 
 Pour créer l'utilisateur admin avec les identifiants :
-- **Email** : `admin@novabank.com`
+- **Email** : `admin@openbanque.com`
 - **Mot de passe** : `012345678`
 
 ## Méthode 1 : Script automatique (Recommandé si vous avez la SERVICE_ROLE_KEY)
@@ -40,7 +40,7 @@ Le script créera automatiquement :
 2. Navigation : **Authentication** > **Users**
 3. Cliquez sur **"Add user"** > **"Create new user"**
 4. Remplissez :
-   - **Email** : `admin@novabank.com`
+   - **Email** : `admin@openbanque.com`
    - **Password** : `012345678`
    - Décochez **"Auto Confirm User"** (puis confirmez manuellement après création)
 5. Cliquez sur **"Create user"**
@@ -65,14 +65,14 @@ Profil admin créé/mis à jour avec succès
 
 Et une ligne avec :
 - name: Super Administrator
-- email: admin@novabank.com
+- email: admin@openbanque.com
 - role: ADMIN
 - balance: 999999999
 
 ## Connexion
 
 Une fois créé, vous pouvez vous connecter à l'application avec :
-- **Email** : `admin@novabank.com`
+- **Email** : `admin@openbanque.com`
 - **Mot de passe** : `012345678`
 
 Vous serez redirigé vers le tableau de bord admin.

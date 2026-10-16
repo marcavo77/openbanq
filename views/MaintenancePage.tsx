@@ -27,7 +27,7 @@ const MaintenancePage: React.FC = () => {
         </h1>
         
         <p className="text-xl text-slate-400 mb-10 leading-relaxed max-w-xl mx-auto">
-          No momento, estamos realizando melhorias importantes no NovaBank para oferecer a você uma experiência ainda mais segura e eficiente.
+          No momento, estamos realizando melhorias importantes no Open Banque para oferecer a você uma experiência ainda mais segura e eficiente.
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
@@ -59,7 +59,7 @@ const MaintenancePage: React.FC = () => {
       
       {/* Footer */}
       <div className="absolute bottom-6 left-0 w-full text-center text-slate-500 text-sm z-10">
-        <p>&copy; {new Date().getFullYear()} NovaBank. Todos os direitos reservados.</p>
+        <p>&copy; {new Date().getFullYear()} Open Banque. Todos os direitos reservados.</p>
       </div>
     </div>
   );

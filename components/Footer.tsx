@@ -8,7 +8,7 @@ const Footer: React.FC = () => {
   return (
     <footer className="bg-slate-950 py-12 border-t border-slate-800">
       <div className="max-w-7xl mx-auto px-4 text-center">
-        <h2 className="text-2xl font-bold text-emerald-500 mb-4 cursor-pointer" onClick={() => setView('LANDING')}>NovaBank</h2>
+        <h2 className="text-2xl font-bold text-emerald-500 mb-4 cursor-pointer" onClick={() => setView('LANDING')}>Open Banque</h2>
         <p className="text-gray-400 mb-8">{t('footer.slogan')}</p>
         <div className="flex justify-center space-x-6 mb-8">
           <a href="#" className="text-gray-400 hover:text-white transition-colors">{t('footer.social.twitter')}</a>
@@ -21,7 +21,7 @@ const Footer: React.FC = () => {
           <button onClick={() => setView('PRIVACY')} className="hover:text-gray-300 transition-colors">{t('footer.privacy')}</button>
           <button onClick={() => setView('COOKIES')} className="hover:text-gray-300 transition-colors">{t('footer.cookies')}</button>
         </div>
-        <p className="text-gray-600 text-sm">© {new Date().getFullYear()} NovaBank Corporation. {t('footer.rights')}</p>
+        <p className="text-gray-600 text-sm">© {new Date().getFullYear()} Open Banque Corporation. {t('footer.rights')}</p>
       </div>
     </footer>
   );

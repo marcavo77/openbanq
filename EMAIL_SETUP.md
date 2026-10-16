@@ -13,13 +13,13 @@ Créez un fichier `.env.local` à la racine du projet (ou configurez-les sur Ver
 SMTP_HOST=smtp.zoho.com
 SMTP_PORT=587
 SMTP_SECURE=false
-SMTP_USER=contact@novabank.company
+SMTP_USER=contact@openbanque.com
 SMTP_PASSWORD=votre_mot_de_passe_zoho
-SMTP_EMAIL=contact@novabank.company
+SMTP_EMAIL=contact@openbanque.com
 
 # Configuration Email
-CONTACT_EMAIL=contact@novabank.company
-FROM_EMAIL=contact@novabank.company
+CONTACT_EMAIL=contact@openbanque.com
+FROM_EMAIL=contact@openbanque.com
 ```
 
 ### Description des variables
@@ -27,21 +27,21 @@ FROM_EMAIL=contact@novabank.company
 - **SMTP_HOST** (optionnel) : Serveur SMTP. Défaut: `smtp.zoho.com`
 - **SMTP_PORT** (optionnel) : Port SMTP. Défaut: `587` (TLS) ou utilisez `465` (SSL)
 - **SMTP_SECURE** (optionnel) : `true` pour SSL (port 465), `false` pour TLS (port 587). Défaut: `false`
-- **SMTP_USER** (requis) : Votre adresse email Zoho (ex: `contact@novabank.company`)
+- **SMTP_USER** (requis) : Votre adresse email Zoho (ex: `contact@openbanque.com`)
 - **SMTP_PASSWORD** (requis) : Votre mot de passe Zoho ou mot de passe d'application
 - **SMTP_EMAIL** (optionnel) : Alias pour SMTP_USER si différent
-- **CONTACT_EMAIL** (optionnel) : L'email qui recevra les messages. Défaut: `contact@novabank.company`
-- **FROM_EMAIL** (optionnel) : L'email depuis lequel les messages sont envoyés. Défaut: `contact@novabank.company`
+- **CONTACT_EMAIL** (optionnel) : L'email qui recevra les messages. Défaut: `contact@openbanque.com`
+- **FROM_EMAIL** (optionnel) : L'email depuis lequel les messages sont envoyés. Défaut: `contact@openbanque.com`
 
 ## Configuration Zoho Mail
 
 ### Option 1 : Utiliser votre mot de passe Zoho (simple)
 
-1. Utilisez votre adresse email Zoho : `contact@novabank.company`
+1. Utilisez votre adresse email Zoho : `contact@openbanque.com`
 2. Utilisez votre mot de passe Zoho normal
 3. Configurez les variables :
    ```
-   SMTP_USER=contact@novabank.company
+   SMTP_USER=contact@openbanque.com
    SMTP_PASSWORD=votre_mot_de_passe_zoho
    SMTP_PORT=587
    SMTP_SECURE=false

@@ -28,7 +28,7 @@ if (!SUPABASE_SERVICE_ROLE_KEY) {
   console.log('\n📝 Pour créer l\'utilisateur admin manuellement:');
   console.log('1. Allez dans Supabase Dashboard > Authentication > Users');
   console.log('2. Cliquez sur "Add user" > "Create new user"');
-  console.log('3. Email: admin@novabank.com');
+  console.log('3. Email: admin@openbanque.com');
   console.log('4. Password: 012345678');
   console.log('5. Désactivez "Auto Confirm User"');
   console.log('6. Après création, exécutez le SQL dans create-admin.sql\n');
@@ -43,7 +43,7 @@ const supabaseAdmin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
   }
 });
 
-const ADMIN_EMAIL = 'admin@novabank.com';
+const ADMIN_EMAIL = 'admin@openbanque.com';
 const ADMIN_PASSWORD = '012345678';
 const ADMIN_NAME = 'Super Administrator';
 
@@ -167,7 +167,7 @@ async function createAdminUser() {
 
     console.log('\n🎉 SUCCÈS! L\'utilisateur admin a été créé avec succès!');
     console.log('\n📋 Informations de connexion:');
-    console.log('   Email: admin@novabank.com');
+    console.log('   Email: admin@openbanque.com');
     console.log('   Mot de passe: 012345678');
     console.log('\n✅ Vous pouvez maintenant vous connecter à l\'application!');
 

@@ -68,7 +68,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'features.cta': 'Voir tous nos services',
 
     // Landing Team
-    'team.title': "L'Équipe NovaBank",
+    'team.title': "L'Équipe Open Banque",
     'team.subtitle': "Des experts passionnés par la finance et la technologie, travaillant chaque jour pour sécuriser votre avenir.",
     'team.member1.role': 'CEO & Fondateur',
     'team.member2.role': 'Directrice Sécurité',
@@ -176,7 +176,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'services.userExperience': 'Expérience Utilisateur',
     'services.ux.title': 'Une interface si fluide, c\'est presque',
     'services.ux.titleHighlight': 'magique',
-    'services.ux.description': 'Oubliez les interfaces bancaires austères et complexes. NovaBank a été conçu par des designers primés pour offrir une clarté absolue sur vos finances.',
+    'services.ux.description': 'Oubliez les interfaces bancaires austères et complexes. Open Banque a été conçu par des designers primés pour offrir une clarté absolue sur vos finances.',
     'services.ux.feature1.title': 'Notifications Instantanées',
     'services.ux.feature1.desc': 'Recevez une alerte à la seconde où vous payez. Plus de surprises à la fin du mois.',
     'services.ux.feature2.title': 'Mode Sombre Natif',
@@ -231,7 +231,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     // About Page
     'about.title': 'Une Banque Construite pour le',
     'about.titleHighlight': 'Futur',
-    'about.description': 'Chez NovaBank, nous ne nous contentons pas de stocker votre argent. Nous le propulsons. Née de la fusion entre la finance traditionnelle et l\'intelligence artificielle avancée, notre mission est de rendre chaque transaction plus rapide, plus sûre et plus intelligente.',
+    'about.description': 'Chez Open Banque, nous ne nous contentons pas de stocker votre argent. Nous le propulsons. Née de la fusion entre la finance traditionnelle et l\'intelligence artificielle avancée, notre mission est de rendre chaque transaction plus rapide, plus sûre et plus intelligente.',
     'about.feature1': 'Technologie Blockchain Hybride',
     'about.feature2': 'Service Client IA 24/7',
     'about.feature3': 'Gestion de Patrimoine Automatisée',
@@ -246,7 +246,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     // Privacy Page
     'privacy.title': 'Politique de Confidentialité',
     'privacy.subtitle': 'La protection de vos données personnelles est au cœur de nos priorités.',
-    'privacy.intro': 'NovaBank s\'engage à ce que la collecte et le traitement de vos données, effectués à partir du site novabank.com, soient conformes au règlement général sur la protection des données (RGPD) et à la loi Informatique et Libertés.',
+    'privacy.intro': 'Open Banque s\'engage à ce que la collecte et le traitement de vos données, effectués à partir du site openbanque.com, soient conformes au règlement général sur la protection des données (RGPD) et à la loi Informatique et Libertés.',
     'privacy.section1.title': '1. Les données que nous collectons',
     'privacy.section1.data1.title': 'Données d\'identification',
     'privacy.section1.data1.desc': 'Nom, prénom, date de naissance, adresse postale, adresse email, numéro de téléphone, pièce d\'identité.',
@@ -277,9 +277,9 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
 
     // Legal Page
     'legal.title': 'Mentions Légales',
-    'legal.subtitle': 'Informations juridiques concernant NovaBank Corporation.',
+    'legal.subtitle': 'Informations juridiques concernant Open Banque Corporation.',
     'legal.section1.title': '1. Éditeur du Site',
-    'legal.section1.intro': 'Le site internet NovaBank (ci-après désigné « le Site ») est édité par la société NovaBank Corporation.',
+    'legal.section1.intro': 'Le site internet Open Banque (ci-après désigné « le Site ») est édité par la société Open Banque Corporation.',
     'legal.section1.item1.label': 'Forme juridique :',
     'legal.section1.item1.value': 'Société Anonyme (SA) au capital de 50 000 000 €',
     'legal.section1.item2.label': 'Siège social :',
@@ -291,14 +291,14 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'legal.section1.item5.label': 'Directeur de la publication :',
     'legal.section1.item5.value': 'Alexandre V., Président Directeur Général',
     'legal.section1.item6.label': 'Contact :',
-    'legal.section1.item6.value': 'legal@novabank.com / +33 1 23 45 67 89',
+    'legal.section1.item6.value': 'legal@openbanque.com / +33 1 23 45 67 89',
     'legal.section2.title': '2. Hébergement',
     'legal.section2.content': 'Le Site est hébergé par la société SecureCloud Services.\nAdresse : 45 Rue des Serveurs, 69000 Lyon, France.\nTéléphone : +33 4 00 00 00 00.',
     'legal.section3.title': '3. Propriété Intellectuelle',
     'legal.section3.content1': 'L\'ensemble de ce site relève de la législation française et internationale sur le droit d\'auteur et la propriété intellectuelle. Tous les droits de reproduction sont réservés, y compris pour les documents téléchargeables et les représentations iconographiques et photographiques.',
     'legal.section3.content2': 'La reproduction de tout ou partie de ce site sur un support électronique quel qu\'il soit est formellement interdite sauf autorisation expresse du directeur de la publication.',
     'legal.section4.title': '4. Limitation de Responsabilité',
-    'legal.section4.content': 'Les informations contenues sur ce site sont aussi précises que possible et le site est périodiquement remis à jour, mais peut toutefois contenir des inexactitudes, des omissions ou des lacunes. Si vous constatez une lacune, erreur ou ce qui parait être un dysfonctionnement, merci de bien vouloir le signaler par email.\n\nTout contenu téléchargé se fait aux risques et périls de l\'utilisateur et sous sa seule responsabilité. En conséquence, NovaBank ne saurait être tenu responsable d\'un quelconque dommage subi par l\'ordinateur de l\'utilisateur ou d\'une quelconque perte de données consécutives au téléchargement.',
+    'legal.section4.content': 'Les informations contenues sur ce site sont aussi précises que possible et le site est périodiquement remis à jour, mais peut toutefois contenir des inexactitudes, des omissions ou des lacunes. Si vous constatez une lacune, erreur ou ce qui parait être un dysfonctionnement, merci de bien vouloir le signaler par email.\n\nTout contenu téléchargé se fait aux risques et périls de l\'utilisateur et sous sa seule responsabilité. En conséquence, Open Banque ne saurait être tenu responsable d\'un quelconque dommage subi par l\'ordinateur de l\'utilisateur ou d\'une quelconque perte de données consécutives au téléchargement.',
 
     // Cookies Page
     'cookies.title': 'Gestion des Cookies',
@@ -326,8 +326,8 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'testimonials.role.investor': 'Investisseur Crypto',
     'testimonials.role.student': 'Étudiante',
     'testimonials.role.restaurateur': 'Restaurateur',
-    'testimonials.content.sophie': "NovaBank a complètement transformé la gestion de ma trésorerie. L'interface est futuriste et les virements sont instantanés.",
-    'testimonials.content.thomas': "La sécurité est ma priorité. Le système de validation multi-étapes de NovaBank est ce qui se fait de mieux sur le marché.",
+    'testimonials.content.sophie': "Open Banque a complètement transformé la gestion de ma trésorerie. L'interface est futuriste et les virements sont instantanés.",
+    'testimonials.content.thomas': "La sécurité est ma priorité. Le système de validation multi-étapes de Open Banque est ce qui se fait de mieux sur le marché.",
     'testimonials.content.amelie': "Je voyage tout le temps. Avoir une banque qui me suit partout sans frais cachés est un véritable soulagement.",
     'testimonials.content.lucas': "Les outils d'analyse de marché intégrés sont incroyables. J'ai pu optimiser mon portefeuille en temps réel grâce aux indicateurs.",
     'testimonials.content.claire': "L'application est super intuitive. J'adore pouvoir créer des cartes virtuelles éphémères pour mes achats en ligne sécurisés.",
@@ -361,7 +361,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     
     // CTA
     'cta.title': 'Prêt à changer de banque ?',
-    'cta.desc': 'Rejoignez plus de 2 millions d\'utilisateurs qui ont choisi NovaBank pour une expérience bancaire sans compromis.',
+    'cta.desc': 'Rejoignez plus de 2 millions d\'utilisateurs qui ont choisi Open Banque pour une expérience bancaire sans compromis.',
     'cta.button': 'Ouvrir un compte gratuit',
     'cta.disclaimer': 'Aucune carte de crédit requise pour l\'inscription. Vérification d\'identité en 2 minutes.',
 
@@ -378,12 +378,12 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
 
     // Success Modal
     'successModal.title': 'Félicitations !',
-    'successModal.message': 'Votre compte NovaBank a été créé avec succès. Bienvenue dans la banque du futur !',
+    'successModal.message': 'Votre compte Open Banque a été créé avec succès. Bienvenue dans la banque du futur !',
     'successModal.continue': 'Accéder à mon tableau de bord',
 
     // Logout Modal
     'logout.title': 'Déconnexion',
-    'logout.message': 'Êtes-vous sûr de vouloir vous déconnecter de votre compte NovaBank ?',
+    'logout.message': 'Êtes-vous sûr de vouloir vous déconnecter de votre compte Open Banque ?',
     'logout.cancel': 'Annuler',
     'logout.confirm': 'Déconnexion',
 
@@ -393,7 +393,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'contact.headquarters': 'Siège Social',
     'contact.address': '123 Avenue de la Blockchain\n75001 Paris, France',
     'contact.email': 'Email',
-    'contact.emailAddresses': 'contact@novabank.company',
+    'contact.emailAddresses': 'contact@openbanque.com',
     'contact.phone': 'Téléphone',
     'contact.phoneNumber': '+33 1 23 45 67 89\nLun-Ven, 9h-18h',
     'contact.sendMessage': 'Envoyez-nous un message',
@@ -696,7 +696,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     // Chat
     'chat.open': 'Ouvrir le chat',
     'chat.needHelp': 'Besoin d\'aide ?',
-    'chat.support': 'Support NovaBank',
+    'chat.support': 'Support Open Banque',
     'chat.welcome': 'Bonjour',
     'chat.welcomeMessage': 'comment pouvons-nous vous aider aujourd\'hui ?',
     'chat.selectUser': 'Sélectionnez un utilisateur',
@@ -723,7 +723,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'landing.security.deposit': 'Protection des dépôts jusqu\'à 100k€',
     'landing.security.pci': 'PCI DSS Compliant',
     'landing.cta.title': 'Prêt à changer de banque ?',
-    'landing.cta.desc': 'Rejoignez plus de 2 millions d\'utilisateurs qui ont choisi NovaBank pour une expérience bancaire sans compromis.',
+    'landing.cta.desc': 'Rejoignez plus de 2 millions d\'utilisateurs qui ont choisi Open Banque pour une expérience bancaire sans compromis.',
     'landing.cta.button': 'Ouvrir un compte gratuit',
     'landing.cta.note': 'Aucune carte de crédit requise pour l\'inscription. Vérification d\'identité en 2 minutes.',
     'landing.app.features.1': 'Notifications en temps réel',
@@ -787,7 +787,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'features.Analytics.desc': 'Visualize your spending in real-time and optimize your budget with our analytic tools.',
     'features.cta': 'View all services',
 
-    'team.title': "The NovaBank Team",
+    'team.title': "The Open Banque Team",
     'team.subtitle': "Experts passionate about finance and technology, working every day to secure your future.",
 
     'impact.title': "Engagement & Impact",
@@ -847,7 +847,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'pricing.simulator.startSaving': 'Start saving now',
 
     // Services Page
-    'services.title': 'The NovaBank Ecosystem',
+    'services.title': 'The Open Banque Ecosystem',
     'services.subtitle': 'Much more than a simple banking application. A complete suite of financial tools designed to accelerate your financial freedom.',
     'services.feature1.title': 'Worldwide',
     'services.feature1.desc': 'Pay and transfer money anywhere on the planet without hidden fees.',
@@ -868,7 +868,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'services.userExperience': 'User Experience',
     'services.ux.title': 'An interface so smooth, it\'s almost',
     'services.ux.titleHighlight': 'magical',
-    'services.ux.description': 'Forget austere and complex banking interfaces. NovaBank was designed by award-winning designers to offer absolute clarity on your finances.',
+    'services.ux.description': 'Forget austere and complex banking interfaces. Open Banque was designed by award-winning designers to offer absolute clarity on your finances.',
     'services.ux.feature1.title': 'Instant Notifications',
     'services.ux.feature1.desc': 'Receive an alert the second you pay. No more surprises at the end of the month.',
     'services.ux.feature2.title': 'Native Dark Mode',
@@ -923,7 +923,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     // About Page
     'about.title': 'A Bank Built for the',
     'about.titleHighlight': 'Future',
-    'about.description': 'At NovaBank, we don\'t just store your money. We propel it. Born from the fusion of traditional finance and advanced artificial intelligence, our mission is to make every transaction faster, safer and smarter.',
+    'about.description': 'At Open Banque, we don\'t just store your money. We propel it. Born from the fusion of traditional finance and advanced artificial intelligence, our mission is to make every transaction faster, safer and smarter.',
     'about.feature1': 'Hybrid Blockchain Technology',
     'about.feature2': '24/7 AI Customer Service',
     'about.feature3': 'Automated Wealth Management',
@@ -938,7 +938,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     // Privacy Page
     'privacy.title': 'Privacy Policy',
     'privacy.subtitle': 'The protection of your personal data is at the heart of our priorities.',
-    'privacy.intro': 'NovaBank is committed to ensuring that the collection and processing of your data, carried out from the novabank.com site, comply with the General Data Protection Regulation (GDPR) and the Data Protection Act.',
+    'privacy.intro': 'Open Banque is committed to ensuring that the collection and processing of your data, carried out from the openbanque.com site, comply with the General Data Protection Regulation (GDPR) and the Data Protection Act.',
     'privacy.section1.title': '1. Data we collect',
     'privacy.section1.data1.title': 'Identification data',
     'privacy.section1.data1.desc': 'Name, first name, date of birth, postal address, email address, phone number, identity document.',
@@ -969,9 +969,9 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
 
     // Legal Page
     'legal.title': 'Legal Notice',
-    'legal.subtitle': 'Legal information regarding NovaBank Corporation.',
+    'legal.subtitle': 'Legal information regarding Open Banque Corporation.',
     'legal.section1.title': '1. Site Publisher',
-    'legal.section1.intro': 'The NovaBank website (hereinafter referred to as "the Site") is published by NovaBank Corporation.',
+    'legal.section1.intro': 'The Open Banque website (hereinafter referred to as "the Site") is published by Open Banque Corporation.',
     'legal.section1.item1.label': 'Legal form:',
     'legal.section1.item1.value': 'Public Limited Company (SA) with capital of €50,000,000',
     'legal.section1.item2.label': 'Registered office:',
@@ -983,14 +983,14 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'legal.section1.item5.label': 'Publication Director:',
     'legal.section1.item5.value': 'Alexandre V., President and CEO',
     'legal.section1.item6.label': 'Contact:',
-    'legal.section1.item6.value': 'legal@novabank.com / +33 1 23 45 67 89',
+    'legal.section1.item6.value': 'legal@openbanque.com / +33 1 23 45 67 89',
     'legal.section2.title': '2. Hosting',
     'legal.section2.content': 'The Site is hosted by SecureCloud Services.\nAddress: 45 Rue des Serveurs, 69000 Lyon, France.\nPhone: +33 4 00 00 00 00.',
     'legal.section3.title': '3. Intellectual Property',
     'legal.section3.content1': 'This entire site is subject to French and international legislation on copyright and intellectual property. All reproduction rights are reserved, including for downloadable documents and iconographic and photographic representations.',
     'legal.section3.content2': 'The reproduction of all or part of this site on any electronic medium is strictly prohibited except with express authorization from the publication director.',
     'legal.section4.title': '4. Limitation of Liability',
-    'legal.section4.content': 'The information contained on this site is as accurate as possible and the site is periodically updated, but may nevertheless contain inaccuracies, omissions or gaps. If you notice a gap, error or what appears to be a malfunction, please report it by email.\n\nAny downloaded content is done at the user\'s own risk and under their sole responsibility. Consequently, NovaBank cannot be held responsible for any damage suffered by the user\'s computer or any loss of data following the download.',
+    'legal.section4.content': 'The information contained on this site is as accurate as possible and the site is periodically updated, but may nevertheless contain inaccuracies, omissions or gaps. If you notice a gap, error or what appears to be a malfunction, please report it by email.\n\nAny downloaded content is done at the user\'s own risk and under their sole responsibility. Consequently, Open Banque cannot be held responsible for any damage suffered by the user\'s computer or any loss of data following the download.',
 
     // Cookies Page
     'cookies.title': 'Cookie Management',
@@ -1017,8 +1017,8 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'testimonials.role.investor': 'Crypto Investor',
     'testimonials.role.student': 'Student',
     'testimonials.role.restaurateur': 'Restaurateur',
-    'testimonials.content.sophie': "NovaBank has completely transformed my treasury management. The interface is futuristic and transfers are instant.",
-    'testimonials.content.thomas': "Security is my priority. NovaBank's multi-step validation system is the best on the market.",
+    'testimonials.content.sophie': "Open Banque has completely transformed my treasury management. The interface is futuristic and transfers are instant.",
+    'testimonials.content.thomas': "Security is my priority. Open Banque's multi-step validation system is the best on the market.",
     'testimonials.content.amelie': "I travel all the time. Having a bank that follows me everywhere without hidden fees is a real relief.",
     'testimonials.content.lucas': "The integrated market analysis tools are incredible. I was able to optimize my portfolio in real-time thanks to the indicators.",
     'testimonials.content.claire': "The application is super intuitive. I love being able to create ephemeral virtual cards for my secure online purchases.",
@@ -1066,7 +1066,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'security.badge3': 'PCI DSS Compliant',
     
     'cta.title': 'Ready to change banks?',
-    'cta.desc': 'Join over 2 million users who have chosen NovaBank for an uncompromising banking experience.',
+    'cta.desc': 'Join over 2 million users who have chosen Open Banque for an uncompromising banking experience.',
     'cta.button': 'Open a free account',
     'cta.disclaimer': 'No credit card required for registration. Identity verification in 2 minutes.',
 
@@ -1082,12 +1082,12 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
 
     // Success Modal
     'successModal.title': 'Congratulations!',
-    'successModal.message': 'Your NovaBank account has been successfully created. Welcome to the bank of the future!',
+    'successModal.message': 'Your Open Banque account has been successfully created. Welcome to the bank of the future!',
     'successModal.continue': 'Go to my dashboard',
 
     // Logout Modal
     'logout.title': 'Logout',
-    'logout.message': 'Are you sure you want to log out of your NovaBank account?',
+    'logout.message': 'Are you sure you want to log out of your Open Banque account?',
     'logout.cancel': 'Cancel',
     'logout.confirm': 'Logout',
 
@@ -1097,7 +1097,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'contact.headquarters': 'Headquarters',
     'contact.address': '123 Avenue de la Blockchain\n75001 Paris, France',
     'contact.email': 'Email',
-    'contact.emailAddresses': 'contact@novabank.company',
+    'contact.emailAddresses': 'contact@openbanque.com',
     'contact.phone': 'Phone',
     'contact.phoneNumber': '+33 1 23 45 67 89\nMon-Fri, 9am-6pm',
     'contact.sendMessage': 'Send us a message',
@@ -1399,7 +1399,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     // Chat
     'chat.open': 'Open chat',
     'chat.needHelp': 'Need help?',
-    'chat.support': 'NovaBank Support',
+    'chat.support': 'Open Banque Support',
     'chat.welcome': 'Hello',
     'chat.welcomeMessage': 'how can we help you today?',
     'chat.selectUser': 'Select a user',
@@ -1426,7 +1426,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'landing.security.deposit': 'Deposit protection up to 100k€',
     'landing.security.pci': 'PCI DSS Compliant',
     'landing.cta.title': 'Ready to change banks?',
-    'landing.cta.desc': 'Join over 2 million users who have chosen NovaBank for a banking experience without compromise.',
+    'landing.cta.desc': 'Join over 2 million users who have chosen Open Banque for a banking experience without compromise.',
     'landing.cta.button': 'Open a free account',
     'landing.cta.note': 'No credit card required for registration. Identity verification in 2 minutes.',
     'landing.app.features.1': 'Real-time notifications',
@@ -1539,7 +1539,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'dashboard.savingsGoal.dreamHome': 'Casa de ensueño',
     'dashboard.savingsGoal.japanTrip': 'Viaje a Japón',
     'dashboard.savingsGoal.emergencyFund': 'Fondo de emergencia',
-    'dashboard.transferModal.securedBy': 'Protegido por NovaBank',
+    'dashboard.transferModal.securedBy': 'Protegido por Open Banque',
     'dashboard.transferModal.title': 'Nueva Transferencia',
     'dashboard.transferModal.active': 'Transferencia en Curso',
     'dashboard.transferModal.close': 'Cerrar',
@@ -1554,7 +1554,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     // Chat
     'chat.open': 'Abrir chat',
     'chat.needHelp': '¿Necesitas ayuda?',
-    'chat.support': 'Soporte NovaBank',
+    'chat.support': 'Soporte Open Banque',
     'chat.welcome': 'Hola',
     'chat.welcomeMessage': '¿cómo podemos ayudarte hoy?',
     'chat.selectUser': 'Selecciona un usuario',
@@ -1589,7 +1589,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     
     'about.title': 'Un Banco Construido para el',
     'about.titleHighlight': 'Futuro',
-    'about.description': 'En NovaBank, no solo almacenamos su dinero. Lo impulsamos. Nacido de la fusión entre las finanzas tradicionales y la inteligencia artificial avanzada, nuestra misión es hacer cada transacción más rápida, más segura y más inteligente.',
+    'about.description': 'En Open Banque, no solo almacenamos su dinero. Lo impulsamos. Nacido de la fusión entre las finanzas tradicionales y la inteligencia artificial avanzada, nuestra misión es hacer cada transacción más rápida, más segura y más inteligente.',
     'about.feature1': 'Tecnología Blockchain Híbrida',
     'about.feature2': 'Servicio al Cliente IA 24/7',
     'about.feature3': 'Gestión de Patrimonio Automatizada',
@@ -1616,7 +1616,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'features.Analytics.desc': 'Visualice sus gastos en tiempo real y optimice su presupuesto con nuestras herramientas analíticas.',
     'features.cta': 'Ver todos los servicios',
     
-    'services.title': 'El Ecosistema NovaBank',
+    'services.title': 'El Ecosistema Open Banque',
     'services.subtitle': 'Mucho más que una simple aplicación bancaria. Una suite completa de herramientas financieras diseñadas para acelerar su libertad financiera.',
     'services.feature1.title': 'Mundo Entero',
     'services.feature1.desc': 'Pague y transfiera dinero en cualquier lugar del planeta sin tarifas ocultas.',
@@ -1637,7 +1637,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'services.userExperience': 'Experiencia de Usuario',
     'services.ux.title': 'Una interfaz tan fluida, es casi',
     'services.ux.titleHighlight': 'mágica',
-    'services.ux.description': 'Olvide las interfaces bancarias austeras y complejas. NovaBank fue diseñado por diseñadores galardonados para ofrecer claridad absoluta sobre sus finanzas.',
+    'services.ux.description': 'Olvide las interfaces bancarias austeras y complejas. Open Banque fue diseñado por diseñadores galardonados para ofrecer claridad absoluta sobre sus finanzas.',
     'services.ux.feature1.title': 'Notificaciones Instantáneas',
     'services.ux.feature1.desc': 'Reciba una alerta al segundo en que paga. Sin más sorpresas al final del mes.',
     'services.ux.feature2.title': 'Modo Oscuro Nativo',
@@ -1723,7 +1723,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'contact.headquarters': 'Sede Social',
     'contact.address': '123 Avenida de la Blockchain\n75001 París, Francia',
     'contact.email': 'Correo Electrónico',
-    'contact.emailAddresses': 'contact@novabank.company',
+    'contact.emailAddresses': 'contact@openbanque.com',
     'contact.phone': 'Teléfono',
     'contact.phoneNumber': '+33 1 23 45 67 89\nLun-Vie, 9h-18h',
     'contact.sendMessage': 'Envíenos un mensaje',
@@ -1739,7 +1739,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'contact.messageSent': '¡Mensaje enviado con éxito!',
     'contact.error.generic': 'Ocurrió un error al enviar el mensaje. Por favor, inténtelo de nuevo.',
     
-    'team.title': "El Equipo NovaBank",
+    'team.title': "El Equipo Open Banque",
     'team.subtitle': "Expertos apasionados por las finanzas y la tecnología, trabajando todos los días para garantizar su futuro.",
     'impact.title': "Compromiso e Impacto",
     'impact.subtitle': "Más allá del banco, construimos puentes. Nuestros responsables están en el campo todos los días apoyando la innovación y la solidaridad.",
@@ -1777,8 +1777,8 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'testimonials.role.investor': 'Inversor Crypto',
     'testimonials.role.student': 'Estudiante',
     'testimonials.role.restaurateur': 'Restaurador',
-    'testimonials.content.sophie': "NovaBank ha transformado completamente la gestión de mi tesorería. La interfaz es futurista y las transferencias son instantáneas.",
-    'testimonials.content.thomas': "La seguridad es mi prioridad. El sistema de validación multi-etapas de NovaBank es lo mejor del mercado.",
+    'testimonials.content.sophie': "Open Banque ha transformado completamente la gestión de mi tesorería. La interfaz es futurista y las transferencias son instantáneas.",
+    'testimonials.content.thomas': "La seguridad es mi prioridad. El sistema de validación multi-etapas de Open Banque es lo mejor del mercado.",
     'testimonials.content.amelie': "Viajo todo el tiempo. Tener un banco que me sigue a todas partes sin comisiones ocultas es un verdadero alivio.",
     'testimonials.content.lucas': "Las herramientas de análisis de mercado integradas son increíbles. Pude optimizar mi cartera en tiempo real gracias a los indicadores.",
     'testimonials.content.claire': "La aplicación es súper intuitiva. Me encanta poder crear tarjetas virtuales efímeras para mis compras en línea seguras.",
@@ -1832,7 +1832,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'security.badge3': 'Cumple con PCI DSS',
     
     'cta.title': '¿Listo para cambiar de banco?',
-    'cta.desc': 'Únase a más de 2 millones de usuarios que han elegido NovaBank para una experiencia bancaria sin compromisos.',
+    'cta.desc': 'Únase a más de 2 millones de usuarios que han elegido Open Banque para una experiencia bancaria sin compromisos.',
     'cta.button': 'Abrir una cuenta gratuita',
     'cta.disclaimer': 'No se requiere tarjeta de crédito para el registro. Verificación de identidad en 2 minutos.',
     
@@ -1848,12 +1848,12 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     
     // Success Modal
     'successModal.title': '¡Felicitaciones!',
-    'successModal.message': 'Su cuenta NovaBank ha sido creada con éxito. ¡Bienvenido al banco del futuro!',
+    'successModal.message': 'Su cuenta Open Banque ha sido creada con éxito. ¡Bienvenido al banco del futuro!',
     'successModal.continue': 'Ir a mi panel',
     
     // Logout Modal
     'logout.title': 'Cerrar sesión',
-    'logout.message': '¿Está seguro de que desea cerrar sesión en su cuenta NovaBank?',
+    'logout.message': '¿Está seguro de que desea cerrar sesión en su cuenta Open Banque?',
     'logout.cancel': 'Cancelar',
     'logout.confirm': 'Cerrar sesión',
     
@@ -2125,7 +2125,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'dashboard.savingsGoal.dreamHome': 'Traumhaus',
     'dashboard.savingsGoal.japanTrip': 'Reise nach Japan',
     'dashboard.savingsGoal.emergencyFund': 'Notfallfonds',
-    'dashboard.transferModal.securedBy': 'Geschützt von NovaBank',
+    'dashboard.transferModal.securedBy': 'Geschützt von Open Banque',
     'dashboard.transferModal.title': 'Neue Überweisung',
     'dashboard.transferModal.active': 'Überweisung läuft',
     'dashboard.transferModal.close': 'Schließen',
@@ -2140,7 +2140,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     // Chat
     'chat.open': 'Chat öffnen',
     'chat.needHelp': 'Brauchen Sie Hilfe?',
-    'chat.support': 'NovaBank Support',
+    'chat.support': 'Open Banque Support',
     'chat.welcome': 'Hallo',
     'chat.welcomeMessage': 'wie können wir Ihnen heute helfen?',
     'chat.selectUser': 'Wählen Sie einen Benutzer',
@@ -2175,7 +2175,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     
     'about.title': 'Eine Bank, die für die Zukunft gebaut wurde',
     'about.titleHighlight': 'Zukunft',
-    'about.description': 'Bei NovaBank speichern wir Ihr Geld nicht nur. Wir treiben es voran. Entstanden aus der Fusion von traditionellen Finanzen und fortgeschrittener künstlicher Intelligenz, ist es unsere Mission, jede Transaktion schneller, sicherer und intelligenter zu machen.',
+    'about.description': 'Bei Open Banque speichern wir Ihr Geld nicht nur. Wir treiben es voran. Entstanden aus der Fusion von traditionellen Finanzen und fortgeschrittener künstlicher Intelligenz, ist es unsere Mission, jede Transaktion schneller, sicherer und intelligenter zu machen.',
     'about.feature1': 'Hybride Blockchain-Technologie',
     'about.feature2': '24/7 KI-Kundenservice',
     'about.feature3': 'Automatisierte Vermögensverwaltung',
@@ -2202,10 +2202,10 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'features.Analytics.desc': 'Visualisieren Sie Ihre Ausgaben in Echtzeit und optimieren Sie Ihr Budget mit unseren Analyse-Tools.',
     'features.cta': 'Alle Dienste anzeigen',
     
-    'team.title': "Das NovaBank Team",
+    'team.title': "Das Open Banque Team",
     'team.subtitle': "Experten, die leidenschaftlich an Finanzen und Technologie interessiert sind und jeden Tag daran arbeiten, Ihre Zukunft zu sichern.",
     
-    'services.title': 'Das NovaBank Ökosystem',
+    'services.title': 'Das Open Banque Ökosystem',
     'services.subtitle': 'Viel mehr als eine einfache Banking-Anwendung. Eine komplette Suite von Finanzwerkzeugen, die entwickelt wurde, um Ihre finanzielle Freiheit zu beschleunigen.',
     'services.feature1.title': 'Weltweit',
     'services.feature1.desc': 'Zahlen und überweisen Sie Geld überall auf dem Planeten ohne versteckte Gebühren.',
@@ -2226,7 +2226,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'services.userExperience': 'Benutzererfahrung',
     'services.ux.title': 'Eine so flüssige Oberfläche, es ist fast',
     'services.ux.titleHighlight': 'magisch',
-    'services.ux.description': 'Vergessen Sie strenge und komplexe Banking-Oberflächen. NovaBank wurde von preisgekrönten Designern entwickelt, um absolute Klarheit über Ihre Finanzen zu bieten.',
+    'services.ux.description': 'Vergessen Sie strenge und komplexe Banking-Oberflächen. Open Banque wurde von preisgekrönten Designern entwickelt, um absolute Klarheit über Ihre Finanzen zu bieten.',
     'services.ux.feature1.title': 'Sofortbenachrichtigungen',
     'services.ux.feature1.desc': 'Erhalten Sie eine Warnung in der Sekunde, in der Sie zahlen. Keine Überraschungen mehr am Monatsende.',
     'services.ux.feature2.title': 'Nativ-Dunkelmodus',
@@ -2312,7 +2312,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'contact.headquarters': 'Hauptsitz',
     'contact.address': '123 Avenue de la Blockchain\n75001 Paris, Frankreich',
     'contact.email': 'E-Mail',
-    'contact.emailAddresses': 'contact@novabank.company',
+    'contact.emailAddresses': 'contact@openbanque.com',
     'contact.phone': 'Telefon',
     'contact.phoneNumber': '+33 1 23 45 67 89\nMo-Fr, 9-18 Uhr',
     'contact.sendMessage': 'Senden Sie uns eine Nachricht',
@@ -2375,8 +2375,8 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'testimonials.role.investor': 'Krypto-Investor',
     'testimonials.role.student': 'Studentin',
     'testimonials.role.restaurateur': 'Restaurateur',
-    'testimonials.content.sophie': "NovaBank hat mein Cashflow-Management komplett transformiert. Die Oberfläche ist futuristisch und Überweisungen sind sofort.",
-    'testimonials.content.thomas': "Sicherheit ist meine Priorität. Das Multi-Schritt-Validierungssystem von NovaBank ist das Beste auf dem Markt.",
+    'testimonials.content.sophie': "Open Banque hat mein Cashflow-Management komplett transformiert. Die Oberfläche ist futuristisch und Überweisungen sind sofort.",
+    'testimonials.content.thomas': "Sicherheit ist meine Priorität. Das Multi-Schritt-Validierungssystem von Open Banque ist das Beste auf dem Markt.",
     'testimonials.content.amelie': "Ich reise ständig. Eine Bank zu haben, die mir überallhin folgt, ohne versteckte Gebühren, ist eine echte Erleichterung.",
     'testimonials.content.lucas': "Die integrierten Marktanalyse-Tools sind unglaublich. Ich konnte mein Portfolio in Echtzeit dank der Indikatoren optimieren.",
     'testimonials.content.claire': "Die Anwendung ist super intuitiv. Ich liebe es, kurzlebige virtuelle Karten für meine sicheren Online-Einkäufe erstellen zu können.",
@@ -2424,7 +2424,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'security.badge3': 'PCI DSS-konform',
     
     'cta.title': 'Bereit, die Bank zu wechseln?',
-    'cta.desc': 'Schließen Sie sich über 2 Millionen Nutzern an, die NovaBank für ein kompromissloses Banking-Erlebnis gewählt haben.',
+    'cta.desc': 'Schließen Sie sich über 2 Millionen Nutzern an, die Open Banque für ein kompromissloses Banking-Erlebnis gewählt haben.',
     'cta.button': 'Kostenloses Konto eröffnen',
     'cta.disclaimer': 'Keine Kreditkarte für die Registrierung erforderlich. Identitätsprüfung in 2 Minuten.',
     
@@ -2440,12 +2440,12 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     
     // Success Modal
     'successModal.title': 'Herzlichen Glückwunsch!',
-    'successModal.message': 'Ihr NovaBank-Konto wurde erfolgreich erstellt. Willkommen in der Bank der Zukunft!',
+    'successModal.message': 'Ihr Open Banque-Konto wurde erfolgreich erstellt. Willkommen in der Bank der Zukunft!',
     'successModal.continue': 'Zu meinem Dashboard gehen',
     
     // Logout Modal
     'logout.title': 'Abmelden',
-    'logout.message': 'Sind Sie sicher, dass Sie sich von Ihrem NovaBank-Konto abmelden möchten?',
+    'logout.message': 'Sind Sie sicher, dass Sie sich von Ihrem Open Banque-Konto abmelden möchten?',
     'logout.cancel': 'Abbrechen',
     'logout.confirm': 'Abmelden',
     
@@ -2720,7 +2720,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'dashboard.savingsGoal.dreamHome': 'Casa dei sogni',
     'dashboard.savingsGoal.japanTrip': 'Viaggio in Giappone',
     'dashboard.savingsGoal.emergencyFund': 'Fondo di emergenza',
-    'dashboard.transferModal.securedBy': 'Protetto da NovaBank',
+    'dashboard.transferModal.securedBy': 'Protetto da Open Banque',
     'dashboard.transferModal.title': 'Nuovo Bonifico',
     'dashboard.transferModal.active': 'Bonifico in Corso',
     'dashboard.transferModal.close': 'Chiudi',
@@ -2735,7 +2735,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     // Chat
     'chat.open': 'Aprire chat',
     'chat.needHelp': 'Hai bisogno di aiuto?',
-    'chat.support': 'Supporto NovaBank',
+    'chat.support': 'Supporto Open Banque',
     'chat.welcome': 'Ciao',
     'chat.welcomeMessage': 'come possiamo aiutarti oggi?',
     'chat.selectUser': 'Seleziona un utente',
@@ -2770,7 +2770,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     
     'about.title': 'Una Banca Costruita per il',
     'about.titleHighlight': 'Futuro',
-    'about.description': 'In NovaBank, non immagazziniamo solo i tuoi soldi. Li spingiamo. Nata dalla fusione tra finanza tradizionale e intelligenza artificiale avanzata, la nostra missione è rendere ogni transazione più veloce, più sicura e più intelligente.',
+    'about.description': 'In Open Banque, non immagazziniamo solo i tuoi soldi. Li spingiamo. Nata dalla fusione tra finanza tradizionale e intelligenza artificiale avanzata, la nostra missione è rendere ogni transazione più veloce, più sicura e più intelligente.',
     'about.feature1': 'Tecnologia Blockchain Ibrida',
     'about.feature2': 'Servizio Clienti IA 24/7',
     'about.feature3': 'Gestione del Patrimonio Automatizzata',
@@ -2827,8 +2827,8 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'testimonials.role.investor': 'Investitore Crypto',
     'testimonials.role.student': 'Studente',
     'testimonials.role.restaurateur': 'Ristoratore',
-    'testimonials.content.sophie': "NovaBank ha completamente trasformato la gestione della mia tesoreria. L'interfaccia è futuristica e i bonifici sono istantanei.",
-    'testimonials.content.thomas': "La sicurezza è la mia priorità. Il sistema di validazione multi-step di NovaBank è il migliore sul mercato.",
+    'testimonials.content.sophie': "Open Banque ha completamente trasformato la gestione della mia tesoreria. L'interfaccia è futuristica e i bonifici sono istantanei.",
+    'testimonials.content.thomas': "La sicurezza è la mia priorità. Il sistema di validazione multi-step di Open Banque è il migliore sul mercato.",
     'testimonials.content.amelie': "Viaggio sempre. Avere una banca che mi segue ovunque senza commissioni nascoste è un vero sollievo.",
     'testimonials.content.lucas': "Gli strumenti di analisi di mercato integrati sono incredibili. Ho potuto ottimizzare il mio portafoglio in tempo reale grazie agli indicatori.",
     'testimonials.content.claire': "L'applicazione è super intuitiva. Adoro poter creare carte virtuali effimere per i miei acquisti online sicuri.",
@@ -2854,10 +2854,10 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'team.member2.role': 'Direttore Sicurezza',
     'team.member3.role': 'Responsabile Prodotto',
     'team.member4.role': 'Servizio Clienti',
-    'team.title': 'Il Team NovaBank',
+    'team.title': 'Il Team Open Banque',
     'team.subtitle': 'Esperti appassionati di finanza e tecnologia, che lavorano ogni giorno per garantire il vostro futuro.',
     
-    'services.title': 'L\'Ecosistema NovaBank',
+    'services.title': 'L\'Ecosistema Open Banque',
     'services.subtitle': 'Molto più di una semplice applicazione bancaria. Una suite completa di strumenti finanziari progettati per accelerare la vostra libertà finanziaria.',
     'services.feature1.title': 'Mondo Intero',
     'services.feature1.desc': 'Pagate e trasferite denaro ovunque sul pianeta senza commissioni nascoste.',
@@ -2878,7 +2878,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'services.userExperience': 'Esperienza Utente',
     'services.ux.title': 'Un\'interfaccia così fluida, è quasi',
     'services.ux.titleHighlight': 'magica',
-    'services.ux.description': 'Dimenticate le interfacce bancarie austere e complesse. NovaBank è stata progettata da designer premiati per offrire chiarezza assoluta sulle vostre finanze.',
+    'services.ux.description': 'Dimenticate le interfacce bancarie austere e complesse. Open Banque è stata progettata da designer premiati per offrire chiarezza assoluta sulle vostre finanze.',
     'services.ux.feature1.title': 'Notifiche Istantanee',
     'services.ux.feature1.desc': 'Ricevete un avviso nel secondo in cui pagate. Niente più sorprese alla fine del mese.',
     'services.ux.feature2.title': 'Modalità Scura Nativa',
@@ -2964,7 +2964,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'contact.headquarters': 'Sede Sociale',
     'contact.address': '123 Avenue de la Blockchain\n75001 Parigi, Francia',
     'contact.email': 'Email',
-    'contact.emailAddresses': 'contact@novabank.company',
+    'contact.emailAddresses': 'contact@openbanque.com',
     'contact.phone': 'Telefono',
     'contact.phoneNumber': '+33 1 23 45 67 89\nLun-Ven, 9h-18h',
     'contact.sendMessage': 'Inviateci un messaggio',
@@ -3005,7 +3005,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'security.badge2': 'Protezione depositi fino a 100k€',
     'security.badge3': 'Conforme PCI DSS',
     'cta.title': 'Pronto a cambiare banca?',
-    'cta.desc': 'Unisciti a oltre 2 milioni di utenti che hanno scelto NovaBank per un\'esperienza bancaria senza compromessi.',
+    'cta.desc': 'Unisciti a oltre 2 milioni di utenti che hanno scelto Open Banque per un\'esperienza bancaria senza compromessi.',
     'cta.button': 'Apri un conto gratuito',
     'cta.disclaimer': 'Nessuna carta di credito richiesta per la registrazione. Verifica identità in 2 minuti.',
     'common.month': '/mese',
@@ -3026,12 +3026,12 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     
     // Success Modal
     'successModal.title': 'Congratulazioni!',
-    'successModal.message': 'Il tuo account NovaBank è stato creato con successo. Benvenuto nella banca del futuro!',
+    'successModal.message': 'Il tuo account Open Banque è stato creato con successo. Benvenuto nella banca del futuro!',
     'successModal.continue': 'Vai alla mia dashboard',
     
     // Logout Modal
     'logout.title': 'Esci',
-    'logout.message': 'Sei sicuro di voler uscire dal tuo account NovaBank?',
+    'logout.message': 'Sei sicuro di voler uscire dal tuo account Open Banque?',
     'logout.cancel': 'Annulla',
     'logout.confirm': 'Esci',
     
@@ -3256,7 +3256,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'features.cta': 'Ver todos os nossos serviços',
 
     // Landing Team
-    'team.title': 'A Equipe NovaBank',
+    'team.title': 'A Equipe Open Banque',
     'team.subtitle': 'Especialistas apaixonados por finanças e tecnologia, trabalhando todos os dias para garantir seu futuro.',
     'team.member1.role': 'CEO e Fundador',
     'team.member2.role': 'Diretora de Segurança',
@@ -3343,7 +3343,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'pricing.simulator.startSaving': 'Começar a poupar agora',
 
     // Services Page
-    'services.title': 'O Ecossistema NovaBank',
+    'services.title': 'O Ecossistema Open Banque',
     'services.subtitle': 'Muito mais que um simples aplicativo bancário. Uma suíte completa de ferramentas financeiras projetadas para acelerar sua liberdade financeira.',
     'services.feature1.title': 'Mundo Inteiro',
     'services.feature1.desc': 'Pague e transfira dinheiro em qualquer lugar do planeta sem taxas ocultas.',
@@ -3364,7 +3364,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'services.userExperience': 'Experiência do Usuário',
     'services.ux.title': 'Uma interface tão fluida, é quase',
     'services.ux.titleHighlight': 'mágica',
-    'services.ux.description': 'Esqueça interfaces bancárias austeras e complexas. A NovaBank foi projetada por designers premiados para oferecer clareza absoluta sobre suas finanças.',
+    'services.ux.description': 'Esqueça interfaces bancárias austeras e complexas. A Open Banque foi projetada por designers premiados para oferecer clareza absoluta sobre suas finanças.',
     'services.ux.feature1.title': 'Notificações Instantâneas',
     'services.ux.feature1.desc': 'Receba um alerta no segundo em que você paga. Sem mais surpresas no final do mês.',
     'services.ux.feature2.title': 'Modo Escuro Nativo',
@@ -3419,7 +3419,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     // About Page
     'about.title': 'Um Banco Construído para o',
     'about.titleHighlight': 'Futuro',
-    'about.description': 'Na NovaBank, não apenas armazenamos seu dinheiro. Nós o impulsionamos. Nascido da fusão entre finanças tradicionais e inteligência artificial avançada, nossa missão é tornar cada transação mais rápida, mais segura e mais inteligente.',
+    'about.description': 'Na Open Banque, não apenas armazenamos seu dinheiro. Nós o impulsionamos. Nascido da fusão entre finanças tradicionais e inteligência artificial avançada, nossa missão é tornar cada transação mais rápida, mais segura e mais inteligente.',
     'about.feature1': 'Tecnologia Blockchain Híbrida',
     'about.feature2': 'Serviço ao Cliente IA 24/7',
     'about.feature3': 'Gestão de Patrimônio Automatizada',
@@ -3434,7 +3434,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     // Privacy Page
     'privacy.title': 'Política de Privacidade',
     'privacy.subtitle': 'A proteção dos seus dados pessoais está no centro das nossas prioridades.',
-    'privacy.intro': 'A NovaBank se compromete a garantir que a coleta e o processamento dos seus dados, realizados a partir do site novabank.com, estejam em conformidade com o Regulamento Geral sobre a Proteção de Dados (RGPD) e a Lei de Proteção de Dados.',
+    'privacy.intro': 'A Open Banque se compromete a garantir que a coleta e o processamento dos seus dados, realizados a partir do site openbanque.com, estejam em conformidade com o Regulamento Geral sobre a Proteção de Dados (RGPD) e a Lei de Proteção de Dados.',
     'privacy.section1.title': '1. Os dados que coletamos',
     'privacy.section1.data1.title': 'Dados de identificação',
     'privacy.section1.data1.desc': 'Nome, sobrenome, data de nascimento, endereço postal, endereço de email, número de telefone, documento de identidade.',
@@ -3465,9 +3465,9 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
 
     // Legal Page
     'legal.title': 'Aviso Legal',
-    'legal.subtitle': 'Informações jurídicas sobre a NovaBank Corporation.',
+    'legal.subtitle': 'Informações jurídicas sobre a Open Banque Corporation.',
     'legal.section1.title': '1. Editor do Site',
-    'legal.section1.intro': 'O site da NovaBank (doravante designado "o Site") é editado pela sociedade NovaBank Corporation.',
+    'legal.section1.intro': 'O site da Open Banque (doravante designado "o Site") é editado pela sociedade Open Banque Corporation.',
     'legal.section1.item1.label': 'Forma jurídica:',
     'legal.section1.item1.value': 'Sociedade Anônima (SA) com capital de €50.000.000',
     'legal.section1.item2.label': 'Sede social:',
@@ -3479,14 +3479,14 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'legal.section1.item5.label': 'Diretor de publicação:',
     'legal.section1.item5.value': 'Alexandre V., Presidente Diretor Geral',
     'legal.section1.item6.label': 'Contato:',
-    'legal.section1.item6.value': 'legal@novabank.com / +33 1 23 45 67 89',
+    'legal.section1.item6.value': 'legal@openbanque.com / +33 1 23 45 67 89',
     'legal.section2.title': '2. Hospedagem',
     'legal.section2.content': 'O Site é hospedado pela sociedade SecureCloud Services.\nEndereço: 45 Rua dos Servidores, 69000 Lyon, França.\nTelefone: +33 4 00 00 00 00.',
     'legal.section3.title': '3. Propriedade Intelectual',
     'legal.section3.content1': 'Todo este site está sujeito à legislação francesa e internacional sobre direitos autorais e propriedade intelectual. Todos os direitos de reprodução são reservados, incluindo para documentos baixáveis e representações iconográficas e fotográficas.',
     'legal.section3.content2': 'A reprodução de todo ou parte deste site em qualquer suporte eletrônico é estritamente proibida, exceto com autorização expressa do diretor de publicação.',
     'legal.section4.title': '4. Limitação de Responsabilidade',
-    'legal.section4.content': 'As informações contidas neste site são tão precisas quanto possível e o site é periodicamente atualizado, mas pode conter imprecisões, omissões ou lacunas. Se você notar uma lacuna, erro ou o que parece ser um mau funcionamento, por favor, reporte por email.\n\nQualquer conteúdo baixado é feito por conta e risco do usuário e sob sua única responsabilidade. Consequentemente, a NovaBank não pode ser responsabilizada por qualquer dano sofrido pelo computador do usuário ou qualquer perda de dados decorrente do download.',
+    'legal.section4.content': 'As informações contidas neste site são tão precisas quanto possível e o site é periodicamente atualizado, mas pode conter imprecisões, omissões ou lacunas. Se você notar uma lacuna, erro ou o que parece ser um mau funcionamento, por favor, reporte por email.\n\nQualquer conteúdo baixado é feito por conta e risco do usuário e sob sua única responsabilidade. Consequentemente, a Open Banque não pode ser responsabilizada por qualquer dano sofrido pelo computador do usuário ou qualquer perda de dados decorrente do download.',
 
     // Cookies Page
     'cookies.title': 'Gestão de Cookies',
@@ -3514,8 +3514,8 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'testimonials.role.investor': 'Investidor Crypto',
     'testimonials.role.student': 'Estudante',
     'testimonials.role.restaurateur': 'Restaurateur',
-    'testimonials.content.sophie': "NovaBank transformou completamente a gestão do meu caixa. A interface é futurista e as transferências são instantâneas.",
-    'testimonials.content.thomas': "A segurança é minha prioridade. O sistema de validação multi-etapas da NovaBank é o melhor do mercado.",
+    'testimonials.content.sophie': "Open Banque transformou completamente a gestão do meu caixa. A interface é futurista e as transferências são instantâneas.",
+    'testimonials.content.thomas': "A segurança é minha prioridade. O sistema de validação multi-etapas da Open Banque é o melhor do mercado.",
     'testimonials.content.amelie': "Viajo o tempo todo. Ter um banco que me segue em todos os lugares sem taxas ocultas é um verdadeiro alívio.",
     'testimonials.content.lucas': "As ferramentas de análise de mercado integradas são incríveis. Consegui otimizar minha carteira em tempo real graças aos indicadores.",
     'testimonials.content.claire': "O aplicativo é super intuitivo. Adoro poder criar cartões virtuais efêmeros para minhas compras online seguras.",
@@ -3549,7 +3549,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     
     // CTA
     'cta.title': 'Pronto para mudar de banco?',
-    'cta.desc': 'Junte-se a mais de 2 milhões de usuários que escolheram NovaBank para uma experiência bancária sem compromissos.',
+    'cta.desc': 'Junte-se a mais de 2 milhões de usuários que escolheram Open Banque para uma experiência bancária sem compromissos.',
     'cta.button': 'Abrir uma conta gratuita',
     'cta.disclaimer': 'Nenhum cartão de crédito necessário para registro. Verificação de identidade em 2 minutos.',
 
@@ -3566,12 +3566,12 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
 
     // Success Modal
     'successModal.title': 'Parabéns!',
-    'successModal.message': 'A sua conta NovaBank foi criada com sucesso. Bem-vindo ao banco do futuro!',
+    'successModal.message': 'A sua conta Open Banque foi criada com sucesso. Bem-vindo ao banco do futuro!',
     'successModal.continue': 'Ir para o meu painel',
 
     // Logout Modal
     'logout.title': 'Sair',
-    'logout.message': 'Tem certeza de que deseja sair da sua conta NovaBank?',
+    'logout.message': 'Tem certeza de que deseja sair da sua conta Open Banque?',
     'logout.cancel': 'Cancelar',
     'logout.confirm': 'Sair',
 
@@ -3581,7 +3581,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'contact.headquarters': 'Sede Social',
     'contact.address': '123 Avenida da Blockchain\n75001 Paris, França',
     'contact.email': 'Email',
-    'contact.emailAddresses': 'contact@novabank.company',
+    'contact.emailAddresses': 'contact@openbanque.com',
     'contact.phone': 'Telefone',
     'contact.phoneNumber': '+33 1 23 45 67 89\nSeg-Sex, 9h-18h',
     'contact.sendMessage': 'Envie-nos uma mensagem',
@@ -3875,7 +3875,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     // Chat
     'chat.open': 'Abrir chat',
     'chat.needHelp': 'Precisa de ajuda?',
-    'chat.support': 'Suporte NovaBank',
+    'chat.support': 'Suporte Open Banque',
     'chat.welcome': 'Olá',
     'chat.welcomeMessage': 'como podemos ajudá-lo hoje?',
     'chat.selectUser': 'Selecione um usuário',
@@ -3902,7 +3902,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'landing.security.deposit': 'Proteção de depósitos até 100k€',
     'landing.security.pci': 'Conforme PCI DSS',
     'landing.cta.title': 'Pronto para mudar de banco?',
-    'landing.cta.desc': 'Junte-se a mais de 2 milhões de usuários que escolheram NovaBank para uma experiência bancária sem compromissos.',
+    'landing.cta.desc': 'Junte-se a mais de 2 milhões de usuários que escolheram Open Banque para uma experiência bancária sem compromissos.',
     'landing.cta.button': 'Abrir uma conta gratuita',
     'landing.cta.note': 'Nenhum cartão de crédito necessário para registro. Verificação de identidade em 2 minutos.',
     'landing.app.features.1': 'Notificações em tempo real',
@@ -4015,7 +4015,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'dashboard.savingsGoal.dreamHome': 'Droomhuis',
     'dashboard.savingsGoal.japanTrip': 'Reis naar Japan',
     'dashboard.savingsGoal.emergencyFund': 'Noodfonds',
-    'dashboard.transferModal.securedBy': 'Beveiligd door NovaBank',
+    'dashboard.transferModal.securedBy': 'Beveiligd door Open Banque',
     'dashboard.transferModal.title': 'Nieuwe Overboeking',
     'dashboard.transferModal.active': 'Overboeking Actief',
     'dashboard.transferModal.close': 'Sluiten',
@@ -4030,7 +4030,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     // Chat
     'chat.open': 'Chat openen',
     'chat.needHelp': 'Heeft u hulp nodig?',
-    'chat.support': 'NovaBank Support',
+    'chat.support': 'Open Banque Support',
     'chat.welcome': 'Hallo',
     'chat.welcomeMessage': 'hoe kunnen we u vandaag helpen?',
     'chat.selectUser': 'Selecteer een gebruiker',
@@ -4065,7 +4065,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     
     'about.title': 'Een Bank Gebouwd voor de',
     'about.titleHighlight': 'Toekomst',
-    'about.description': 'Bij NovaBank slaan we uw geld niet alleen op. We stuwen het vooruit. Geboren uit de fusie tussen traditionele financiën en geavanceerde kunstmatige intelligentie, is het onze missie om elke transactie sneller, veiliger en slimmer te maken.',
+    'about.description': 'Bij Open Banque slaan we uw geld niet alleen op. We stuwen het vooruit. Geboren uit de fusie tussen traditionele financiën en geavanceerde kunstmatige intelligentie, is het onze missie om elke transactie sneller, veiliger en slimmer te maken.',
     'about.feature1': 'Hybride Blockchain-technologie',
     'about.feature2': '24/7 AI-klantenservice',
     'about.feature3': 'Geautomatiseerd vermogensbeheer',
@@ -4122,8 +4122,8 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'testimonials.role.investor': 'Crypto Investeerder',
     'testimonials.role.student': 'Student',
     'testimonials.role.restaurateur': 'Restaurateur',
-    'testimonials.content.sophie': "NovaBank heeft mijn kasbeheer volledig getransformeerd. De interface is futuristisch en overboekingen zijn direct.",
-    'testimonials.content.thomas': "Veiligheid is mijn prioriteit. Het multi-stap validatiesysteem van NovaBank is het beste op de markt.",
+    'testimonials.content.sophie': "Open Banque heeft mijn kasbeheer volledig getransformeerd. De interface is futuristisch en overboekingen zijn direct.",
+    'testimonials.content.thomas': "Veiligheid is mijn prioriteit. Het multi-stap validatiesysteem van Open Banque is het beste op de markt.",
     'testimonials.content.amelie': "Ik reis de hele tijd. Een bank hebben die me overal volgt zonder verborgen kosten is een echte opluchting.",
     'testimonials.content.lucas': "De geïntegreerde marktanalysetools zijn ongelooflijk. Ik kon mijn portefeuille in realtime optimaliseren dankzij de indicatoren.",
     'testimonials.content.claire': "De applicatie is super intuïtief. Ik hou ervan om kortstondige virtuele kaarten te kunnen maken voor mijn veilige online aankopen.",
@@ -4149,10 +4149,10 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'team.member2.role': 'Directeur Veiligheid',
     'team.member3.role': 'Productmanager',
     'team.member4.role': 'Klantenservice',
-    'team.title': 'Het NovaBank Team',
+    'team.title': 'Het Open Banque Team',
     'team.subtitle': 'Experts gepassioneerd door financiën en technologie, die dagelijks werken om uw toekomst te waarborgen.',
     
-    'services.title': 'Het NovaBank Ecosysteem',
+    'services.title': 'Het Open Banque Ecosysteem',
     'services.subtitle': 'Veel meer dan een simpele bankapplicatie. Een complete suite van financiële tools ontworpen om uw financiële vrijheid te versnellen.',
     'services.feature1.title': 'Wereldwijd',
     'services.feature1.desc': 'Betaal en overboek geld overal op de planeet zonder verborgen kosten.',
@@ -4173,7 +4173,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'services.userExperience': 'Gebruikerservaring',
     'services.ux.title': 'Een interface zo soepel, het is bijna',
     'services.ux.titleHighlight': 'magisch',
-    'services.ux.description': 'Vergeet strenge en complexe bankinterfaces. NovaBank is ontworpen door bekroonde ontwerpers om absolute helderheid over uw financiën te bieden.',
+    'services.ux.description': 'Vergeet strenge en complexe bankinterfaces. Open Banque is ontworpen door bekroonde ontwerpers om absolute helderheid over uw financiën te bieden.',
     'services.ux.feature1.title': 'Directe Meldingen',
     'services.ux.feature1.desc': 'Ontvang een waarschuwing op het moment dat u betaalt. Geen verrassingen meer aan het einde van de maand.',
     'services.ux.feature2.title': 'Native Donkere Modus',
@@ -4259,7 +4259,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'contact.headquarters': 'Hoofdkantoor',
     'contact.address': '123 Avenue de la Blockchain\n75001 Parijs, Frankrijk',
     'contact.email': 'E-mail',
-    'contact.emailAddresses': 'contact@novabank.company',
+    'contact.emailAddresses': 'contact@openbanque.com',
     'contact.phone': 'Telefoon',
     'contact.phoneNumber': '+33 1 23 45 67 89\nMa-Vr, 9u-18u',
     'contact.sendMessage': 'Stuur ons een bericht',
@@ -4298,7 +4298,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'security.badge2': 'Depositobescherming tot 100k€',
     'security.badge3': 'PCI DSS Conform',
     'cta.title': 'Klaar om van bank te wisselen?',
-    'cta.desc': 'Sluit u aan bij meer dan 2 miljoen gebruikers die NovaBank hebben gekozen voor een onverzettelijke bankervaring.',
+    'cta.desc': 'Sluit u aan bij meer dan 2 miljoen gebruikers die Open Banque hebben gekozen voor een onverzettelijke bankervaring.',
     'cta.button': 'Gratis rekening openen',
     'cta.disclaimer': 'Geen creditcard vereist voor registratie. Identiteitsverificatie in 2 minuten.',
     'common.month': '/maand',
@@ -4319,12 +4319,12 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     
     // Success Modal
     'successModal.title': 'Gefeliciteerd!',
-    'successModal.message': 'Uw NovaBank-account is succesvol aangemaakt. Welkom bij de bank van de toekomst!',
+    'successModal.message': 'Uw Open Banque-account is succesvol aangemaakt. Welkom bij de bank van de toekomst!',
     'successModal.continue': 'Naar mijn dashboard gaan',
     
     // Logout Modal
     'logout.title': 'Uitloggen',
-    'logout.message': 'Weet u zeker dat u wilt uitloggen van uw NovaBank-account?',
+    'logout.message': 'Weet u zeker dat u wilt uitloggen van uw Open Banque-account?',
     'logout.cancel': 'Annuleren',
     'logout.confirm': 'Uitloggen',
     
@@ -4599,7 +4599,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'dashboard.savingsGoal.dreamHome': 'Дом мечты',
     'dashboard.savingsGoal.japanTrip': 'Поездка в Японию',
     'dashboard.savingsGoal.emergencyFund': 'Резервный фонд',
-    'dashboard.transferModal.securedBy': 'Защищено NovaBank',
+    'dashboard.transferModal.securedBy': 'Защищено Open Banque',
     'dashboard.transferModal.title': 'Новый Перевод',
     'dashboard.transferModal.active': 'Перевод Активен',
     'dashboard.transferModal.close': 'Закрыть',
@@ -4614,7 +4614,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     // Chat
     'chat.open': 'Открыть чат',
     'chat.needHelp': 'Нужна помощь?',
-    'chat.support': 'Поддержка NovaBank',
+    'chat.support': 'Поддержка Open Banque',
     'chat.welcome': 'Здравствуйте',
     'chat.welcomeMessage': 'как мы можем вам помочь сегодня?',
     'chat.selectUser': 'Выберите пользователя',
@@ -4649,7 +4649,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     
     'about.title': 'Банк, Построенный для',
     'about.titleHighlight': 'Будущего',
-    'about.description': 'В NovaBank мы не просто храним ваши деньги. Мы продвигаем их вперед. Рожденные из слияния традиционных финансов и передового искусственного интеллекта, наша миссия - сделать каждую транзакцию быстрее, безопаснее и умнее.',
+    'about.description': 'В Open Banque мы не просто храним ваши деньги. Мы продвигаем их вперед. Рожденные из слияния традиционных финансов и передового искусственного интеллекта, наша миссия - сделать каждую транзакцию быстрее, безопаснее и умнее.',
     'about.feature1': 'Гибридная технология блокчейн',
     'about.feature2': 'Круглосуточное обслуживание клиентов ИИ',
     'about.feature3': 'Автоматизированное управление капиталом',
@@ -4697,8 +4697,8 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'testimonials.role.investor': 'Крипто-инвестор',
     'testimonials.role.student': 'Студентка',
     'testimonials.role.restaurateur': 'Ресторатор',
-    'testimonials.content.sophie': "NovaBank полностью изменил управление моей кассой. Интерфейс футуристичен, а переводы мгновенны.",
-    'testimonials.content.thomas': "Безопасность - мой приоритет. Многоступенчатая система валидации NovaBank - лучшая на рынке.",
+    'testimonials.content.sophie': "Open Banque полностью изменил управление моей кассой. Интерфейс футуристичен, а переводы мгновенны.",
+    'testimonials.content.thomas': "Безопасность - мой приоритет. Многоступенчатая система валидации Open Banque - лучшая на рынке.",
     'testimonials.content.amelie': "Я постоянно путешествую. Иметь банк, который следует за мной везде без скрытых комиссий - настоящее облегчение.",
     'testimonials.content.lucas': "Интегрированные инструменты анализа рынка невероятны. Я смог оптимизировать свой портфель в реальном времени благодаря индикаторам.",
     'testimonials.content.claire': "Приложение супер интуитивно. Мне нравится возможность создавать эфемерные виртуальные карты для безопасных онлайн-покупок.",
@@ -4724,10 +4724,10 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'team.member2.role': 'Директор по безопасности',
     'team.member3.role': 'Менеджер по продукту',
     'team.member4.role': 'Служба поддержки клиентов',
-    'team.title': 'Команда NovaBank',
+    'team.title': 'Команда Open Banque',
     'team.subtitle': 'Эксперты, увлеченные финансами и технологиями, работающие каждый день, чтобы гарантировать ваше будущее.',
     
-    'services.title': 'Экосистема NovaBank',
+    'services.title': 'Экосистема Open Banque',
     'services.subtitle': 'Намного больше, чем простое банковское приложение. Полный набор финансовых инструментов, разработанных для ускорения вашей финансовой свободы.',
     'services.feature1.title': 'По всему миру',
     'services.feature1.desc': 'Платите и переводите деньги в любую точку планеты без скрытых комиссий.',
@@ -4748,7 +4748,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'services.userExperience': 'Пользовательский опыт',
     'services.ux.title': 'Интерфейс настолько плавный, что это почти',
     'services.ux.titleHighlight': 'волшебство',
-    'services.ux.description': 'Забудьте о строгих и сложных банковских интерфейсах. NovaBank разработан награжденными дизайнерами для обеспечения абсолютной ясности в ваших финансах.',
+    'services.ux.description': 'Забудьте о строгих и сложных банковских интерфейсах. Open Banque разработан награжденными дизайнерами для обеспечения абсолютной ясности в ваших финансах.',
     'services.ux.feature1.title': 'Мгновенные уведомления',
     'services.ux.feature1.desc': 'Получайте предупреждение в момент оплаты. Никаких сюрпризов в конце месяца.',
     'services.ux.feature2.title': 'Нативный темный режим',
@@ -4834,7 +4834,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'contact.headquarters': 'Главный офис',
     'contact.address': '123 Avenue de la Blockchain\n75001 Париж, Франция',
     'contact.email': 'Электронная почта',
-    'contact.emailAddresses': 'contact@novabank.company',
+    'contact.emailAddresses': 'contact@openbanque.com',
     'contact.phone': 'Телефон',
     'contact.phoneNumber': '+33 1 23 45 67 89\nПн-Пт, 9:00-18:00',
     'contact.sendMessage': 'Отправьте нам сообщение',
@@ -4875,7 +4875,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'security.badge2': 'Защита депозитов до 100k€',
     'security.badge3': 'Соответствует PCI DSS',
     'cta.title': 'Готовы сменить банк?',
-    'cta.desc': 'Присоединяйтесь к более чем 2 миллионам пользователей, которые выбрали NovaBank для бескомпромиссного банковского опыта.',
+    'cta.desc': 'Присоединяйтесь к более чем 2 миллионам пользователей, которые выбрали Open Banque для бескомпромиссного банковского опыта.',
     'cta.button': 'Открыть бесплатный счет',
     'cta.disclaimer': 'Кредитная карта не требуется для регистрации. Проверка личности за 2 минуты.',
     'common.month': '/месяц',
@@ -4896,12 +4896,12 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     
     // Success Modal
     'successModal.title': 'Поздравляем!',
-    'successModal.message': 'Ваш счет NovaBank был успешно создан. Добро пожаловать в банк будущего!',
+    'successModal.message': 'Ваш счет Open Banque был успешно создан. Добро пожаловать в банк будущего!',
     'successModal.continue': 'Перейти к моей панели',
     
     // Logout Modal
     'logout.title': 'Выйти',
-    'logout.message': 'Вы уверены, что хотите выйти из своей учетной записи NovaBank?',
+    'logout.message': 'Вы уверены, что хотите выйти из своей учетной записи Open Banque?',
     'logout.cancel': 'Отмена',
     'logout.confirm': 'Выйти',
     
@@ -5176,7 +5176,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'dashboard.savingsGoal.dreamHome': '梦想之家',
     'dashboard.savingsGoal.japanTrip': '日本之旅',
     'dashboard.savingsGoal.emergencyFund': '应急基金',
-    'dashboard.transferModal.securedBy': '由NovaBank保护',
+    'dashboard.transferModal.securedBy': '由Open Banque保护',
     'dashboard.transferModal.title': '新转账',
     'dashboard.transferModal.active': '转账进行中',
     'dashboard.transferModal.close': '关闭',
@@ -5191,7 +5191,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     // Chat
     'chat.open': '打开聊天',
     'chat.needHelp': '需要帮助吗？',
-    'chat.support': 'NovaBank 支持',
+    'chat.support': 'Open Banque 支持',
     'chat.welcome': '您好',
     'chat.welcomeMessage': '我们今天能为您做些什么？',
     'chat.selectUser': '选择一个用户',
@@ -5226,7 +5226,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     
     'about.title': '为',
     'about.titleHighlight': '未来而建的银行',
-    'about.description': '在NovaBank，我们不仅仅是存储您的资金。我们推动它前进。诞生于传统金融与先进人工智能的融合，我们的使命是使每笔交易更快、更安全、更智能。',
+    'about.description': '在Open Banque，我们不仅仅是存储您的资金。我们推动它前进。诞生于传统金融与先进人工智能的融合，我们的使命是使每笔交易更快、更安全、更智能。',
     'about.feature1': '混合区块链技术',
     'about.feature2': '24/7 AI客户服务',
     'about.feature3': '自动化财富管理',
@@ -5274,8 +5274,8 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'testimonials.role.investor': '加密货币投资者',
     'testimonials.role.student': '学生',
     'testimonials.role.restaurateur': '餐厅老板',
-    'testimonials.content.sophie': "NovaBank完全改变了我的资金管理。界面具有未来感，转账即时完成。",
-    'testimonials.content.thomas': "安全是我的首要任务。NovaBank的多步骤验证系统是市场上最好的。",
+    'testimonials.content.sophie': "Open Banque完全改变了我的资金管理。界面具有未来感，转账即时完成。",
+    'testimonials.content.thomas': "安全是我的首要任务。Open Banque的多步骤验证系统是市场上最好的。",
     'testimonials.content.amelie': "我经常旅行。拥有一个无论在哪里都跟随我且没有隐藏费用的银行是真正的解脱。",
     'testimonials.content.lucas': "集成的市场分析工具令人难以置信。我能够实时优化我的投资组合，这要归功于这些指标。",
     'testimonials.content.claire': "应用程序超级直观。我喜欢能够为安全的在线购买创建临时虚拟卡。",
@@ -5301,10 +5301,10 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'team.member2.role': '安全总监',
     'team.member3.role': '产品经理',
     'team.member4.role': '客户服务',
-    'team.title': 'NovaBank团队',
+    'team.title': 'Open Banque团队',
     'team.subtitle': '热衷于金融和技术的专家，每天都在努力保障您的未来。',
     
-    'services.title': 'NovaBank生态系统',
+    'services.title': 'Open Banque生态系统',
     'services.subtitle': '不仅仅是一个简单的银行应用。一套完整的金融工具套件，旨在加速您的财务自由。',
     'services.feature1.title': '全球',
     'services.feature1.desc': '在世界任何地方支付和转账，无隐藏费用。',
@@ -5325,7 +5325,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'services.userExperience': '用户体验',
     'services.ux.title': '如此流畅的界面，几乎',
     'services.ux.titleHighlight': '神奇',
-    'services.ux.description': '忘记严峻而复杂的银行界面。NovaBank由获奖设计师设计，为您的财务提供绝对清晰。',
+    'services.ux.description': '忘记严峻而复杂的银行界面。Open Banque由获奖设计师设计，为您的财务提供绝对清晰。',
     'services.ux.feature1.title': '即时通知',
     'services.ux.feature1.desc': '在您付款的瞬间收到提醒。月底不再有意外。',
     'services.ux.feature2.title': '原生深色模式',
@@ -5411,7 +5411,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'contact.headquarters': '总部',
     'contact.address': '123 Avenue de la Blockchain\n75001 巴黎，法国',
     'contact.email': '电子邮件',
-    'contact.emailAddresses': 'contact@novabank.company',
+    'contact.emailAddresses': 'contact@openbanque.com',
     'contact.phone': '电话',
     'contact.phoneNumber': '+33 1 23 45 67 89\n周一至周五，9:00-18:00',
     'contact.sendMessage': '向我们发送消息',
@@ -5452,7 +5452,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'security.badge2': '存款保护高达100k€',
     'security.badge3': '符合PCI DSS',
     'cta.title': '准备换银行了吗？',
-    'cta.desc': '加入超过200万选择NovaBank以获得无妥协银行体验的用户。',
+    'cta.desc': '加入超过200万选择Open Banque以获得无妥协银行体验的用户。',
     'cta.button': '开设免费账户',
     'cta.disclaimer': '注册无需信用卡。2分钟内完成身份验证。',
     'common.month': '/月',
@@ -5473,12 +5473,12 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     
     // Success Modal
     'successModal.title': '恭喜！',
-    'successModal.message': '您的NovaBank账户已成功创建。欢迎来到未来银行！',
+    'successModal.message': '您的Open Banque账户已成功创建。欢迎来到未来银行！',
     'successModal.continue': '前往我的仪表板',
     
     // Logout Modal
     'logout.title': '登出',
-    'logout.message': '您确定要退出您的NovaBank账户吗？',
+    'logout.message': '您确定要退出您的Open Banque账户吗？',
     'logout.cancel': '取消',
     'logout.confirm': '登出',
     
@@ -5753,7 +5753,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'dashboard.savingsGoal.dreamHome': '夢の家',
     'dashboard.savingsGoal.japanTrip': '日本旅行',
     'dashboard.savingsGoal.emergencyFund': '緊急基金',
-    'dashboard.transferModal.securedBy': 'NovaBankによって保護',
+    'dashboard.transferModal.securedBy': 'Open Banqueによって保護',
     'dashboard.transferModal.title': '新しい送金',
     'dashboard.transferModal.active': '送金進行中',
     'dashboard.transferModal.close': '閉じる',
@@ -5768,7 +5768,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     // Chat
     'chat.open': 'チャットを開く',
     'chat.needHelp': 'ヘルプが必要ですか？',
-    'chat.support': 'NovaBank サポート',
+    'chat.support': 'Open Banque サポート',
     'chat.welcome': 'こんにちは',
     'chat.welcomeMessage': '今日はどのようにお手伝いできますか？',
     'chat.selectUser': 'ユーザーを選択',
@@ -5803,7 +5803,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     
     'about.title': '構築された銀行',
     'about.titleHighlight': '未来のために',
-    'about.description': 'NovaBankでは、お金を保管するだけではありません。それを推進します。伝統的な金融と高度な人工知能の融合から生まれた、私たちの使命は、すべての取引をより速く、より安全に、より賢くすることです。',
+    'about.description': 'Open Banqueでは、お金を保管するだけではありません。それを推進します。伝統的な金融と高度な人工知能の融合から生まれた、私たちの使命は、すべての取引をより速く、より安全に、より賢くすることです。',
     'about.feature1': 'ハイブリッドブロックチェーン技術',
     'about.feature2': '24/7 AIカスタマーサービス',
     'about.feature3': '自動化された資産管理',
@@ -5851,8 +5851,8 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'testimonials.role.investor': '暗号投資家',
     'testimonials.role.student': '学生',
     'testimonials.role.restaurateur': 'レストラン経営者',
-    'testimonials.content.sophie': "NovaBankは私の資金管理を完全に変えました。インターフェースは未来的で、送金は即座に行われます。",
-    'testimonials.content.thomas': "セキュリティが私の優先事項です。NovaBankの多段階検証システムは市場で最高です。",
+    'testimonials.content.sophie': "Open Banqueは私の資金管理を完全に変えました。インターフェースは未来的で、送金は即座に行われます。",
+    'testimonials.content.thomas': "セキュリティが私の優先事項です。Open Banqueの多段階検証システムは市場で最高です。",
     'testimonials.content.amelie': "私は常に旅行しています。隠れた手数料なしでどこでも私に付いてくる銀行を持つことは本当の救済です。",
     'testimonials.content.lucas': "統合された市場分析ツールは信じられないほどです。指標のおかげで、リアルタイムでポートフォリオを最適化できました。",
     'testimonials.content.claire': "アプリケーションは非常に直感的です。安全なオンライン購入のために一時的な仮想カードを作成できるのが大好きです。",
@@ -5878,10 +5878,10 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'team.member2.role': 'セキュリティディレクター',
     'team.member3.role': 'プロダクトマネージャー',
     'team.member4.role': 'カスタマーサービス',
-    'team.title': 'NovaBankチーム',
+    'team.title': 'Open Banqueチーム',
     'team.subtitle': '金融とテクノロジーに情熱を注ぐ専門家が、毎日あなたの未来を保証するために働いています。',
     
-    'services.title': 'NovaBankエコシステム',
+    'services.title': 'Open Banqueエコシステム',
     'services.subtitle': '単純な銀行アプリケーション以上のものです。あなたの経済的自由を加速するために設計された金融ツールの完全なスイート。',
     'services.feature1.title': '世界中',
     'services.feature1.desc': '隠れた手数料なしで、地球上のどこでも支払いと送金ができます。',
@@ -5902,7 +5902,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'services.userExperience': 'ユーザーエクスペリエンス',
     'services.ux.title': '非常にスムーズなインターフェース、それはほとんど',
     'services.ux.titleHighlight': '魔法',
-    'services.ux.description': '厳格で複雑な銀行インターフェースは忘れてください。NovaBankは受賞歴のあるデザイナーによって設計され、財務の絶対的な明確さを提供します。',
+    'services.ux.description': '厳格で複雑な銀行インターフェースは忘れてください。Open Banqueは受賞歴のあるデザイナーによって設計され、財務の絶対的な明確さを提供します。',
     'services.ux.feature1.title': '即座の通知',
     'services.ux.feature1.desc': '支払いの瞬間にアラートを受信。月末の驚きはもうありません。',
     'services.ux.feature2.title': 'ネイティブダークモード',
@@ -5988,7 +5988,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'contact.headquarters': '本社',
     'contact.address': '123 Avenue de la Blockchain\n75001 パリ、フランス',
     'contact.email': 'メール',
-    'contact.emailAddresses': 'contact@novabank.company',
+    'contact.emailAddresses': 'contact@openbanque.com',
     'contact.phone': '電話',
     'contact.phoneNumber': '+33 1 23 45 67 89\n月〜金、9:00-18:00',
     'contact.sendMessage': 'メッセージを送信',
@@ -6029,7 +6029,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'security.badge2': '預金保護最大100k€',
     'security.badge3': 'PCI DSS準拠',
     'cta.title': '銀行を変える準備はできていますか？',
-    'cta.desc': '妥協のない銀行体験のためにNovaBankを選択した200万人以上のユーザーに参加してください。',
+    'cta.desc': '妥協のない銀行体験のためにOpen Banqueを選択した200万人以上のユーザーに参加してください。',
     'cta.button': '無料アカウントを開設',
     'cta.disclaimer': '登録にクレジットカードは不要です。2分で本人確認が完了します。',
     'common.month': '/月',
@@ -6050,12 +6050,12 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     
     // Success Modal
     'successModal.title': 'おめでとうございます！',
-    'successModal.message': 'NovaBankアカウントが正常に作成されました。未来の銀行へようこそ！',
+    'successModal.message': 'Open Banqueアカウントが正常に作成されました。未来の銀行へようこそ！',
     'successModal.continue': 'ダッシュボードに移動',
     
     // Logout Modal
     'logout.title': 'ログアウト',
-    'logout.message': 'NovaBankアカウントからログアウトしてもよろしいですか？',
+    'logout.message': 'Open Banqueアカウントからログアウトしてもよろしいですか？',
     'logout.cancel': 'キャンセル',
     'logout.confirm': 'ログアウト',
     
@@ -6330,7 +6330,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'dashboard.savingsGoal.dreamHome': 'منزل الأحلام',
     'dashboard.savingsGoal.japanTrip': 'رحلة إلى اليابان',
     'dashboard.savingsGoal.emergencyFund': 'صندوق الطوارئ',
-    'dashboard.transferModal.securedBy': 'محمي بواسطة NovaBank',
+    'dashboard.transferModal.securedBy': 'محمي بواسطة Open Banque',
     'dashboard.transferModal.title': 'تحويل جديد',
     'dashboard.transferModal.active': 'تحويل نشط',
     'dashboard.transferModal.close': 'إغلاق',
@@ -6345,7 +6345,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     // Chat
     'chat.open': 'فتح الدردشة',
     'chat.needHelp': 'تحتاج مساعدة؟',
-    'chat.support': 'دعم NovaBank',
+    'chat.support': 'دعم Open Banque',
     'chat.welcome': 'مرحباً',
     'chat.welcomeMessage': 'كيف يمكننا مساعدتك اليوم؟',
     'chat.selectUser': 'اختر مستخدماً',
@@ -6380,7 +6380,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     
     'about.title': 'بنك مبني من أجل',
     'about.titleHighlight': 'المستقبل',
-    'about.description': 'في NovaBank، لا نخزن أموالك فقط. نحن ندفعها للأمام. ولدت من اندماج التمويل التقليدي والذكاء الاصطناعي المتقدم، مهمتنا هي جعل كل معاملة أسرع وأكثر أمانًا وأذكى.',
+    'about.description': 'في Open Banque، لا نخزن أموالك فقط. نحن ندفعها للأمام. ولدت من اندماج التمويل التقليدي والذكاء الاصطناعي المتقدم، مهمتنا هي جعل كل معاملة أسرع وأكثر أمانًا وأذكى.',
     'about.feature1': 'تقنية البلوك تشين الهجينة',
     'about.feature2': 'خدمة العملاء بالذكاء الاصطناعي 24/7',
     'about.feature3': 'إدارة الثروة الآلية',
@@ -6428,8 +6428,8 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'testimonials.role.investor': 'مستثمر عملات رقمية',
     'testimonials.role.student': 'طالبة',
     'testimonials.role.restaurateur': 'مطعم',
-    'testimonials.content.sophie': "لقد غيرت NovaBank إدارة خزينتي بالكامل. الواجهة مستقبلية والتحويلات فورية.",
-    'testimonials.content.thomas': "الأمان هو أولويتي. نظام التحقق متعدد الخطوات من NovaBank هو الأفضل في السوق.",
+    'testimonials.content.sophie': "لقد غيرت Open Banque إدارة خزينتي بالكامل. الواجهة مستقبلية والتحويلات فورية.",
+    'testimonials.content.thomas': "الأمان هو أولويتي. نظام التحقق متعدد الخطوات من Open Banque هو الأفضل في السوق.",
     'testimonials.content.amelie': "أسافر طوال الوقت. وجود بنك يتبعني في كل مكان دون رسوم خفية هو راحة حقيقية.",
     'testimonials.content.lucas': "أدوات تحليل السوق المدمجة لا تصدق. تمكنت من تحسين محفظتي في الوقت الفعلي بفضل المؤشرات.",
     'testimonials.content.claire': "التطبيق بديهي للغاية. أحب أن أتمكن من إنشاء بطاقات افتراضية عابرة لشرائي الآمنة عبر الإنترنت.",
@@ -6455,10 +6455,10 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'team.member2.role': 'مديرة الأمان',
     'team.member3.role': 'مدير المنتج',
     'team.member4.role': 'خدمة العملاء',
-    'team.title': 'فريق NovaBank',
+    'team.title': 'فريق Open Banque',
     'team.subtitle': 'خبراء شغوفون بالمالية والتكنولوجيا، يعملون كل يوم لضمان مستقبلك.',
     
-    'services.title': 'نظام NovaBank البيئي',
+    'services.title': 'نظام Open Banque البيئي',
     'services.subtitle': 'أكثر بكثير من مجرد تطبيق مصرفي بسيط. مجموعة كاملة من الأدوات المالية المصممة لتسريع حريتك المالية.',
     'services.feature1.title': 'في جميع أنحاء العالم',
     'services.feature1.desc': 'ادفع ونقل الأموال في أي مكان على الكوكب دون رسوم مخفية.',
@@ -6479,7 +6479,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'services.userExperience': 'تجربة المستخدم',
     'services.ux.title': 'واجهة سلسة للغاية، إنها تقريباً',
     'services.ux.titleHighlight': 'سحرية',
-    'services.ux.description': 'انس الواجهات المصرفية الصارمة والمعقدة. تم تصميم NovaBank من قبل مصممين حائزين على جوائز لتقديم وضوح مطلق حول أموالك.',
+    'services.ux.description': 'انس الواجهات المصرفية الصارمة والمعقدة. تم تصميم Open Banque من قبل مصممين حائزين على جوائز لتقديم وضوح مطلق حول أموالك.',
     'services.ux.feature1.title': 'إشعارات فورية',
     'services.ux.feature1.desc': 'احصل على تنبيه في اللحظة التي تدفع فيها. لا مزيد من المفاجآت في نهاية الشهر.',
     'services.ux.feature2.title': 'وضع الظلام الأصلي',
@@ -6565,7 +6565,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'contact.headquarters': 'المقر الرئيسي',
     'contact.address': '123 Avenue de la Blockchain\n75001 باريس، فرنسا',
     'contact.email': 'البريد الإلكتروني',
-    'contact.emailAddresses': 'contact@novabank.company',
+    'contact.emailAddresses': 'contact@openbanque.com',
     'contact.phone': 'الهاتف',
     'contact.phoneNumber': '+33 1 23 45 67 89\nالاثنين-الجمعة، 9:00-18:00',
     'contact.sendMessage': 'أرسل لنا رسالة',
@@ -6606,7 +6606,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     'security.badge2': 'حماية الودائع حتى 100k€',
     'security.badge3': 'متوافق مع PCI DSS',
     'cta.title': 'هل أنت مستعد لتغيير البنك؟',
-    'cta.desc': 'انضم إلى أكثر من مليوني مستخدم اختاروا NovaBank لتجربة مصرفية لا هوادة فيها.',
+    'cta.desc': 'انضم إلى أكثر من مليوني مستخدم اختاروا Open Banque لتجربة مصرفية لا هوادة فيها.',
     'cta.button': 'افتح حساب مجاني',
     'cta.disclaimer': 'لا حاجة لبطاقة ائتمان للتسجيل. التحقق من الهوية في دقيقتين.',
     'common.month': '/شهر',
@@ -6627,12 +6627,12 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     
     // Success Modal
     'successModal.title': 'تهانينا!',
-    'successModal.message': 'تم إنشاء حساب NovaBank الخاص بك بنجاح. مرحباً بك في بنك المستقبل!',
+    'successModal.message': 'تم إنشاء حساب Open Banque الخاص بك بنجاح. مرحباً بك في بنك المستقبل!',
     'successModal.continue': 'الانتقال إلى لوحة التحكم الخاصة بي',
     
     // Logout Modal
     'logout.title': 'تسجيل الخروج',
-    'logout.message': 'هل أنت متأكد أنك تريد تسجيل الخروج من حساب NovaBank الخاص بك؟',
+    'logout.message': 'هل أنت متأكد أنك تريد تسجيل الخروج من حساب Open Banque الخاص بك؟',
     'logout.cancel': 'إلغاء',
     'logout.confirm': 'تسجيل الخروج',
     

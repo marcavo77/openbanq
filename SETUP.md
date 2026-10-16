@@ -1,4 +1,4 @@
-# NovaBank - Setup Guide
+# Open Banque - Setup Guide
 
 ## Configuration Supabase
 

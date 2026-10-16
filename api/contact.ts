@@ -46,8 +46,8 @@ export default async function handler(
     const smtpSecure = (process.env.SMTP_SECURE || process.env.VERCEL_ENV_SMTP_SECURE) === 'true' || smtpPort === 465;
     const smtpUser = process.env.SMTP_USER || process.env.VERCEL_ENV_SMTP_USER || process.env.SMTP_EMAIL || process.env.VERCEL_ENV_SMTP_EMAIL;
     const smtpPassword = process.env.SMTP_PASSWORD || process.env.VERCEL_ENV_SMTP_PASSWORD;
-    const recipientEmail = process.env.CONTACT_EMAIL || process.env.VERCEL_ENV_CONTACT_EMAIL || 'contact@novabank.company';
-    const fromEmail = process.env.FROM_EMAIL || process.env.VERCEL_ENV_FROM_EMAIL || smtpUser || 'contact@novabank.company';
+    const recipientEmail = process.env.CONTACT_EMAIL || process.env.VERCEL_ENV_CONTACT_EMAIL || 'contact@openbanque.com';
+    const fromEmail = process.env.FROM_EMAIL || process.env.VERCEL_ENV_FROM_EMAIL || smtpUser || 'contact@openbanque.com';
 
     // Debug: Log which variables are missing (without exposing values)
     if (!smtpUser || !smtpPassword) {
@@ -98,7 +98,7 @@ export default async function handler(
 
     // Email content
     const mailOptions = {
-      from: `NovaBank Contact Form <${fromEmail}>`,
+      from: `Open Banque Contact Form <${fromEmail}>`,
       to: recipientEmail,
       replyTo: email,
       subject: `Nouveau message de contact - ${safeFirstName} ${safeLastName} (${safeEmail})`,
@@ -120,13 +120,13 @@ export default async function handler(
           </div>
           
           <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e5e7eb; color: #6b7280; font-size: 12px;">
-            <p>Ce message a été envoyé depuis le formulaire de contact de NovaBank.</p>
+            <p>Ce message a été envoyé depuis le formulaire de contact de Open Banque.</p>
             <p>Vous pouvez répondre directement à cet email pour répondre à ${safeFirstName} ${safeLastName}.</p>
           </div>
         </div>
       `,
       text: `
-Nouveau message depuis le formulaire de contact NovaBank
+Nouveau message depuis le formulaire de contact Open Banque
 
 Prénom: ${firstName}
 Nom: ${lastName}
@@ -136,7 +136,7 @@ Message:
 ${message}
 
 ---
-Ce message a été envoyé depuis le formulaire de contact de NovaBank.
+Ce message a été envoyé depuis le formulaire de contact de Open Banque.
 Vous pouvez répondre directement à cet email pour répondre à ${firstName} ${lastName}.
       `.trim(),
     };

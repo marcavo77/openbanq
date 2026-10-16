@@ -1,6 +1,6 @@
 # 🚀 Guide de Déploiement - GitHub + Vercel
 
-Ce guide vous accompagne étape par étape pour déployer NovaBank sur GitHub et Vercel avec archivage automatique.
+Ce guide vous accompagne étape par étape pour déployer Open Banque sur GitHub et Vercel avec archivage automatique.
 
 ## 📋 Prérequis
 
@@ -36,7 +36,7 @@ dist
 
 ```bash
 git add .
-git commit -m "Initial commit: NovaBank application"
+git commit -m "Initial commit: Open Banque application"
 ```
 
 ## 📦 Étape 2 : Créer le Repository GitHub

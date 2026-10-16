@@ -35,7 +35,7 @@ git push origin main
 
 ## Ajouter un Domaine Personnalisé (Optionnel)
 
-Si vous avez un domaine (ex: `novabank.com`), vous pouvez :
+Si vous avez un domaine (ex: `openbanque.com`), vous pouvez :
 
 1. **Acheter un domaine** sur :
    - Namecheap
@@ -50,7 +50,7 @@ Si vous avez un domaine (ex: `novabank.com`), vous pouvez :
    - Suivez les instructions DNS
 
 3. **Votre application sera accessible via** :
-   - `https://novabank.com` (votre domaine)
+   - `https://openbanque.com` (votre domaine)
    - `https://novabank-eta.vercel.app` (toujours actif)
 
 ## Statut Actuel

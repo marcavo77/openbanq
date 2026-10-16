@@ -15,7 +15,7 @@ git push -u origin main
 Si vous voulez éviter de le taper à chaque fois (mais moins sécurisé) :
 
 ```bash
-git remote set-url origin https://VOTRE_TOKEN@github.com/marcavo77/novabank.git
+git remote set-url origin https://VOTRE_TOKEN@github.com/marcavo77/openbanq.git
 git push -u origin main
 ```
 

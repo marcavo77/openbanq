@@ -1,10 +1,10 @@
 # Configuration Email Zoho SMTP pour le Formulaire de Contact
 
-Ce guide explique comment configurer l'envoi d'emails depuis le formulaire de contact NovaBank en utilisant Zoho Mail via SMTP.
+Ce guide explique comment configurer l'envoi d'emails depuis le formulaire de contact Open Banque en utilisant Zoho Mail via SMTP.
 
 ## Prérequis
 
-1. Un compte Zoho Mail avec l'adresse `contact@novabank.company`
+1. Un compte Zoho Mail avec l'adresse `contact@openbanque.com`
 2. Accès aux paramètres de sécurité Zoho pour créer un mot de passe d'application
 
 ## Étapes de configuration
@@ -17,7 +17,7 @@ Ce guide explique comment configurer l'envoi d'emails depuis le formulaire de co
 2. Cliquez sur l'icône **Paramètres** (⚙️) en haut à droite
 3. Allez dans **Sécurité** → **Mots de passe d'application**
 4. Cliquez sur **Générer un nouveau mot de passe**
-5. Donnez-lui un nom (ex: "NovaBank Contact Form")
+5. Donnez-lui un nom (ex: "Open Banque Contact Form")
 6. Sélectionnez l'application : **Mail Client**
 7. Copiez le mot de passe généré (vous ne pourrez le voir qu'une seule fois !)
 
@@ -35,10 +35,10 @@ Ce guide explique comment configurer l'envoi d'emails depuis le formulaire de co
 SMTP_HOST=smtp.zoho.com
 SMTP_PORT=587
 SMTP_SECURE=false
-SMTP_USER=contact@novabank.company
+SMTP_USER=contact@openbanque.com
 SMTP_PASSWORD=votre_mot_de_passe_application_zoho
-CONTACT_EMAIL=contact@novabank.company
-FROM_EMAIL=contact@novabank.company
+CONTACT_EMAIL=contact@openbanque.com
+FROM_EMAIL=contact@openbanque.com
 ```
 
 **Note** : Remplacez `votre_mot_de_passe_application_zoho` par le mot de passe d'application que vous venez de créer.
@@ -51,10 +51,10 @@ Créez un fichier `.env.local` à la racine du projet :
 SMTP_HOST=smtp.zoho.com
 SMTP_PORT=587
 SMTP_SECURE=false
-SMTP_USER=contact@novabank.company
+SMTP_USER=contact@openbanque.com
 SMTP_PASSWORD=votre_mot_de_passe_application_zoho
-CONTACT_EMAIL=contact@novabank.company
-FROM_EMAIL=contact@novabank.company
+CONTACT_EMAIL=contact@openbanque.com
+FROM_EMAIL=contact@openbanque.com
 ```
 
 **Important**: Ajoutez `.env.local` à votre `.gitignore` pour ne pas commiter vos mots de passe.
@@ -188,8 +188,8 @@ Vérifiez les limites de votre plan Zoho :
 | `SMTP_USER` | Email Zoho | - | ✅ Oui |
 | `SMTP_PASSWORD` | Mot de passe Zoho | - | ✅ Oui |
 | `SMTP_EMAIL` | Alias pour SMTP_USER | - | ❌ Non |
-| `CONTACT_EMAIL` | Email de réception | `contact@novabank.company` | ❌ Non |
-| `FROM_EMAIL` | Email expéditeur | `contact@novabank.company` | ❌ Non |
+| `CONTACT_EMAIL` | Email de réception | `contact@openbanque.com` | ❌ Non |
+| `FROM_EMAIL` | Email expéditeur | `contact@openbanque.com` | ❌ Non |
 
 ## Sécurité
 

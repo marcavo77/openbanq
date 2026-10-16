@@ -1,4 +1,4 @@
-# NovaBank - Application Bancaire en Ligne
+# Open Banque - Application Bancaire en Ligne
 
 Application bancaire moderne avec authentification, transactions, chat en temps réel et gestion complète des utilisateurs.
 

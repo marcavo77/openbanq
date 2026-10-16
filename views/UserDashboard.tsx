@@ -98,14 +98,14 @@ const StockMarketWidget: React.FC = () => {
         {/* Main Charts Column */}
         <div className="lg:col-span-2 flex flex-col gap-6">
             
-            {/* Chart 1: NovaBank (Rising) */}
+            {/* Chart 1: Open Banque (Rising) */}
             <div className="flex flex-col justify-between h-[200px] md:h-[250px] relative bg-slate-800/50 rounded-xl border border-slate-700 p-4 md:p-6 overflow-hidden">
             {/* Header Info */}
             <div className="flex justify-between items-start z-10">
                 <div>
                 <div className="flex items-center gap-2">
                     <div className="w-6 h-6 md:w-8 md:h-8 bg-emerald-500 rounded flex items-center justify-center font-bold text-slate-900 text-xs md:text-base shadow-lg shadow-emerald-500/20">N</div>
-                    <h3 className="text-lg md:text-2xl font-bold text-white">NovaBank Corp.</h3>
+                    <h3 className="text-lg md:text-2xl font-bold text-white">Open Banque Corp.</h3>
                     <span className="text-gray-400 font-mono text-xs md:text-sm">($NVB)</span>
                 </div>
                 <div className="mt-2 flex items-baseline gap-2 md:gap-4">
@@ -220,7 +220,7 @@ const StockMarketWidget: React.FC = () => {
 };
 
 // --- SAVINGS GLOBAL RANKING WIDGET ---
-// This widget is specifically designed to keep NovaBank floating between rank 15 and 20.
+// This widget is specifically designed to keep Open Banque floating between rank 15 and 20.
 // It uses fixed price tiers to ensure the order is maintained roughly while allowing local shuffling.
 const SavingsGlobalRankingWidget: React.FC = () => {
     const { t, language } = useBank();
@@ -244,7 +244,7 @@ const SavingsGlobalRankingWidget: React.FC = () => {
 
     const [companies, setCompanies] = useState<RankingCompany[]>([
         // --- TIER 1: THE UNTOUCHABLES (Rank 1-14) ---
-        // High prices > 400. NovaBank can't reach these easily.
+        // High prices > 400. Open Banque can't reach these easily.
         { name: "Apple Inc.", symbol: "AAPL", price: 950.20, change: 0, logoDomain: "apple.com" },
         { name: "Microsoft", symbol: "MSFT", price: 920.50, change: 0, logoDomain: "microsoft.com" },
         { name: "Saudi Aramco", symbol: "2222.SR", price: 890.00, change: 0, logoDomain: "aramco.com" },
@@ -261,16 +261,16 @@ const SavingsGlobalRankingWidget: React.FC = () => {
         { name: "Johnson & Johnson", symbol: "JNJ", price: 450.10, change: 0, logoDomain: "jnj.com" },
 
         // --- TIER 2: THE BATTLEGROUND (Rank 15-20) ---
-        // Mid prices ~300. This is where NovaBank lives.
+        // Mid prices ~300. This is where Open Banque lives.
         { name: "JPMorgan Chase", symbol: "JPM", price: 320.50, change: 0, logoDomain: "jpmorganchase.com" },
         { name: "Samsung", symbol: "005930.KS", price: 315.20, change: 0, logoDomain: "samsung.com" },
         { name: "LVMH", symbol: "MC.PA", price: 310.80, change: 0, logoDomain: "lvmh.com" },
-        { name: "NovaBank Corp.", symbol: "NVB", price: 300.00, change: 0, isHero: true, logoDomain: "novabank.com" }, // HERO
+        { name: "Open Banque Corp.", symbol: "OBQ", price: 300.00, change: 0, isHero: true, logoDomain: "openbanque.com" }, // HERO
         { name: "Walmart", symbol: "WMT", price: 295.40, change: 0, logoDomain: "walmart.com" },
         { name: "Procter & Gamble", symbol: "PG", price: 290.10, change: 0, logoDomain: "pg.com" },
 
         // --- TIER 3: THE FOLLOWERS (Rank 21+) ---
-        // Low prices < 200. NovaBank shouldn't fall here.
+        // Low prices < 200. Open Banque shouldn't fall here.
         { name: "Mastercard", symbol: "MA", price: 190.50, change: 0, logoDomain: "mastercard.com" },
         { name: "ExxonMobil", symbol: "XOM", price: 180.20, change: 0, logoDomain: "exxonmobil.com" },
         { name: "Nestlé", symbol: "NESN", price: 170.80, change: 0, logoDomain: "nestle.com" },
@@ -299,14 +299,14 @@ const SavingsGlobalRankingWidget: React.FC = () => {
                         // Bottom tier: fluctuate but stay low
                         fluctuation = (Math.random() - 0.5) * 2;
                     } else {
-                        // Middle tier (NovaBank zone): Higher volatility to encourage shuffling
+                        // Middle tier (Open Banque zone): Higher volatility to encourage shuffling
                         fluctuation = (Math.random() - 0.5) * 4; 
                     }
 
                     // Calculate new price
                     let newPrice = company.price + fluctuation;
 
-                    // "Rubber Band" logic specifically for NovaBank to keep it strictly in the mix
+                    // "Rubber Band" logic specifically for Open Banque to keep it strictly in the mix
                     // but not letting it drift too far up or down out of the 300 range.
                     if (isHero) {
                         if (newPrice > 330) newPrice -= 1; // Push down if too high
@@ -325,7 +325,7 @@ const SavingsGlobalRankingWidget: React.FC = () => {
         return () => clearInterval(interval);
     }, []);
 
-    // Find NovaBank's current rank
+    // Find Open Banque's current rank
     const novaRank = companies.findIndex(c => c.isHero) + 1;
 
     return (
@@ -341,7 +341,7 @@ const SavingsGlobalRankingWidget: React.FC = () => {
                 </div>
             </div>
 
-            {/* NovaBank Live Rank Indicator */}
+            {/* Open Banque Live Rank Indicator */}
             <div className="mb-4 bg-emerald-900/20 border border-emerald-500/30 p-3 rounded-xl flex items-center justify-between">
                  <span className="text-emerald-400 font-bold text-sm">{translations.yourBank}</span>
                  <div className="flex items-center gap-2">
@@ -431,7 +431,7 @@ const CreditCardDisplay: React.FC = () => {
       
       {/* Header */}
       <div className="flex justify-between items-start relative z-10">
-        <div className="text-2xl font-bold italic tracking-wider">NovaBank</div>
+        <div className="text-2xl font-bold italic tracking-wider">Open Banque</div>
         <CardIcon className="h-8 w-8 opacity-80" />
       </div>
       
@@ -1192,7 +1192,7 @@ const TransferModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                         <div className="absolute inset-0 bg-emerald-500/10 rounded-full animate-ping-slow"></div>
                         <ShieldCheck className="h-6 w-6 md:h-10 md:w-10 text-emerald-400" />
                     </div>
-                    <div className="text-emerald-400 font-bold text-xs md:text-sm">NovaBank</div>
+                    <div className="text-emerald-400 font-bold text-xs md:text-sm">Open Banque</div>
                 </div>
 
                 {/* Right Node (Receiver) */}

@@ -41,10 +41,10 @@ Les variables SMTP sont importées mais pas disponibles dans les fonctions serve
 1. **SMTP_HOST** = `smtp.zoho.com`
 2. **SMTP_PORT** = `587`
 3. **SMTP_SECURE** = `false`
-4. **SMTP_USER** = `contact@novabank.company`
+4. **SMTP_USER** = `contact@openbanque.com`
 5. **SMTP_PASSWORD** = `$V!6uGw7gzrvd4#`
-6. **CONTACT_EMAIL** = `contact@novabank.company`
-7. **FROM_EMAIL** = `contact@novabank.company`
+6. **CONTACT_EMAIL** = `contact@openbanque.com`
+7. **FROM_EMAIL** = `contact@openbanque.com`
 
 ⚠️ **Pour chaque variable** :
 - ✅ Cocher **"Production"**
@@ -62,7 +62,7 @@ Les variables SMTP sont importées mais pas disponibles dans les fonctions serve
 ### Étape 4 : Vérifier
 
 1. Attendez 1-2 minutes que le redéploiement se termine
-2. Visitez `https://novabank.company/api/test-env`
+2. Visitez `https://openbanque.com/api/test-env`
 3. Vous devriez maintenant voir `"SET"` au lieu de `"MISSING"` pour toutes les variables SMTP
 4. Testez le formulaire de contact
 

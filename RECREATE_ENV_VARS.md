@@ -46,7 +46,7 @@ Pour chaque variable, suivez ces étapes :
 
 #### 4. SMTP_USER
 - **Key** : `SMTP_USER`
-- **Value** : `contact@novabank.company`
+- **Value** : `contact@openbanque.com`
 - **Environments** : ✅ Production, ✅ Preview
 
 #### 5. SMTP_PASSWORD ⚠️
@@ -56,12 +56,12 @@ Pour chaque variable, suivez ces étapes :
 
 #### 6. CONTACT_EMAIL
 - **Key** : `CONTACT_EMAIL`
-- **Value** : `contact@novabank.company`
+- **Value** : `contact@openbanque.com`
 - **Environments** : ✅ Production, ✅ Preview
 
 #### 7. FROM_EMAIL
 - **Key** : `FROM_EMAIL`
-- **Value** : `contact@novabank.company`
+- **Value** : `contact@openbanque.com`
 - **Environments** : ✅ Production, ✅ Preview
 
 ### Étape 3 : Redéployer
@@ -75,7 +75,7 @@ Pour chaque variable, suivez ces étapes :
 ### Étape 4 : Vérifier
 
 1. Attendez 1-2 minutes que le redéploiement se termine
-2. Visitez `https://novabank.company/api/test-env`
+2. Visitez `https://openbanque.com/api/test-env`
 3. Vous devriez voir `"SET"` au lieu de `"MISSING"` pour toutes les variables
 4. Testez le formulaire de contact
 

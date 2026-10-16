@@ -1,4 +1,4 @@
-# Corrections de Persistance - Application NovaBank
+# Corrections de Persistance - Application Open Banque
 
 ## ✅ Modifications effectuées
 

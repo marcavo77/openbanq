@@ -1,4 +1,4 @@
-# NovaBank - Récapitulatif de l'Implémentation Supabase
+# Open Banque - Récapitulatif de l'Implémentation Supabase
 
 ## ✅ Ce qui a été fait
 

@@ -20,7 +20,7 @@ Les mots de passe d'application nécessitent généralement que l'authentificati
 1. Allez sur https://accounts.zoho.com/home#security/app-passwords
    - Ou : **Accounts** → **Security** → **App Passwords** (Mots de passe d'application)
 2. Cliquez sur **Generate New Password** (Générer un nouveau mot de passe)
-3. Donnez un nom descriptif : `NovaBank Contact Form` ou `SMTP Zoho`
+3. Donnez un nom descriptif : `Open Banque Contact Form` ou `SMTP Zoho`
 4. Cliquez sur **Generate**
 5. **IMPORTANT** : Copiez immédiatement le mot de passe généré (il ne sera affiché qu'une seule fois !)
    - Il ressemblera à quelque chose comme : `abcd1234efgh5678`
@@ -45,7 +45,7 @@ Les mots de passe d'application nécessitent généralement que l'authentificati
 
 ### Étape 5 : Tester
 
-1. Visitez `https://novabank.company/api/test-smtp`
+1. Visitez `https://openbanque.com/api/test-smtp`
    - Vous devriez voir `"success": true` et `"SMTP connection successful"`
 2. Testez le formulaire de contact sur votre site
    - L'email devrait maintenant être envoyé avec succès

@@ -16,7 +16,7 @@ https://github.com/settings/tokens/new
 
 ## Configuration du Token
 
-- **Note** : "NovaBank Deployment"
+- **Note** : "Open Banque Deployment"
 - **Expiration** : Choisissez une durée (90 jours, 1 an, etc.)
 - **Scopes** : Cochez **`repo`** (Full control of private repositories)
 - Cliquez sur **"Generate token"**

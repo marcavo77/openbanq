@@ -1188,7 +1188,7 @@ export const BankProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         userId: userId,
         type: isCredit ? 'CREDIT' : 'DEBIT',
         recipientName: isCredit ? 'Dépôt Admin' : 'Retrait Admin',
-        recipientBank: 'NovaBank System',
+        recipientBank: 'Open Banque System',
         recipientIban: 'N/A',
         amount: Math.abs(amount),
         status: 'COMPLETED'

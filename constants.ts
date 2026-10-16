@@ -1,11 +1,11 @@
 
 import { Country } from './types';
 
-export const APP_NAME = "NovaBank";
+export const APP_NAME = "Open Banque";
 export const CURRENCY = "€";
 
 // Mock admin credentials for demo
-export const ADMIN_EMAIL = "admin@novabank.com";
+export const ADMIN_EMAIL = "admin@openbanque.com";
 export const ADMIN_PASSWORD = "admin"; // In a real app, never do this.
 
 export const COUNTRIES: Country[] = [

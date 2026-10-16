@@ -52,7 +52,7 @@ Pour chaque variable, suivez ces étapes :
 #### Variable 4 : SMTP_USER
 
 - **Key** : `SMTP_USER`
-- **Value** : `contact@novabank.company`
+- **Value** : `contact@openbanque.com`
 - **Environments** : ✅ Production, ✅ Preview
 
 #### Variable 5 : SMTP_PASSWORD
@@ -66,13 +66,13 @@ Pour chaque variable, suivez ces étapes :
 #### Variable 6 : CONTACT_EMAIL
 
 - **Key** : `CONTACT_EMAIL`
-- **Value** : `contact@novabank.company`
+- **Value** : `contact@openbanque.com`
 - **Environments** : ✅ Production, ✅ Preview
 
 #### Variable 7 : FROM_EMAIL
 
 - **Key** : `FROM_EMAIL`
-- **Value** : `contact@novabank.company`
+- **Value** : `contact@openbanque.com`
 - **Environments** : ✅ Production, ✅ Preview
 
 ### Étape 5 : Vérifier les variables ajoutées
@@ -139,7 +139,7 @@ Pour vérifier que les variables sont bien configurées :
 ### Erreur "SMTP authentication failed"
 
 - ✅ Vérifiez que le mot de passe est correct (copiez-collez pour éviter les erreurs)
-- ✅ Vérifiez que l'email `contact@novabank.company` existe dans votre compte Zoho
+- ✅ Vérifiez que l'email `contact@openbanque.com` existe dans votre compte Zoho
 - ✅ Si vous avez l'authentification à deux facteurs, utilisez un mot de passe d'application
 
 ## Modifier une variable plus tard
