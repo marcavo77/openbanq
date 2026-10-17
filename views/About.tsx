@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import Footer from '../components/Footer';
 import { CheckCircle, ShieldCheck, Handshake, Heart, GraduationCap } from 'lucide-react';
 import { useBank } from '../context/BankContext';
+import { OpenBanqueIcon } from '../components/Logo';
 
 const About: React.FC = () => {
   const { t, language } = useBank();
@@ -152,7 +153,7 @@ const About: React.FC = () => {
                 </div>
 
                 <div className="absolute top-[45%] right-[25%] transform -translate-y-1/2 w-20 flex flex-col items-center opacity-90 rotate-[-5deg] mix-blend-hard-light filter brightness-110">
-                    <ShieldCheck className="text-emerald-400 h-8 w-8 drop-shadow-md" strokeWidth={2.5} />
+                    <OpenBanqueIcon size={32} />
                     <span className="text-white font-bold text-[10px] tracking-widest drop-shadow-md mt-1 font-sans">OPEN BANQUE</span>
                 </div>
 
@@ -177,9 +178,7 @@ const About: React.FC = () => {
                 </div>
 
                 <div className="absolute top-[55%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 w-24 flex flex-col items-center opacity-85 rotate-[2deg] mix-blend-screen">
-                     <div className="bg-emerald-600/80 p-1 rounded-full mb-1">
-                        <ShieldCheck className="text-white h-6 w-6" />
-                     </div>
+                     <OpenBanqueIcon size={26} className="mb-1" />
                     <span className="text-emerald-300 font-black text-[12px] tracking-tighter drop-shadow-lg font-sans bg-slate-900/30 px-2 rounded">OPEN BANQUE</span>
                     <span className="text-white text-[8px] uppercase tracking-widest">Foundation</span>
                 </div>

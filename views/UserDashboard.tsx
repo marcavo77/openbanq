@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { useBank } from '../context/BankContext';
+import { OpenBanqueIcon } from '../components/Logo';
 import { 
   CreditCard as CardIcon, 
   LogOut, 
@@ -431,7 +432,10 @@ const CreditCardDisplay: React.FC = () => {
       
       {/* Header */}
       <div className="flex justify-between items-start relative z-10">
-        <div className="text-2xl font-bold italic tracking-wider">Open Banque</div>
+        <div className="flex items-center gap-2">
+          <OpenBanqueIcon size={28} />
+          <div className="text-xl font-bold tracking-wider">Open Banque</div>
+        </div>
         <CardIcon className="h-8 w-8 opacity-80" />
       </div>
       
@@ -1188,9 +1192,9 @@ const TransferModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 
                 {/* Left Node (Sender) */}
                 <div className="relative z-10 flex flex-col items-center gap-3 animate-float">
-                    <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-slate-800 border-2 border-emerald-500 shadow-[0_0_30px_rgba(16,185,129,0.3)] flex items-center justify-center relative">
+                    <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-slate-800 border-2 border-emerald-500 shadow-[0_0_30px_rgba(16,185,129,0.3)] flex items-center justify-center relative p-2">
                         <div className="absolute inset-0 bg-emerald-500/10 rounded-full animate-ping-slow"></div>
-                        <ShieldCheck className="h-6 w-6 md:h-10 md:w-10 text-emerald-400" />
+                        <OpenBanqueIcon size={40} />
                     </div>
                     <div className="text-emerald-400 font-bold text-xs md:text-sm">Open Banque</div>
                 </div>

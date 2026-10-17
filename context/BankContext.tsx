@@ -146,28 +146,35 @@ export const BankProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [lastCompletedTransaction, setLastCompletedTransaction] = useState<{ amount: number; recipientName: string } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   
-  // Language State with Persistence - Portuguese is now the default language
+  // Language State with Persistence - French is the default language
   const [language, setLanguage] = useState<LanguageCode>(() => {
-    const saved = localStorage.getItem('nova_lang');
-    // Force Portuguese as default - only use saved value if it's not 'fr' (migration from old default)
-    if (saved === 'fr') {
-      localStorage.setItem('nova_lang', 'pt');
-      return 'pt';
+    const saved = localStorage.getItem('openbanque_lang');
+    const oldSaved = localStorage.getItem('nova_lang');
+    
+    if (saved && saved !== 'pt') {
+      return saved as LanguageCode;
     }
-    return (saved as LanguageCode) || 'pt';
+    if (oldSaved && oldSaved !== 'pt') {
+      localStorage.setItem('openbanque_lang', oldSaved);
+      return oldSaved as LanguageCode;
+    }
+    
+    localStorage.setItem('openbanque_lang', 'fr');
+    return 'fr';
   });
 
-  // Force Portuguese on mount if localStorage was 'fr' (migration)
+  // Ensure French on mount if not specified or legacy Portuguese
   useEffect(() => {
-    const saved = localStorage.getItem('nova_lang');
-    if (saved === 'fr' || !saved) {
-      setLanguage('pt');
-      localStorage.setItem('nova_lang', 'pt');
+    const saved = localStorage.getItem('openbanque_lang');
+    if (!saved || saved === 'pt') {
+      setLanguage('fr');
+      localStorage.setItem('openbanque_lang', 'fr');
     }
+    localStorage.removeItem('nova_lang');
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('nova_lang', language);
+    localStorage.setItem('openbanque_lang', language);
   }, [language]);
 
   // Translation Function - Memoized to ensure components re-render when language changes
@@ -179,9 +186,9 @@ export const BankProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       const text = langTrans[key];
       if (text) return text;
 
-      // Fallback to Portuguese (default language) if translation not found
-      if (language !== 'pt' && TRANSLATIONS['pt'][key]) {
-        return TRANSLATIONS['pt'][key];
+      // Fallback to French (default language) if translation not found
+      if (language !== 'fr' && TRANSLATIONS['fr'] && TRANSLATIONS['fr'][key]) {
+        return TRANSLATIONS['fr'][key];
       }
       
       return key;

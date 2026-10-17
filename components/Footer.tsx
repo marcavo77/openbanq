@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { useBank } from '../context/BankContext';
+import Logo from './Logo';
 
 const Footer: React.FC = () => {
   const { setView, t } = useBank();
@@ -8,7 +9,9 @@ const Footer: React.FC = () => {
   return (
     <footer className="bg-slate-950 py-12 border-t border-slate-800">
       <div className="max-w-7xl mx-auto px-4 text-center">
-        <h2 className="text-2xl font-bold text-emerald-500 mb-4 cursor-pointer" onClick={() => setView('LANDING')}>Open Banque</h2>
+        <div className="flex justify-center mb-4">
+          <Logo size="lg" showTagline={true} onClick={() => setView('LANDING')} />
+        </div>
         <p className="text-gray-400 mb-8">{t('footer.slogan')}</p>
         <div className="flex justify-center space-x-6 mb-8">
           <a href="#" className="text-gray-400 hover:text-white transition-colors">{t('footer.social.twitter')}</a>

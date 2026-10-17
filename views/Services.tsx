@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import Footer from '../components/Footer';
 import { useBank } from '../context/BankContext';
+import { OpenBanqueIcon } from '../components/Logo';
 import { 
   Globe, Lock, Smartphone, CreditCard, Shield, Zap, RefreshCw, BarChart, 
   Check, X as XIcon, ArrowRight, Wallet, Bitcoin, TrendingUp, Layers,
@@ -294,7 +295,7 @@ const Services: React.FC = () => {
                <div className="grid grid-cols-3 bg-slate-800/50 p-6 border-b border-slate-700">
                   <div className="text-gray-400 font-bold uppercase text-xs tracking-wider pt-2">{t('services.comparison.comparison')}</div>
                   <div className="text-center text-xl font-bold text-emerald-400 flex items-center justify-center gap-2">
-                     <Shield className="h-6 w-6" /> Open Banque
+                     <OpenBanqueIcon size={24} /> Open Banque
                   </div>
                   <div className="text-center text-xl font-bold text-gray-500">{t('services.comparison.classicBank')}</div>
                </div>

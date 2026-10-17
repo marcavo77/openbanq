@@ -5,6 +5,8 @@ import { useBank } from '../context/BankContext';
 import { APP_NAME } from '../constants';
 import LanguageSelector from './LanguageSelector';
 
+import Logo from './Logo';
+
 const Navbar: React.FC = () => {
   const { setView, currentUser, openLogoutModal, view, toggleChat, getUnreadCount, isChatOpen, t, language } = useBank();
   const [isOpen, setIsOpen] = React.useState(false);
@@ -29,17 +31,11 @@ const Navbar: React.FC = () => {
     <nav className="fixed w-full z-50 glass-panel border-b border-white/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          <div 
-            className={`flex items-center ${!currentUser ? 'cursor-pointer' : ''} flex-shrink-0`} 
-            onClick={() => !currentUser && setView('LANDING')}
-          >
-            <div className="flex-shrink-0 text-emerald-400">
-              <ShieldCheck className="h-8 w-8" />
-            </div>
-            <div>
-              <span className="ml-2 text-xl font-bold tracking-wider text-white">{APP_NAME}</span>
-            </div>
-          </div>
+          <Logo 
+            size="md" 
+            showTagline={false} 
+            onClick={() => !currentUser && setView('LANDING')} 
+          />
           
           <div className="hidden md:flex items-center gap-4">
             <div className="flex items-baseline space-x-2">

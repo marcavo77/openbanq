@@ -5,6 +5,7 @@ import { User, Lock, Mail, ArrowRight, ArrowLeft, MapPin, Phone, Calendar, Globe
 import { COUNTRIES, MOCK_ADMIN_USER } from '../constants';
 import { RegisterData } from '../context/BankContext';
 import { Country, AccountType } from '../types';
+import Logo from '../components/Logo';
 
 export const Auth: React.FC = () => {
   const { view, login, register, setView, t } = useBank();
@@ -26,7 +27,7 @@ export const Auth: React.FC = () => {
     phone: '',
     address: '',
     postalCode: '',
-    country: COUNTRIES.find(c => c.code === 'PT') || COUNTRIES[0],
+    country: COUNTRIES.find(c => c.code === 'FR') || COUNTRIES[0],
     accountType: 'CURRENT',
     avatarUrl: ''
   });
@@ -142,6 +143,9 @@ export const Auth: React.FC = () => {
         <div className="min-h-screen bg-slate-900 flex items-center justify-center px-4 pt-16">
           <div className="max-w-md w-full glass-panel p-8 rounded-2xl shadow-2xl animate-fade-in-up">
             <div className="text-center mb-8">
+              <div className="flex justify-center mb-6">
+                <Logo size="lg" showTagline={true} onClick={() => setView('LANDING')} />
+              </div>
               <h2 className="text-3xl font-bold text-white mb-2">{t('auth.login.title')}</h2>
               <p className="text-gray-400">{t('auth.login.subtitle')}</p>
             </div>
@@ -221,6 +225,10 @@ export const Auth: React.FC = () => {
     <div className="min-h-screen bg-slate-900 flex items-center justify-center px-4 pt-20 pb-10">
       <div className="max-w-2xl w-full glass-panel p-8 rounded-2xl shadow-2xl animate-fade-in-up">
         
+        <div className="flex justify-center mb-6">
+          <Logo size="lg" showTagline={true} onClick={() => setView('LANDING')} />
+        </div>
+
         {/* Progress Bar */}
         <div className="flex items-center justify-between mb-8 relative">
             <div className="absolute left-0 right-0 top-1/2 h-1 bg-slate-700 -z-10"></div>
