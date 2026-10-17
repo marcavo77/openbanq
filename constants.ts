@@ -6,7 +6,7 @@ export const CURRENCY = "€";
 
 // Mock admin credentials for demo
 export const ADMIN_EMAIL = "admin@openbanque.com";
-export const ADMIN_PASSWORD = "admin"; // In a real app, never do this.
+export const ADMIN_PASSWORD = "admin123456"; // Mot de passe admin par défaut
 
 export const COUNTRIES: Country[] = [
   { code: 'AF', name: 'Afghanistan', flag: '🇦🇫' },

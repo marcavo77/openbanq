@@ -2,7 +2,7 @@
 
 Pour créer l'utilisateur admin avec les identifiants :
 - **Email** : `admin@openbanque.com`
-- **Mot de passe** : `012345678`
+- **Mot de passe** : `admin123456`
 
 ## Méthode 1 : Script automatique (Recommandé si vous avez la SERVICE_ROLE_KEY)
 
