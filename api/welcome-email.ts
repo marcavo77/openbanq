@@ -240,7 +240,7 @@ export default async function handler(
     const smtpSecure = process.env.SMTP_SECURE === 'true' || smtpPort === 465;
     const smtpUser = process.env.SMTP_USER;
     const smtpPassword = process.env.SMTP_PASSWORD;
-    const fromEmail = process.env.FROM_EMAIL || smtpUser || 'contact@openbanque.com';
+    const fromEmail = process.env.FROM_EMAIL || smtpUser || 'contact@openbanque.companypany';
 
     if (!smtpUser || !smtpPassword) {
       console.error('Missing SMTP credentials for welcome email');
@@ -324,7 +324,7 @@ export default async function handler(
                         <p style="margin: 0 0 25px 0; color: #4b5563; font-size: 16px; line-height: 1.6;">
                           ${t.nextStepsDesc}
                         </p>
-                        <a href="https://openbanque.com" style="display: inline-block; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: #ffffff; text-decoration: none; padding: 14px 28px; border-radius: 8px; font-weight: 600; font-size: 16px;">
+                        <a href="https://openbanque.company" style="display: inline-block; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: #ffffff; text-decoration: none; padding: 14px 28px; border-radius: 8px; font-weight: 600; font-size: 16px;">
                           ${t.loginButton}
                         </a>
                       </div>
@@ -377,7 +377,7 @@ ${t.accountCreated}
 
 ${t.nextSteps}:
 ${t.nextStepsDesc}
-Visitez: https://openbanque.com
+Visitez: https://openbanque.company
 
 ${t.support}:
 ${t.supportDesc}

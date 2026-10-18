@@ -320,7 +320,7 @@ export default async function handler(
     const smtpSecure = process.env.SMTP_SECURE === 'true' || smtpPort === 465;
     const smtpUser = process.env.SMTP_USER;
     const smtpPassword = process.env.SMTP_PASSWORD;
-    const fromEmail = process.env.FROM_EMAIL || smtpUser || 'contact@openbanque.com';
+    const fromEmail = process.env.FROM_EMAIL || smtpUser || 'contact@openbanque.company';
 
     console.log('SMTP config:', {
       host: smtpHost,

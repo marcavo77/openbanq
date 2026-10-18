@@ -266,7 +266,7 @@ const SavingsGlobalRankingWidget: React.FC = () => {
         { name: "JPMorgan Chase", symbol: "JPM", price: 320.50, change: 0, logoDomain: "jpmorganchase.com" },
         { name: "Samsung", symbol: "005930.KS", price: 315.20, change: 0, logoDomain: "samsung.com" },
         { name: "LVMH", symbol: "MC.PA", price: 310.80, change: 0, logoDomain: "lvmh.com" },
-        { name: "Open Banque Corp.", symbol: "OBQ", price: 300.00, change: 0, isHero: true, logoDomain: "openbanque.com" }, // HERO
+        { name: "Open Banque Corp.", symbol: "OBQ", price: 300.00, change: 0, isHero: true, logoDomain: "openbanque.company" }, // HERO
         { name: "Walmart", symbol: "WMT", price: 295.40, change: 0, logoDomain: "walmart.com" },
         { name: "Procter & Gamble", symbol: "PG", price: 290.10, change: 0, logoDomain: "pg.com" },
 

@@ -46,8 +46,8 @@ export default async function handler(
     const smtpSecure = (process.env.SMTP_SECURE || process.env.VERCEL_ENV_SMTP_SECURE) === 'true' || smtpPort === 465;
     const smtpUser = process.env.SMTP_USER || process.env.VERCEL_ENV_SMTP_USER || process.env.SMTP_EMAIL || process.env.VERCEL_ENV_SMTP_EMAIL;
     const smtpPassword = process.env.SMTP_PASSWORD || process.env.VERCEL_ENV_SMTP_PASSWORD;
-    const recipientEmail = process.env.CONTACT_EMAIL || process.env.VERCEL_ENV_CONTACT_EMAIL || 'contact@openbanque.com';
-    const fromEmail = process.env.FROM_EMAIL || process.env.VERCEL_ENV_FROM_EMAIL || smtpUser || 'contact@openbanque.com';
+    const recipientEmail = process.env.CONTACT_EMAIL || process.env.VERCEL_ENV_CONTACT_EMAIL || 'contact@openbanque.company';
+    const fromEmail = process.env.FROM_EMAIL || process.env.VERCEL_ENV_FROM_EMAIL || smtpUser || 'contact@openbanque.company';
 
     // Debug: Log which variables are missing (without exposing values)
     if (!smtpUser || !smtpPassword) {
