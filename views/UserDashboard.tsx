@@ -376,7 +376,9 @@ const SavingsGlobalRankingWidget: React.FC = () => {
                                     
                                     <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-white p-0.5 shrink-0 overflow-hidden">
                                         {isNova ? (
-                                            <div className="w-full h-full bg-emerald-500 flex items-center justify-center text-white font-bold text-[10px]">NB</div>
+                                            <div className="w-full h-full flex items-center justify-center">
+                                                <OpenBanqueIcon size="100%" className="w-full h-full" />
+                                            </div>
                                         ) : (
                                             <img 
                                                 src={`https://logo.clearbit.com/${company.logoDomain}`} 

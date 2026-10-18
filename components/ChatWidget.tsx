@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useBank } from '../context/BankContext';
 import { messageService } from '../services/supabaseService';
 import { Send, X, MessageSquare, User as UserIcon, ShieldCheck, Check, CheckCheck, Settings, ToggleLeft, ToggleRight, MoreVertical, ArrowLeft } from 'lucide-react';
+import { OpenBanqueIcon } from './Logo';
 
 const TypingIndicator = () => (
   <div className="flex gap-1 items-center p-2 rounded-xl bg-slate-700 w-fit">
@@ -564,8 +565,8 @@ const ChatWidget: React.FC = () => {
       {/* Header */}
       <div className="p-4 bg-emerald-600 flex justify-between items-center shadow-lg relative z-10">
         <div className="flex items-center gap-3">
-            <div className="bg-white/20 p-2 rounded-full">
-                <ShieldCheck className="h-6 w-6 text-white" />
+            <div className="w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center shrink-0 shadow-sm">
+                <OpenBanqueIcon size="100%" className="w-full h-full" />
             </div>
             <div>
                 <h3 className="font-bold text-white">{t('chat.support')}</h3>
@@ -592,7 +593,9 @@ const ChatWidget: React.FC = () => {
         {/* Welcome Message */}
         <div className="flex justify-start">
              <div className="flex items-end gap-2 max-w-[85%]">
-                <div className="w-6 h-6 rounded-full bg-emerald-500 flex items-center justify-center shrink-0 text-white text-xs font-bold shadow-lg">NB</div>
+                <div className="w-7 h-7 rounded-lg overflow-hidden shrink-0 shadow-md">
+                    <OpenBanqueIcon size="100%" className="w-full h-full" />
+                </div>
                 <div className="bg-slate-700 text-gray-200 rounded-2xl rounded-bl-none p-3 text-sm shadow-md">
                    {t('chat.welcome')} {currentUser.name}, {t('chat.welcomeMessage')}
                 </div>
@@ -618,7 +621,9 @@ const ChatWidget: React.FC = () => {
                     )}
                     <div className={`flex ${msg.senderId === currentUser.id ? 'justify-end' : 'justify-start'}`}>
                         {msg.senderId !== currentUser.id && (
-                             <div className="w-6 h-6 rounded-full bg-emerald-500 flex items-center justify-center shrink-0 text-white text-xs font-bold shadow-lg mr-2 self-end">NB</div>
+                             <div className="w-7 h-7 rounded-lg overflow-hidden shrink-0 shadow-md mr-2 self-end">
+                                 <OpenBanqueIcon size="100%" className="w-full h-full" />
+                             </div>
                         )}
                         <div className={`max-w-[80%] rounded-2xl p-3 text-sm shadow-md ${
                             msg.senderId === currentUser.id 
@@ -646,7 +651,9 @@ const ChatWidget: React.FC = () => {
         {/* Admin Typing Indicator Bubble */}
         {isAdminTyping && adminChatSettings.showTypingToUser && (
              <div className="flex justify-start animate-fade-in-up">
-                 <div className="w-6 h-6 rounded-full bg-emerald-500 flex items-center justify-center shrink-0 text-white text-xs font-bold shadow-lg mr-2 self-end">NB</div>
+                 <div className="w-7 h-7 rounded-lg overflow-hidden shrink-0 shadow-md mr-2 self-end">
+                     <OpenBanqueIcon size="100%" className="w-full h-full" />
+                 </div>
                  <TypingIndicator />
              </div>
         )}
