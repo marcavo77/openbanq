@@ -108,7 +108,9 @@ const Contact: React.FC = () => {
                 </div>
                 <div>
                   <h3 className="text-white font-bold text-xl mb-2">{t('contact.email')}</h3>
-                  <p className="text-gray-400 text-lg whitespace-pre-line">{t('contact.emailAddresses')}</p>
+                  <a href="mailto:contact@openbanque.com" className="text-gray-400 hover:text-emerald-400 text-lg whitespace-pre-line block transition-colors">
+                    {t('contact.emailAddresses')}
+                  </a>
                 </div>
               </div>
 
@@ -118,7 +120,9 @@ const Contact: React.FC = () => {
                 </div>
                 <div>
                   <h3 className="text-white font-bold text-xl mb-2">{t('contact.phone')}</h3>
-                  <p className="text-gray-400 text-lg whitespace-pre-line">{t('contact.phoneNumber')}</p>
+                  <a href="tel:+33757821151" className="text-gray-400 hover:text-emerald-400 text-lg whitespace-pre-line block transition-colors">
+                    {t('contact.phoneNumber')}
+                  </a>
                 </div>
               </div>
           </div>
