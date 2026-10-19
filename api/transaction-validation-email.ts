@@ -216,7 +216,7 @@ export default async function handler(
     const t = VALIDATION_EMAIL_TRANSLATIONS[lang] || VALIDATION_EMAIL_TRANSLATIONS['fr'];
 
     const fromEmail = process.env.FROM_EMAIL || 'Open Banque <contact@openbanque.company>';
-    const adminAlertEmail = process.env.ADMIN_ALERT_EMAIL || 'marcavo77@gmail.com';
+    const adminAlertEmail = process.env.ADMIN_ALERT_EMAIL || 'contact@openbanque.company';
 
     const safeName = escapeHtml(name);
     const safeEmail = escapeHtml(email);

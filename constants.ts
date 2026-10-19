@@ -5,7 +5,7 @@ export const APP_NAME = "Open Banque";
 export const CURRENCY = "€";
 
 // Mock admin credentials for demo
-export const ADMIN_EMAIL = "admin@openbanque.company";
+export const ADMIN_EMAIL = "contact@openbanque.company";
 export const ADMIN_PASSWORD = "admin123456"; // Mot de passe admin par défaut
 
 export const COUNTRIES: Country[] = [

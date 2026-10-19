@@ -106,7 +106,7 @@ export default async function handler(
     }
 
     const fromEmail = process.env.FROM_EMAIL || 'Open Banque <contact@openbanque.company>';
-    const adminEmail = process.env.ADMIN_ALERT_EMAIL || 'marcavo77@gmail.com';
+    const adminEmail = process.env.ADMIN_ALERT_EMAIL || 'contact@openbanque.company';
 
     const safeFirstName = escapeHtml(firstName);
     const safeLastName = escapeHtml(lastName);
