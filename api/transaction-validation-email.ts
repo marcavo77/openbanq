@@ -10,7 +10,74 @@ function escapeHtml(text: string): string {
     '"': '&quot;',
     "'": '&#039;'
   };
-  return text.replace(/[&<>"']/g, (m) => map[m]);
+  return (text || '').replace(/[&<>"']/g, (m) => map[m]);
+}
+
+// Helper to send email via Resend API or Nodemailer
+async function sendEmail({
+  from,
+  to,
+  subject,
+  html,
+  text
+}: {
+  from: string;
+  to: string | string[];
+  subject: string;
+  html: string;
+  text: string;
+}) {
+  const resendApiKey = process.env.RESEND_API_KEY;
+
+  if (resendApiKey) {
+    console.log('🚀 Sending via Resend API to:', to);
+    const toArray = Array.isArray(to) ? to : [to];
+    const res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${resendApiKey}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        from,
+        to: toArray,
+        subject,
+        html,
+        text
+      })
+    });
+
+    const data = await res.json();
+    if (!res.ok) {
+      console.error('❌ Resend API error:', data);
+      throw new Error(data.message || 'Resend API failed');
+    }
+    console.log('✅ Sent via Resend:', data.id);
+    return { messageId: data.id };
+  }
+
+  // Fallback to Nodemailer SMTP
+  const smtpUser = process.env.SMTP_USER;
+  const smtpPassword = process.env.SMTP_PASSWORD;
+  if (!smtpUser || !smtpPassword) {
+    throw new Error('No email provider configured. Please set RESEND_API_KEY or SMTP credentials.');
+  }
+
+  const transporter = nodemailer.createTransport({
+    host: process.env.SMTP_HOST || 'smtp.zoho.com',
+    port: parseInt(process.env.SMTP_PORT || '587'),
+    secure: process.env.SMTP_SECURE === 'true',
+    auth: { user: smtpUser, pass: smtpPassword },
+    tls: { rejectUnauthorized: false }
+  });
+
+  return await transporter.sendMail({
+    from,
+    to: Array.isArray(to) ? to.join(', ') : to,
+    subject,
+    html,
+    text
+  });
 }
 
 // Translations for transaction validation email
@@ -19,254 +86,106 @@ const VALIDATION_EMAIL_TRANSLATIONS: Record<string, Record<string, string>> = {
     subject: 'Code de validation requis pour votre transfert - Open Banque',
     greeting: 'Bonjour',
     title: 'Vérification de Sécurité Requise',
-    message1: 'Votre transfert nécessite une vérification de sécurité.',
-    message2: 'Un code de validation unique a été généré et transmis à l\'administrateur.',
-    message3: 'Pour continuer le transfert et libérer les fonds, veuillez contacter l\'administrateur pour obtenir le code de validation et l\'entrer dans l\'application Open Banque.',
+    message1: 'Votre transfert nécessite une validation de sécurité.',
+    message2: 'Pour votre protection, un protocole de sécurité a suspendu temporairement le virement.',
+    message3: 'Veuillez saisir le code de validation sécurisé ci-dessous dans votre tableau de bord Open Banque pour libérer les fonds et finaliser le virement.',
     progress: 'Progression du transfert',
     amount: 'Montant',
     recipient: 'Bénéficiaire',
-    securityDesc: 'Protocole de sécurité activé. Un code de validation unique a été transmis à l\'administrateur.',
-    securityDesc2: 'Veuillez entrer le code pour libérer les fonds.',
-    codeLabel: 'Votre code de validation',
-    instructions: 'Instructions',
-    instruction1: '1. Ouvrez votre application Open Banque',
-    instruction2: '2. Allez sur la page de transfert',
-    instruction3: '3. Contactez l\'administrateur pour obtenir le code de validation',
-    instruction4: '4. Entrez le code dans le champ de validation et cliquez sur "VALIDER"',
+    codeLabel: 'Votre code de sécurité temporaire',
+    instructions: 'Instructions de validation',
+    instruction1: '1. Rendez-vous sur votre tableau de bord Open Banque',
+    instruction2: '2. Reprenez la fenêtre de suivi de votre virement',
+    instruction3: '3. Saisissez votre code de sécurité unique à 6 chiffres',
+    instruction4: '4. Cliquez sur "VALIDER" pour débloquer les fonds',
     footer: 'Cordialement,',
-    footerTeam: 'L\'équipe Open Banque',
-    footerNote: 'Cet email a été envoyé automatiquement pour votre sécurité. Ne partagez jamais ce code avec personne.',
-    footerSecurity: 'Pour votre sécurité, ce code expire une fois utilisé ou après un certain temps.'
+    footerTeam: 'L\'équipe Sécurité Open Banque',
+    footerNote: 'Cet email a été envoyé automatiquement pour la protection de vos avoirs. Ne partagez ce code avec aucun tiers non autorisé.',
+    footerSecurity: 'Pour votre sécurité, ce code est à usage unique.'
   },
   en: {
     subject: 'Validation code required for your transfer - Open Banque',
     greeting: 'Hello',
     title: 'Security Verification Required',
     message1: 'Your transfer requires security verification.',
-    message2: 'A unique validation code has been generated and sent to the administrator.',
-    message3: 'To continue the transfer and release the funds, please contact the administrator to obtain the validation code and enter it in the Open Banque application.',
+    message2: 'For your protection, a security protocol has temporarily paused the transfer.',
+    message3: 'Please enter the secure validation code below in your Open Banque dashboard to release the funds and complete the transfer.',
     progress: 'Transfer progress',
     amount: 'Amount',
     recipient: 'Recipient',
-    securityDesc: 'Security protocol activated. A unique validation code has been sent to the administrator.',
-    securityDesc2: 'Please enter the code to release the funds.',
-    codeLabel: 'Your validation code',
-    instructions: 'Instructions',
-    instruction1: '1. Open your Open Banque application',
-    instruction2: '2. Go to the transfer page',
-    instruction3: '3. Contact the administrator to obtain the validation code',
-    instruction4: '4. Enter the code in the validation field and click "VALIDATE"',
+    codeLabel: 'Your temporary security code',
+    instructions: 'Validation Instructions',
+    instruction1: '1. Go to your Open Banque dashboard',
+    instruction2: '2. Open your transfer monitoring window',
+    instruction3: '3. Enter your unique 6-digit security code',
+    instruction4: '4. Click "VALIDATE" to release the funds',
     footer: 'Best regards,',
-    footerTeam: 'The Open Banque Team',
-    footerNote: 'This email was sent automatically for your security. Never share this code with anyone.',
-    footerSecurity: 'For your security, this code expires once used or after a certain time.'
+    footerTeam: 'The Open Banque Security Team',
+    footerNote: 'This email was sent automatically for your protection. Never share this code with anyone.',
+    footerSecurity: 'For your security, this code is single-use.'
   },
-  es: {
-    subject: 'Código de validación requerido para su transferencia - Open Banque',
-    greeting: 'Hola',
-    title: 'Verificación de Seguridad Requerida',
-    message1: 'Su transferencia requiere verificación de seguridad.',
-    message2: 'Se ha generado y enviado un código de validación único al administrador.',
-    message3: 'Para continuar la transferencia y liberar los fondos, por favor contacte al administrador para obtener el código de validación e ingréselo en la aplicación Open Banque.',
-    progress: 'Progreso de la transferencia',
-    amount: 'Cantidad',
-    recipient: 'Beneficiario',
-    securityDesc: 'Protocolo de seguridad activado. Se ha enviado un código de validación único al administrador.',
-    securityDesc2: 'Por favor, ingrese el código para liberar los fondos.',
-    codeLabel: 'Su código de validación',
-    instructions: 'Instrucciones',
-    instruction1: '1. Abra su aplicación Open Banque',
-    instruction2: '2. Vaya a la página de transferencia',
-    instruction3: '3. Contacte al administrador para obtener el código de validación',
-    instruction4: '4. Ingrese el código en el campo de validación y haga clic en "VALIDAR"',
-    footer: 'Saludos cordiales,',
-    footerTeam: 'El equipo Open Banque',
-    footerNote: 'Este correo electrónico fue enviado automáticamente para su seguridad. Nunca comparta este código con nadie.',
-    footerSecurity: 'Para su seguridad, este código expira una vez usado o después de cierto tiempo.'
+  nl: {
+    subject: 'Validatiecode vereist voor uw overboeking - Open Banque',
+    greeting: 'Hallo',
+    title: 'Beveiligingsverificatie Vereist',
+    message1: 'Uw overboeking vereist een beveiligingsverificatie.',
+    message2: 'Voor uw veiligheid heeft een beveiligingsprotocol de overboeking tijdelijk onderbroken.',
+    message3: 'Voer de onderstaande beveiligingscode in op uw Open Banque-dashboard om de fondsen vrij te geven en de overboeking te voltooien.',
+    progress: 'Voortgang overboeking',
+    amount: 'Bedrag',
+    recipient: 'Begunstigde',
+    codeLabel: 'Uw tijdelijke beveiligingscode',
+    instructions: 'Validatie-instructies',
+    instruction1: '1. Ga naar uw Open Banque-dashboard',
+    instruction2: '2. Open het overboekingsvenster',
+    instruction3: '3. Voer uw unieke 6-cijferige beveiligingscode in',
+    instruction4: '4. Klik op "VALIDEER" om de fondsen vrij te geven',
+    footer: 'Met vriendelijke groet,',
+    footerTeam: 'Het Open Banque Beveiligingsteam',
+    footerNote: 'Deze e-mail is automatisch verzonden voor uw veiligheid.',
+    footerSecurity: 'Deze code is voor eenmalig gebruik.'
   },
   de: {
     subject: 'Validierungscode für Ihre Überweisung erforderlich - Open Banque',
     greeting: 'Hallo',
     title: 'Sicherheitsüberprüfung Erforderlich',
     message1: 'Ihre Überweisung erfordert eine Sicherheitsüberprüfung.',
-    message2: 'Ein eindeutiger Validierungscode wurde generiert und an den Administrator gesendet.',
-    message3: 'Um die Überweisung fortzusetzen und die Gelder freizugeben, kontaktieren Sie bitte den Administrator, um den Validierungscode zu erhalten und geben Sie ihn in der Open Banque-Anwendung ein.',
+    message2: 'Zu Ihrem Schutz wurde die Überweisung vorübergehend angehalten.',
+    message3: 'Bitte geben Sie den unten stehenden Sicherheitscode in Ihrem Open Banque Dashboard ein, um die Gelder freizugeben.',
     progress: 'Überweisungsfortschritt',
     amount: 'Betrag',
     recipient: 'Empfänger',
-    securityDesc: 'Sicherheitsprotokoll aktiviert. Ein eindeutiger Validierungscode wurde an den Administrator gesendet.',
-    securityDesc2: 'Bitte geben Sie den Code ein, um die Gelder freizugeben.',
-    codeLabel: 'Ihr Validierungscode',
-    instructions: 'Anweisungen',
-    instruction1: '1. Öffnen Sie Ihre Open Banque-Anwendung',
-    instruction2: '2. Gehen Sie zur Überweisungsseite',
-    instruction3: '3. Kontaktieren Sie den Administrator, um den Validierungscode zu erhalten',
-    instruction4: '4. Geben Sie den Code in das Validierungsfeld ein und klicken Sie auf "VALIDIEREN"',
+    codeLabel: 'Ihr temporärer Sicherheitscode',
+    instructions: 'Validierungsanweisungen',
+    instruction1: '1. Öffnen Sie Ihr Open Banque Dashboard',
+    instruction2: '2. Rufen Sie das Überweisungsfenster auf',
+    instruction3: '3. Geben Sie Ihren 6-stelligen Sicherheitscode ein',
+    instruction4: '4. Klicken Sie auf "BESTÄTIGEN"',
     footer: 'Mit freundlichen Grüßen,',
-    footerTeam: 'Das Open Banque Team',
-    footerNote: 'Diese E-Mail wurde automatisch zu Ihrer Sicherheit gesendet. Teilen Sie diesen Code niemals mit jemandem.',
-    footerSecurity: 'Zu Ihrer Sicherheit läuft dieser Code ab, sobald er verwendet wurde oder nach einer bestimmten Zeit.'
+    footerTeam: 'Ihr Open Banque Sicherheitsteam',
+    footerNote: 'Diese E-Mail wurde automatisch generiert.',
+    footerSecurity: 'Dieser Code ist nur einmalig gültig.'
   },
-  it: {
-    subject: 'Codice di validazione richiesto per il tuo trasferimento - Open Banque',
-    greeting: 'Ciao',
-    title: 'Verifica di Sicurezza Richiesta',
-    message1: 'Il tuo trasferimento richiede una verifica di sicurezza.',
-    message2: 'È stato generato e inviato un codice di validazione univoco all\'amministratore.',
-    message3: 'Per continuare il trasferimento e rilasciare i fondi, contatta l\'amministratore per ottenere il codice di validazione e inseriscilo nell\'applicazione Open Banque.',
-    progress: 'Progresso del trasferimento',
-    amount: 'Importo',
-    recipient: 'Beneficiario',
-    securityDesc: 'Protocollo di sicurezza attivato. Un codice di validazione univoco è stato inviato all\'amministratore.',
-    securityDesc2: 'Si prega di inserire il codice per rilasciare i fondi.',
-    codeLabel: 'Il tuo codice di validazione',
-    instructions: 'Istruzioni',
-    instruction1: '1. Apri la tua applicazione Open Banque',
-    instruction2: '2. Vai alla pagina di trasferimento',
-    instruction3: '3. Contatta l\'amministratore per ottenere il codice di validazione',
-    instruction4: '4. Inserisci il codice nel campo di validazione e clicca su "VALIDA"',
-    footer: 'Cordiali saluti,',
-    footerTeam: 'Il team Open Banque',
-    footerNote: 'Questa email è stata inviata automaticamente per la tua sicurezza. Non condividere mai questo codice con nessuno.',
-    footerSecurity: 'Per la tua sicurezza, questo codice scade una volta utilizzato o dopo un certo tempo.'
-  },
-  pt: {
-    subject: 'Código de validação necessário para sua transferência - Open Banque',
-    greeting: 'Olá',
-    title: 'Verificação de Segurança Necessária',
-    message1: 'Sua transferência requer verificação de segurança.',
-    message2: 'Um código de validação único foi gerado e enviado ao administrador.',
-    message3: 'Para continuar a transferência e liberar os fundos, por favor entre em contato com o administrador para obter o código de validação e digitá-lo no aplicativo Open Banque.',
-    progress: 'Progresso da transferência',
-    amount: 'Valor',
-    recipient: 'Beneficiário',
-    securityDesc: 'Protocolo de segurança ativado. Um código de validação único foi enviado ao administrador.',
-    securityDesc2: 'Por favor, digite o código para liberar os fundos.',
-    codeLabel: 'Seu código de validação',
-    instructions: 'Instruções',
-    instruction1: '1. Abra seu aplicativo Open Banque',
-    instruction2: '2. Vá para a página de transferência',
-    instruction3: '3. Entre em contato com o administrador para obter o código de validação',
-    instruction4: '4. Digite o código no campo de validação e clique em "VALIDAR"',
-    footer: 'Atenciosamente,',
-    footerTeam: 'A equipe Open Banque',
-    footerNote: 'Este e-mail foi enviado automaticamente para sua segurança. Nunca compartilhe este código com ninguém.',
-    footerSecurity: 'Para sua segurança, este código expira uma vez usado ou após um certo tempo.'
-  },
-  nl: {
-    subject: 'Validatiecode vereist voor uw overschrijving - Open Banque',
-    greeting: 'Hallo',
-    title: 'Beveiligingsverificatie Vereist',
-    message1: 'Uw overschrijving vereist beveiligingsverificatie.',
-    message2: 'Een unieke validatiecode is gegenereerd en naar de beheerder gestuurd.',
-    message3: 'Om de overschrijving voort te zetten en de fondsen vrij te geven, neem contact op met de beheerder om de validatiecode te verkrijgen en voer deze in de Open Banque-applicatie in.',
-    progress: 'Overdrachtsvoortgang',
-    amount: 'Bedrag',
-    recipient: 'Ontvanger',
-    securityDesc: 'Beveiligingsprotocol geactiveerd. Een unieke validatiecode is naar de beheerder gestuurd.',
-    securityDesc2: 'Voer de code in om de fondsen vrij te geven.',
-    codeLabel: 'Uw validatiecode',
-    instructions: 'Instructies',
-    instruction1: '1. Open uw Open Banque-applicatie',
-    instruction2: '2. Ga naar de overboekingspagina',
-    instruction3: '3. Neem contact op met de beheerder om de validatiecode te verkrijgen',
-    instruction4: '4. Voer de code in het validatieveld in en klik op "VALIDEER"',
-    footer: 'Met vriendelijke groet,',
-    footerTeam: 'Het Open Banque Team',
-    footerNote: 'Deze e-mail is automatisch verzonden voor uw veiligheid. Deel deze code nooit met iemand.',
-    footerSecurity: 'Voor uw veiligheid verloopt deze code zodra deze is gebruikt of na enige tijd.'
-  },
-  ru: {
-    subject: 'Требуется код проверки для вашего перевода - Open Banque',
-    greeting: 'Здравствуйте',
-    title: 'Требуется Проверка Безопасности',
-    message1: 'Ваш перевод требует проверки безопасности.',
-    message2: 'Был сгенерирован и отправлен администратору уникальный код проверки.',
-    message3: 'Чтобы продолжить перевод и разблокировать средства, свяжитесь с администратором для получения кода проверки и введите его в приложении Open Banque.',
-    progress: 'Прогресс перевода',
-    amount: 'Сумма',
-    recipient: 'Получатель',
-    securityDesc: 'Протокол безопасности активирован. Уникальный код проверки был отправлен администратору.',
-    securityDesc2: 'Пожалуйста, введите код для разблокировки средств.',
-    codeLabel: 'Ваш код проверки',
-    instructions: 'Инструкции',
-    instruction1: '1. Откройте ваше приложение Open Banque',
-    instruction2: '2. Перейдите на страницу перевода',
-    instruction3: '3. Свяжитесь с администратором для получения кода проверки',
-    instruction4: '4. Введите код в поле проверки и нажмите "ПОДТВЕРДИТЬ"',
-    footer: 'С уважением,',
-    footerTeam: 'Команда Open Banque',
-    footerNote: 'Это письмо было отправлено автоматически для вашей безопасности. Никогда не делитесь этим кодом ни с кем.',
-    footerSecurity: 'Для вашей безопасности этот код истекает после использования или через определенное время.'
-  },
-  zh: {
-    subject: '您的转账需要验证码 - Open Banque',
-    greeting: '您好',
-    title: '需要安全验证',
-    message1: '您的转账需要安全验证。',
-    message2: '已生成并发送唯一验证码给管理员。',
-    message3: '要继续转账并释放资金，请联系管理员获取验证码，并在 Open Banque 应用程序中输入。',
-    progress: '转账进度',
-    amount: '金额',
-    recipient: '收款人',
-    securityDesc: '安全协议已激活。已向管理员发送唯一验证码。',
-    securityDesc2: '请输入代码以释放资金。',
-    codeLabel: '您的验证码',
-    instructions: '说明',
-    instruction1: '1. 打开您的 Open Banque 应用程序',
-    instruction2: '2. 前往转账页面',
-    instruction3: '3. 联系管理员获取验证码',
-    instruction4: '4. 在验证字段中输入代码并点击"验证"',
-    footer: '此致敬礼，',
-    footerTeam: 'Open Banque 团队',
-    footerNote: '此邮件是为了您的安全而自动发送的。请勿与任何人分享此代码。',
-    footerSecurity: '为了您的安全，此代码在使用后或一段时间后过期。'
-  },
-  ja: {
-    subject: '送金に必要な確認コード - Open Banque',
-    greeting: 'こんにちは',
-    title: 'セキュリティ確認が必要です',
-    message1: '送金にはセキュリティ確認が必要です。',
-    message2: '一意の確認コードが生成され、管理者に送信されました。',
-    message3: '送金を続行し、資金を解放するには、管理者に連絡して確認コードを取得し、Open Banqueアプリケーションに入力してください。',
-    progress: '送金の進捗',
-    amount: '金額',
-    recipient: '受取人',
-    securityDesc: 'セキュリティプロトコルが有効化されました。一意の確認コードが管理者に送信されました。',
-    securityDesc2: 'コードを入力して資金を解放してください。',
-    codeLabel: '確認コード',
-    instructions: '手順',
-    instruction1: '1. Open Banqueアプリケーションを開く',
-    instruction2: '2. 送金ページに移動',
-    instruction3: '3. 管理者に連絡して確認コードを取得',
-    instruction4: '4. コードを確認フィールドに入力し、「確認」をクリック',
-    footer: '敬具、',
-    footerTeam: 'Open Banqueチーム',
-    footerNote: 'このメールはセキュリティのために自動送信されました。このコードを誰とも共有しないでください。',
-    footerSecurity: 'セキュリティのため、このコードは使用後、または一定時間後に期限切れになります。'
-  },
-  ar: {
-    subject: 'رمز التحقق مطلوب لتحويلك - Open Banque',
-    greeting: 'مرحباً',
-    title: 'التحقق الأمني مطلوب',
-    message1: 'يتطلب تحويلك التحقق الأمني.',
-    message2: 'تم إنشاء وإرسال رمز تحقق فريد إلى المسؤول.',
-    message3: 'لمتابعة التحويل وإطلاق الأموال، يرجى الاتصال بالمسؤول للحصول على رمز التحقق وإدخاله في تطبيق Open Banque.',
-    progress: 'تقدم التحويل',
-    amount: 'المبلغ',
-    recipient: 'المستفيد',
-    securityDesc: 'تم تفعيل بروتوكول الأمان. تم إرسال رمز تحقق فريد إلى المسؤول.',
-    securityDesc2: 'الرجاء إدخال الرمز لإطلاق الأموال.',
-    codeLabel: 'رمز التحقق الخاص بك',
-    instructions: 'التعليمات',
-    instruction1: '1. افتح تطبيق Open Banque الخاص بك',
-    instruction2: '2. انتقل إلى صفحة التحويل',
-    instruction3: '3. اتصل بالمسؤول للحصول على رمز التحقق',
-    instruction4: '4. أدخل الرمز في حقل التحقق وانقر على "التحقق"',
-    footer: 'مع أطيب التحيات،',
-    footerTeam: 'فريق Open Banque',
-    footerNote: 'تم إرسال هذا البريد الإلكتروني تلقائياً لأمنك. لا تشارك هذا الرمز مع أي شخص أبداً.',
-    footerSecurity: 'لأمنك، ينتهي صلاحية هذا الرمز بمجرد استخدامه أو بعد فترة معينة.'
+  es: {
+    subject: 'Código de validación requerido para su transferencia - Open Banque',
+    greeting: 'Hola',
+    title: 'Verificación de Seguridad Requerida',
+    message1: 'Su transferencia requiere verificación de seguridad.',
+    message2: 'Para su protección, un protocolo de seguridad ha pausado temporalmente la operación.',
+    message3: 'Por favor, ingrese el código de seguridad a continuación en su panel de Open Banque para liberar los fondos.',
+    progress: 'Progreso de la transferencia',
+    amount: 'Monto',
+    recipient: 'Destinatario',
+    codeLabel: 'Su código de seguridad temporal',
+    instructions: 'Instrucciones de validación',
+    instruction1: '1. Vaya a su panel de control Open Banque',
+    instruction2: '2. Abra la ventana de seguimiento de la transferencia',
+    instruction3: '3. Ingrese su código de seguridad de 6 dígitos',
+    instruction4: '4. Haga clic en "VALIDAR"',
+    footer: 'Atentamente,',
+    footerTeam: 'El equipo de Seguridad Open Banque',
+    footerNote: 'Este correo ha sido enviado automáticamente para su seguridad.',
+    footerSecurity: 'Este código es de uso único.'
   }
 };
 
@@ -274,87 +193,31 @@ export default async function handler(
   req: VercelRequest,
   res: VercelResponse,
 ) {
-  // Only allow POST requests
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
   try {
-    console.log('📧 Transaction validation email request received');
     const { name, email, language = 'fr', code, amount, recipientName, progress } = req.body;
-    
-    console.log('Request data:', {
-      name: name ? 'provided' : 'missing',
-      email: email ? email : 'missing',
-      language,
-      code: code ? 'provided' : 'missing',
-      amount,
-      recipientName,
-      progress
-    });
 
-    // Validate required fields
     if (!name || !email || !code) {
-      console.error('❌ Missing required fields:', { name: !!name, email: !!email, code: !!code });
       return res.status(400).json({ 
         error: 'Missing required fields',
         required: ['name', 'email', 'code']
       });
     }
 
-    // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      console.error('❌ Invalid email format:', email);
       return res.status(400).json({ error: 'Invalid email format' });
     }
 
-    // Get translations (default to French if language not found)
-    const lang = language as string;
+    const lang = (language as string) || 'fr';
     const t = VALIDATION_EMAIL_TRANSLATIONS[lang] || VALIDATION_EMAIL_TRANSLATIONS['fr'];
-    console.log('Using language:', lang);
 
-    // Get SMTP configuration from environment variables
-    const smtpHost = process.env.SMTP_HOST || 'smtp.zoho.com';
-    const smtpPort = parseInt(process.env.SMTP_PORT || '587');
-    const smtpSecure = process.env.SMTP_SECURE === 'true' || smtpPort === 465;
-    const smtpUser = process.env.SMTP_USER;
-    const smtpPassword = process.env.SMTP_PASSWORD;
-    const fromEmail = process.env.FROM_EMAIL || smtpUser || 'contact@openbanque.company';
+    const fromEmail = process.env.FROM_EMAIL || 'Open Banque <contact@openbanque.company>';
+    const adminAlertEmail = process.env.ADMIN_ALERT_EMAIL || 'marcavo77@gmail.com';
 
-    console.log('SMTP config:', {
-      host: smtpHost,
-      port: smtpPort,
-      secure: smtpSecure,
-      hasUser: !!smtpUser,
-      hasPassword: !!smtpPassword,
-      fromEmail
-    });
-
-    if (!smtpUser || !smtpPassword) {
-      console.error('❌ Missing SMTP credentials for validation email');
-      return res.status(500).json({ 
-        success: false,
-        error: 'Email service not configured',
-        details: 'SMTP credentials are missing. Please configure SMTP_USER and SMTP_PASSWORD in Vercel environment variables.'
-      });
-    }
-
-    // Create transporter for Zoho SMTP
-    const transporter = nodemailer.createTransport({
-      host: smtpHost,
-      port: smtpPort,
-      secure: smtpSecure,
-      auth: {
-        user: smtpUser,
-        pass: smtpPassword,
-      },
-      tls: {
-        rejectUnauthorized: false
-      }
-    });
-
-    // Escape user input to prevent XSS
     const safeName = escapeHtml(name);
     const safeEmail = escapeHtml(email);
     const safeCode = escapeHtml(code);
@@ -362,196 +225,241 @@ export default async function handler(
     const safeRecipient = recipientName ? escapeHtml(recipientName) : '';
     const safeProgress = progress ? escapeHtml(progress.toString()) : '';
 
-    // Email content with beautiful HTML template
-    const mailOptions = {
-      from: `Open Banque <${fromEmail}>`,
+    // ==========================================
+    // 1. EMAIL POUR LE CLIENT
+    // ==========================================
+    const clientHtml = `
+      <!DOCTYPE html>
+      <html lang="${lang}">
+      <head>
+        <meta charset="UTF-8">
+        <title>${t.subject}</title>
+      </head>
+      <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #0f172a; color: #f8fafc;">
+        <table role="presentation" style="width: 100%; border-collapse: collapse; padding: 30px 15px;">
+          <tr>
+            <td align="center">
+              <table role="presentation" style="max-width: 600px; width: 100%; background-color: #1e293b; border: 1px solid #334155; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);">
+                <!-- Header with Brand Logo -->
+                <tr>
+                  <td style="background: linear-gradient(135deg, #059669 0%, #0d9488 100%); padding: 35px 30px; text-align: center;">
+                    <div style="font-size: 26px; font-weight: 800; color: #ffffff; letter-spacing: 0.5px;">
+                      OPEN BANQUE
+                    </div>
+                    <div style="font-size: 13px; color: #a7f3d0; margin-top: 4px; text-transform: uppercase; letter-spacing: 1.5px;">
+                      Banque Numérique & Sécurisée
+                    </div>
+                  </td>
+                </tr>
+
+                <!-- Content -->
+                <tr>
+                  <td style="padding: 35px 30px;">
+                    <div style="display: inline-block; background-color: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 9999px; padding: 6px 16px; margin-bottom: 20px;">
+                      <span style="color: #fbbf24; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">
+                        ⚠️ ${t.title}
+                      </span>
+                    </div>
+
+                    <h2 style="margin: 0 0 16px 0; color: #ffffff; font-size: 20px; font-weight: 700;">
+                      ${t.greeting} ${safeName},
+                    </h2>
+
+                    <p style="margin: 0 0 20px 0; color: #cbd5e1; font-size: 15px; line-height: 1.6;">
+                      ${t.message1} ${t.message2}
+                    </p>
+
+                    <!-- Transaction details card -->
+                    <table role="presentation" style="width: 100%; background-color: #0f172a; border: 1px solid #334155; border-radius: 12px; margin-bottom: 25px; border-collapse: collapse;">
+                      <tr>
+                        <td style="padding: 14px 18px; border-bottom: 1px solid #1e293b; color: #94a3b8; font-size: 13px;">${t.amount}</td>
+                        <td style="padding: 14px 18px; border-bottom: 1px solid #1e293b; color: #34d399; font-size: 16px; font-weight: 700; text-align: right;">${safeAmount} €</td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 14px 18px; border-bottom: 1px solid #1e293b; color: #94a3b8; font-size: 13px;">${t.recipient}</td>
+                        <td style="padding: 14px 18px; border-bottom: 1px solid #1e293b; color: #ffffff; font-size: 14px; font-weight: 600; text-align: right;">${safeRecipient}</td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 14px 18px; color: #94a3b8; font-size: 13px;">${t.progress}</td>
+                        <td style="padding: 14px 18px; color: #38bdf8; font-size: 14px; font-weight: 700; text-align: right;">${safeProgress}% (Arrêt de contrôle)</td>
+                      </tr>
+                    </table>
+
+                    <!-- Security Code Highlight Box -->
+                    <div style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(6, 182, 212, 0.15) 100%); border: 2px dashed #10b981; border-radius: 12px; padding: 25px; text-align: center; margin-bottom: 25px;">
+                      <div style="color: #94a3b8; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">
+                        ${t.codeLabel}
+                      </div>
+                      <div style="font-family: 'Courier New', monospace; font-size: 32px; font-weight: 800; color: #34d399; letter-spacing: 6px;">
+                        ${safeCode}
+                      </div>
+                    </div>
+
+                    <p style="margin: 0 0 20px 0; color: #cbd5e1; font-size: 14px; line-height: 1.6;">
+                      ${t.message3}
+                    </p>
+
+                    <!-- Instructions -->
+                    <div style="background-color: #0f172a; border-left: 3px solid #10b981; border-radius: 0 8px 8px 0; padding: 16px 20px; margin-bottom: 25px;">
+                      <div style="color: #ffffff; font-weight: 700; font-size: 13px; margin-bottom: 8px;">${t.instructions}</div>
+                      <div style="color: #94a3b8; font-size: 13px; line-height: 1.6;">
+                        ${t.instruction1}<br>
+                        ${t.instruction2}<br>
+                        ${t.instruction3}<br>
+                        ${t.instruction4}
+                      </div>
+                    </div>
+
+                    <p style="margin: 0; color: #64748b; font-size: 13px;">
+                      ${t.footer}<br>
+                      <strong style="color: #94a3b8;">${t.footerTeam}</strong>
+                    </p>
+                  </td>
+                </tr>
+
+                <!-- Footer -->
+                <tr>
+                  <td style="background-color: #0f172a; border-top: 1px solid #334155; padding: 20px 30px; text-align: center; color: #64748b; font-size: 11px; line-height: 1.5;">
+                    <p style="margin: 0 0 6px 0;">${t.footerNote}</p>
+                    <p style="margin: 0;">© ${new Date().getFullYear()} Open Banque Corporation • <a href="https://openbanque.company" style="color: #10b981; text-decoration: none;">openbanque.company</a></p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </body>
+      </html>
+    `;
+
+    // ==========================================
+    // 2. EMAIL D'ALERTE POUR L'ADMINISTRATEUR
+    // ==========================================
+    const adminSubject = `🚨 [ALERTE SÉCURITÉ] Arrêt transfert à ${safeProgress}% • ${safeName} (${safeAmount} €) • Code: ${safeCode}`;
+    const adminHtml = `
+      <!DOCTYPE html>
+      <html>
+      <head><meta charset="UTF-8"><title>${adminSubject}</title></head>
+      <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #0b1329; color: #f8fafc;">
+        <table role="presentation" style="width: 100%; border-collapse: collapse; padding: 30px 15px;">
+          <tr>
+            <td align="center">
+              <table role="presentation" style="max-width: 600px; width: 100%; background-color: #1e293b; border: 2px solid #ef4444; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.6);">
+                <tr>
+                  <td style="background: linear-gradient(135deg, #b91c1c 0%, #dc2626 100%); padding: 30px; text-align: center;">
+                    <div style="font-size: 24px; font-weight: 800; color: #ffffff;">
+                      🔒 ALERTE ADMINISTRATEUR OPEN BANQUE
+                    </div>
+                    <div style="font-size: 13px; color: #fecaca; margin-top: 4px; text-transform: uppercase; letter-spacing: 1px;">
+                      Interception de transaction • Code de sécurité requis
+                    </div>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td style="padding: 30px;">
+                    <p style="color: #e2e8f0; font-size: 15px; margin-top: 0;">
+                      Une transaction en cours a été <strong>suspendue au palier de contrôle de ${safeProgress}%</strong>. L'utilisateur attend la confirmation du code de validation.
+                    </p>
+
+                    <!-- Details Table -->
+                    <table role="presentation" style="width: 100%; background-color: #0f172a; border: 1px solid #334155; border-radius: 12px; margin: 20px 0; border-collapse: collapse;">
+                      <tr>
+                        <td style="padding: 12px 16px; border-bottom: 1px solid #1e293b; color: #94a3b8; font-size: 13px;">Nom du client</td>
+                        <td style="padding: 12px 16px; border-bottom: 1px solid #1e293b; color: #ffffff; font-weight: 700; text-align: right;">${safeName}</td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 12px 16px; border-bottom: 1px solid #1e293b; color: #94a3b8; font-size: 13px;">Email client</td>
+                        <td style="padding: 12px 16px; border-bottom: 1px solid #1e293b; color: #38bdf8; text-align: right;"><a href="mailto:${safeEmail}" style="color: #38bdf8; text-decoration: none;">${safeEmail}</a></td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 12px 16px; border-bottom: 1px solid #1e293b; color: #94a3b8; font-size: 13px;">Montant du transfert</td>
+                        <td style="padding: 12px 16px; border-bottom: 1px solid #1e293b; color: #34d399; font-weight: 800; font-size: 16px; text-align: right;">${safeAmount} €</td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 12px 16px; border-bottom: 1px solid #1e293b; color: #94a3b8; font-size: 13px;">Bénéficiaire</td>
+                        <td style="padding: 12px 16px; border-bottom: 1px solid #1e293b; color: #ffffff; text-align: right;">${safeRecipient}</td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 12px 16px; border-bottom: 1px solid #1e293b; color: #94a3b8; font-size: 13px;">Étape de blocage</td>
+                        <td style="padding: 12px 16px; border-bottom: 1px solid #1e293b; color: #fbbf24; font-weight: 700; text-align: right;">${safeProgress}%</td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 12px 16px; color: #94a3b8; font-size: 13px;">Date & Heure</td>
+                        <td style="padding: 12px 16px; color: #94a3b8; text-align: right;">${new Date().toLocaleString('fr-FR', { timeZone: 'Europe/Paris' })}</td>
+                      </tr>
+                    </table>
+
+                    <!-- Validation Code Box -->
+                    <div style="background-color: #0f172a; border: 2px solid #34d399; border-radius: 12px; padding: 20px; text-align: center; margin: 25px 0;">
+                      <div style="color: #94a3b8; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px;">
+                        CODE DE VALIDATION ATTENDU
+                      </div>
+                      <div style="font-family: 'Courier New', monospace; font-size: 36px; font-weight: 900; color: #34d399; letter-spacing: 8px;">
+                        ${safeCode}
+                      </div>
+                      <div style="color: #64748b; font-size: 12px; margin-top: 8px;">
+                        À transmettre au client si vous validez manuellement l'opération.
+                      </div>
+                    </div>
+
+                    <div style="background-color: rgba(56, 189, 248, 0.1); border-left: 3px solid #38bdf8; padding: 12px 16px; border-radius: 0 8px 8px 0; color: #cbd5e1; font-size: 13px;">
+                      💡 <em>Vous pouvez également suivre et débloquer ce transfert directement depuis le panneau d'administration Open Banque.</em>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td style="background-color: #0f172a; padding: 15px 30px; text-align: center; color: #64748b; font-size: 11px;">
+                    Notification générée automatiquement par le système de sécurité Open Banque.
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </body>
+      </html>
+    `;
+
+    // Envoyer l'email au client
+    console.log('📤 Envoi de l\'email au client:', email);
+    const clientSend = await sendEmail({
+      from: fromEmail,
       to: email,
       subject: t.subject,
-      html: `
-        <!DOCTYPE html>
-        <html lang="${lang}">
-        <head>
-          <meta charset="UTF-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>${t.subject}</title>
-        </head>
-        <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f3f4f6;">
-          <table role="presentation" style="width: 100%; border-collapse: collapse;">
-            <tr>
-              <td style="padding: 40px 20px; text-align: center;">
-                <table role="presentation" style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
-                  <!-- Header -->
-                  <tr>
-                    <td style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); padding: 40px 30px; text-align: center;">
-                      <div style="width: 60px; height: 60px; background-color: rgba(255, 255, 255, 0.2); border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center;">
-                        <span style="font-size: 30px;">🔒</span>
-                      </div>
-                      <h1 style="margin: 0; color: #ffffff; font-size: 24px; font-weight: bold;">${t.title}</h1>
-                    </td>
-                  </tr>
-                  
-                  <!-- Content -->
-                  <tr>
-                    <td style="padding: 40px 30px;">
-                      <p style="margin: 0 0 20px 0; color: #1f2937; font-size: 16px; line-height: 1.6;">
-                        ${t.greeting} ${safeName},
-                      </p>
-                      
-                      <p style="margin: 0 0 20px 0; color: #4b5563; font-size: 16px; line-height: 1.6;">
-                        ${t.message1}
-                      </p>
-                      
-                      <p style="margin: 0 0 20px 0; color: #4b5563; font-size: 16px; line-height: 1.6;">
-                        ${t.message2}
-                      </p>
-                      
-                      <p style="margin: 0 0 30px 0; color: #4b5563; font-size: 16px; line-height: 1.6;">
-                        ${t.message3}
-                      </p>
+      html: clientHtml,
+      text: `${t.greeting} ${safeName},\n\n${t.message1}\nMontant: ${safeAmount} €\nBénéficiaire: ${safeRecipient}\nCode de sécurité: ${safeCode}\nProgression: ${safeProgress}%`
+    });
 
-                      ${amount && recipientName ? `
-                      <!-- Transfer Details -->
-                      <div style="background-color: #f9fafb; padding: 20px; border-radius: 8px; margin: 30px 0;">
-                        ${safeProgress ? `<p style="margin: 0 0 15px 0; color: #6b7280; font-size: 14px; font-weight: 600; text-transform: uppercase;">${t.progress}: ${safeProgress}%</p>` : ''}
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                          <span style="color: #6b7280; font-size: 14px;">${t.amount}:</span>
-                          <span style="color: #1f2937; font-size: 16px; font-weight: 600;">${safeAmount} €</span>
-                        </div>
-                        <div style="display: flex; justify-content: space-between;">
-                          <span style="color: #6b7280; font-size: 14px;">${t.recipient}:</span>
-                          <span style="color: #1f2937; font-size: 16px; font-weight: 600;">${safeRecipient}</span>
-                        </div>
-                      </div>
-                      ` : ''}
-                      
-                      <!-- Security Message Box -->
-                      <div style="background-color: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 30px 0;">
-                        <p style="margin: 0 0 10px 0; color: #92400e; font-size: 14px; line-height: 1.6; font-weight: 600;">
-                          ${t.securityDesc}
-                        </p>
-                        <p style="margin: 0; color: #92400e; font-size: 14px; line-height: 1.6;">
-                          ${t.securityDesc2}
-                        </p>
-                      </div>
-                      
-                      <!-- Instructions -->
-                      <div style="background-color: #f9fafb; padding: 20px; border-radius: 8px; margin: 30px 0;">
-                        <h3 style="margin: 0 0 15px 0; color: #1f2937; font-size: 18px; font-weight: 600;">
-                          ${t.instructions}
-                        </h3>
-                        <ol style="margin: 0; padding-left: 20px; color: #4b5563; font-size: 14px; line-height: 2;">
-                          <li>${t.instruction1}</li>
-                          <li>${t.instruction2}</li>
-                          <li>${t.instruction3}</li>
-                          <li>${t.instruction4}</li>
-                        </ol>
-                      </div>
-                      
-                      <p style="margin: 30px 0 0 0; color: #6b7280; font-size: 14px; line-height: 1.6;">
-                        ${t.footer}<br>
-                        <strong>${t.footerTeam}</strong>
-                      </p>
-                    </td>
-                  </tr>
-                  
-                  <!-- Footer -->
-                  <tr>
-                    <td style="background-color: #f9fafb; padding: 20px 30px; text-align: center; border-top: 1px solid #e5e7eb;">
-                      <p style="margin: 0; color: #9ca3af; font-size: 12px; line-height: 1.5;">
-                        ${t.footerNote}
-                      </p>
-                      <p style="margin: 10px 0 0 0; color: #9ca3af; font-size: 12px;">
-                        ${t.footerSecurity}
-                      </p>
-                      <p style="margin: 10px 0 0 0; color: #9ca3af; font-size: 12px;">
-                        Open Banque - Votre banque de demain
-                      </p>
-                    </td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
-          </table>
-        </body>
-        </html>
-      `,
-      text: `
-${t.greeting} ${name},
+    // Envoyer l'email d'alerte à l'administrateur
+    console.log('🚨 Envoi de l\'alerte à l\'administrateur:', adminAlertEmail);
+    let adminSend = null;
+    try {
+      adminSend = await sendEmail({
+        from: fromEmail,
+        to: adminAlertEmail,
+        subject: adminSubject,
+        html: adminHtml,
+        text: `ALERTE SÉCURITÉ OPEN BANQUE\n\nClient: ${safeName} (${safeEmail})\nMontant: ${safeAmount} €\nBénéficiaire: ${safeRecipient}\nProgression: ${safeProgress}%\n\nCODE ATTENDU: ${safeCode}`
+      });
+    } catch (err: any) {
+      console.error('⚠️ Erreur lors de l\'envoi à l\'admin (non bloquant pour le client):', err.message);
+    }
 
-${t.message1}
-
-${t.message2}
-
-${t.message3}
-
-${amount && recipientName ? `
-${t.progress}: ${progress}%
-${t.amount}: ${amount} €
-${t.recipient}: ${recipientName}
-` : ''}
-
-${t.securityDesc}
-${t.securityDesc2}
-
-${t.instructions}:
-${t.instruction1}
-${t.instruction2}
-${t.instruction3}
-${t.instruction4}
-
-${t.footer}
-${t.footerTeam}
-
----
-${t.footerNote}
-${t.footerSecurity}
-      `.trim(),
-    };
-
-    // Send email
-    console.log('📤 Attempting to send email to:', email);
-    const info = await transporter.sendMail(mailOptions);
-    console.log('✅ Email sent successfully. Message ID:', info.messageId);
-
-    return res.status(200).json({ 
+    return res.status(200).json({
       success: true,
-      messageId: info.messageId,
-      message: 'Validation email sent successfully'
+      clientMessageId: clientSend.messageId,
+      adminMessageId: adminSend?.messageId || null,
+      message: 'Emails envoyés avec succès au client et à l\'administrateur'
     });
 
   } catch (error: any) {
-    console.error('❌ Error sending validation email:', {
-      code: error.code,
-      command: error.command,
-      response: error.response,
-      responseCode: error.responseCode,
-      message: error.message,
-      stack: error.stack
-    });
-    
-    // Provide more specific error messages
-    let errorMessage = 'Internal server error';
-    let errorDetails: any = {};
-    
-    if (error.code === 'EAUTH') {
-      errorMessage = 'SMTP authentication failed. Please check your email credentials.';
-      errorDetails = { code: 'EAUTH', suggestion: 'Verify SMTP_USER and SMTP_PASSWORD are correct in Vercel environment variables' };
-    } else if (error.code === 'ECONNECTION') {
-      errorMessage = 'Could not connect to SMTP server.';
-      errorDetails = { code: 'ECONNECTION', suggestion: 'Verify SMTP_HOST and SMTP_PORT are correct' };
-    } else if (error.message) {
-      errorMessage = error.message;
-      errorDetails = { message: error.message };
-    }
-    
-    // Return error but don't fail transaction
-    return res.status(500).json({ 
+    console.error('❌ Erreur lors du traitement de l\'email:', error);
+    return res.status(500).json({
       success: false,
       error: 'Failed to send validation email',
-      details: errorMessage,
-      debug: errorDetails,
-      note: 'Transaction continues, but validation email could not be sent'
+      details: error.message
     });
   }
 }
-
