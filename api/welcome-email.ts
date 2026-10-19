@@ -13,6 +13,75 @@ function escapeHtml(text: string): string {
   return text.replace(/[&<>"']/g, (m) => map[m]);
 }
 
+// Helper to send email via Resend API or Nodemailer
+async function sendEmail({
+  from,
+  to,
+  replyTo,
+  subject,
+  html,
+  text
+}: {
+  from: string;
+  to: string | string[];
+  replyTo?: string;
+  subject: string;
+  html: string;
+  text: string;
+}) {
+  const resendApiKey = process.env.RESEND_API_KEY;
+
+  if (resendApiKey) {
+    const toArray = Array.isArray(to) ? to : [to];
+    const res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${resendApiKey}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        from,
+        to: toArray,
+        ...(replyTo ? { reply_to: replyTo } : {}),
+        subject,
+        html,
+        text
+      })
+    });
+
+    const data = await res.json();
+    if (!res.ok) {
+      console.error('❌ Resend API welcome error:', data);
+      throw new Error(data.message || 'Resend API failed');
+    }
+    return { messageId: data.id };
+  }
+
+  // Fallback to Nodemailer
+  const smtpUser = process.env.SMTP_USER;
+  const smtpPassword = process.env.SMTP_PASSWORD;
+  if (!smtpUser || !smtpPassword) {
+    throw new Error('No email provider configured. Please set RESEND_API_KEY or SMTP credentials.');
+  }
+
+  const transporter = nodemailer.createTransport({
+    host: process.env.SMTP_HOST || 'smtp.zoho.com',
+    port: parseInt(process.env.SMTP_PORT || '587'),
+    secure: process.env.SMTP_SECURE === 'true',
+    auth: { user: smtpUser, pass: smtpPassword },
+    tls: { rejectUnauthorized: false }
+  });
+
+  return await transporter.sendMail({
+    from,
+    to: Array.isArray(to) ? to.join(', ') : to,
+    replyTo,
+    subject,
+    html,
+    text
+  });
+}
+
 // Translations for welcome email (to be replaced with translations.ts import if needed)
 const WELCOME_EMAIL_TRANSLATIONS: Record<string, Record<string, string>> = {
   fr: {
@@ -231,171 +300,143 @@ export default async function handler(
     }
 
     // Get translations (default to French if language not found)
-    const lang = language as string;
-    const t = WELCOME_EMAIL_TRANSLATIONS[lang] || WELCOME_EMAIL_TRANSLATIONS['fr'];
+    const langKey = typeof language === 'string' ? language.toLowerCase() : 'fr';
+    const t = WELCOME_EMAIL_TRANSLATIONS[langKey] || WELCOME_EMAIL_TRANSLATIONS['fr'];
 
-    // Get SMTP configuration from environment variables
-    const smtpHost = process.env.SMTP_HOST || 'smtp.zoho.com';
-    const smtpPort = parseInt(process.env.SMTP_PORT || '587');
-    const smtpSecure = process.env.SMTP_SECURE === 'true' || smtpPort === 465;
-    const smtpUser = process.env.SMTP_USER;
-    const smtpPassword = process.env.SMTP_PASSWORD;
-    const fromEmail = process.env.FROM_EMAIL || smtpUser || 'contact@openbanque.companypany';
-
-    if (!smtpUser || !smtpPassword) {
-      console.error('Missing SMTP credentials for welcome email');
-      // Don't fail registration if email sending fails, just log it
-      return res.status(500).json({ 
-        error: 'Email service not configured',
-        details: 'SMTP credentials are missing. Email sending skipped but account creation succeeded.'
-      });
-    }
-
-    // Create transporter for Zoho SMTP
-    const transporter = nodemailer.createTransport({
-      host: smtpHost,
-      port: smtpPort,
-      secure: smtpSecure,
-      auth: {
-        user: smtpUser,
-        pass: smtpPassword,
-      },
-      tls: {
-        rejectUnauthorized: false
-      }
-    });
+    const fromEmail = process.env.FROM_EMAIL || 'Open Banque <contact@openbanque.company>';
+    const adminEmail = process.env.ADMIN_ALERT_EMAIL || 'contact@openbanque.company';
 
     // Escape user input to prevent XSS
     const safeName = escapeHtml(name);
     const safeEmail = escapeHtml(email);
 
-    // Email content with beautiful HTML template
-    const mailOptions = {
-      from: `Open Banque <${fromEmail}>`,
+    const clientHtml = `
+      <!DOCTYPE html>
+      <html lang="${langKey}">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>${t.subject}</title>
+      </head>
+      <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f3f4f6;">
+        <table role="presentation" style="width: 100%; border-collapse: collapse;">
+          <tr>
+            <td style="padding: 40px 20px; text-align: center;">
+              <table role="presentation" style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                <!-- Header -->
+                <tr>
+                  <td style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); padding: 40px 30px; text-align: center;">
+                    <h1 style="margin: 0; color: #ffffff; font-size: 28px; font-weight: bold;">${t.title}</h1>
+                  </td>
+                </tr>
+                
+                <!-- Content -->
+                <tr>
+                  <td style="padding: 40px 30px;">
+                    <p style="margin: 0 0 20px 0; color: #1f2937; font-size: 16px; line-height: 1.6;">
+                      ${t.greeting} ${safeName},
+                    </p>
+                    
+                    <p style="margin: 0 0 20px 0; color: #4b5563; font-size: 16px; line-height: 1.6;">
+                      ${t.message1}
+                    </p>
+                    
+                    <p style="margin: 0 0 30px 0; color: #4b5563; font-size: 16px; line-height: 1.6;">
+                      ${t.message2}
+                    </p>
+                    
+                    <!-- Account Created Box -->
+                    <div style="background-color: #ecfdf5; border-left: 4px solid #10b981; padding: 20px; border-radius: 8px; margin: 30px 0;">
+                      <p style="margin: 0; color: #065f46; font-size: 16px; font-weight: 600;">
+                        ✓ ${t.accountCreated}
+                      </p>
+                    </div>
+                    
+                    <!-- Next Steps -->
+                    <div style="margin: 30px 0;">
+                      <h2 style="margin: 0 0 15px 0; color: #1f2937; font-size: 20px; font-weight: 600;">
+                        ${t.nextSteps}
+                      </h2>
+                      <p style="margin: 0 0 25px 0; color: #4b5563; font-size: 16px; line-height: 1.6;">
+                        ${t.nextStepsDesc}
+                      </p>
+                      <a href="https://openbanque.company" style="display: inline-block; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: #ffffff; text-decoration: none; padding: 14px 28px; border-radius: 8px; font-weight: 600; font-size: 16px;">
+                        ${t.loginButton}
+                      </a>
+                    </div>
+                    
+                    <!-- Support Section -->
+                    <div style="background-color: #f9fafb; padding: 20px; border-radius: 8px; margin: 30px 0;">
+                      <h3 style="margin: 0 0 10px 0; color: #1f2937; font-size: 18px; font-weight: 600;">
+                        ${t.support}
+                      </h3>
+                      <p style="margin: 0; color: #4b5563; font-size: 14px; line-height: 1.6;">
+                        ${t.supportDesc}
+                      </p>
+                    </div>
+                    
+                    <p style="margin: 30px 0 0 0; color: #6b7280; font-size: 14px; line-height: 1.6;">
+                      ${t.footer}<br>
+                      <strong>${t.footerTeam}</strong>
+                    </p>
+                  </td>
+                </tr>
+                
+                <!-- Footer -->
+                <tr>
+                  <td style="background-color: #f9fafb; padding: 20px 30px; text-align: center; border-top: 1px solid #e5e7eb;">
+                    <p style="margin: 0; color: #9ca3af; font-size: 12px; line-height: 1.5;">
+                      ${t.footerNote}
+                    </p>
+                    <p style="margin: 10px 0 0 0; color: #9ca3af; font-size: 12px;">
+                      Open Banque - Votre banque de demain
+                    </p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </body>
+      </html>
+    `;
+
+    // 1. Send welcome email to user
+    const userSend = await sendEmail({
+      from: fromEmail,
       to: email,
       subject: t.subject,
-      html: `
-        <!DOCTYPE html>
-        <html lang="${lang}">
-        <head>
-          <meta charset="UTF-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>${t.subject}</title>
-        </head>
-        <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f3f4f6;">
-          <table role="presentation" style="width: 100%; border-collapse: collapse;">
-            <tr>
-              <td style="padding: 40px 20px; text-align: center;">
-                <table role="presentation" style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
-                  <!-- Header -->
-                  <tr>
-                    <td style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); padding: 40px 30px; text-align: center;">
-                      <h1 style="margin: 0; color: #ffffff; font-size: 28px; font-weight: bold;">${t.title}</h1>
-                    </td>
-                  </tr>
-                  
-                  <!-- Content -->
-                  <tr>
-                    <td style="padding: 40px 30px;">
-                      <p style="margin: 0 0 20px 0; color: #1f2937; font-size: 16px; line-height: 1.6;">
-                        ${t.greeting} ${safeName},
-                      </p>
-                      
-                      <p style="margin: 0 0 20px 0; color: #4b5563; font-size: 16px; line-height: 1.6;">
-                        ${t.message1}
-                      </p>
-                      
-                      <p style="margin: 0 0 30px 0; color: #4b5563; font-size: 16px; line-height: 1.6;">
-                        ${t.message2}
-                      </p>
-                      
-                      <!-- Account Created Box -->
-                      <div style="background-color: #ecfdf5; border-left: 4px solid #10b981; padding: 20px; border-radius: 8px; margin: 30px 0;">
-                        <p style="margin: 0; color: #065f46; font-size: 16px; font-weight: 600;">
-                          ✓ ${t.accountCreated}
-                        </p>
-                      </div>
-                      
-                      <!-- Next Steps -->
-                      <div style="margin: 30px 0;">
-                        <h2 style="margin: 0 0 15px 0; color: #1f2937; font-size: 20px; font-weight: 600;">
-                          ${t.nextSteps}
-                        </h2>
-                        <p style="margin: 0 0 25px 0; color: #4b5563; font-size: 16px; line-height: 1.6;">
-                          ${t.nextStepsDesc}
-                        </p>
-                        <a href="https://openbanque.company" style="display: inline-block; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: #ffffff; text-decoration: none; padding: 14px 28px; border-radius: 8px; font-weight: 600; font-size: 16px;">
-                          ${t.loginButton}
-                        </a>
-                      </div>
-                      
-                      <!-- Support Section -->
-                      <div style="background-color: #f9fafb; padding: 20px; border-radius: 8px; margin: 30px 0;">
-                        <h3 style="margin: 0 0 10px 0; color: #1f2937; font-size: 18px; font-weight: 600;">
-                          ${t.support}
-                        </h3>
-                        <p style="margin: 0; color: #4b5563; font-size: 14px; line-height: 1.6;">
-                          ${t.supportDesc}
-                        </p>
-                      </div>
-                      
-                      <p style="margin: 30px 0 0 0; color: #6b7280; font-size: 14px; line-height: 1.6;">
-                        ${t.footer}<br>
-                        <strong>${t.footerTeam}</strong>
-                      </p>
-                    </td>
-                  </tr>
-                  
-                  <!-- Footer -->
-                  <tr>
-                    <td style="background-color: #f9fafb; padding: 20px 30px; text-align: center; border-top: 1px solid #e5e7eb;">
-                      <p style="margin: 0; color: #9ca3af; font-size: 12px; line-height: 1.5;">
-                        ${t.footerNote}
-                      </p>
-                      <p style="margin: 10px 0 0 0; color: #9ca3af; font-size: 12px;">
-                        Open Banque - Votre banque de demain
-                      </p>
-                    </td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
-          </table>
-        </body>
-        </html>
-      `,
-      text: `
-${t.greeting} ${name},
+      html: clientHtml,
+      text: `${t.greeting} ${safeName},\n\n${t.message1}\n\n${t.message2}\n\n${t.footer}\n${t.footerTeam}`
+    });
 
-${t.message1}
-
-${t.message2}
-
-${t.message3}
-
-${t.accountCreated}
-
-${t.nextSteps}:
-${t.nextStepsDesc}
-Visitez: https://openbanque.company
-
-${t.support}:
-${t.supportDesc}
-
-${t.footer}
-${t.footerTeam}
-
----
-${t.footerNote}
-      `.trim(),
-    };
-
-    // Send email
-    const info = await transporter.sendMail(mailOptions);
+    // 2. Alert admin of new user registration (Zoho sender: "Nouvel Utilisateur")
+    try {
+      await sendEmail({
+        from: 'Nouvel Utilisateur <inscription@openbanque.company>',
+        to: adminEmail,
+        subject: `👤 [NOUVELLE INSCRIPTION] ${safeName} (${safeEmail})`,
+        html: `
+          <div style="font-family: sans-serif; background-color: #0f172a; color: #f8fafc; padding: 25px; border-radius: 12px;">
+            <h2 style="color: #34d399; margin-top: 0;">👤 Nouvelle Inscription Client</h2>
+            <p>Un nouvel utilisateur vient de créer un compte sur Open Banque :</p>
+            <ul>
+              <li><strong>Nom :</strong> ${safeName}</li>
+              <li><strong>Email :</strong> <a href="mailto:${safeEmail}" style="color: #38bdf8;">${safeEmail}</a></li>
+              <li><strong>Langue choisie :</strong> ${langKey.toUpperCase()}</li>
+              <li><strong>Date :</strong> ${new Date().toLocaleString('fr-FR', { timeZone: 'Europe/Paris' })}</li>
+            </ul>
+          </div>
+        `,
+        text: `Nouvelle inscription sur Open Banque:\nNom: ${safeName}\nEmail: ${safeEmail}\nLangue: ${langKey}`
+      });
+    } catch (adminErr: any) {
+      console.warn('⚠️ Admin notification for new registration skipped:', adminErr.message);
+    }
 
     return res.status(200).json({ 
       success: true,
-      messageId: info.messageId,
+      messageId: userSend.messageId,
       message: 'Welcome email sent successfully'
     });
 

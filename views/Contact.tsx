@@ -11,7 +11,7 @@ interface ContactFormData {
 }
 
 const Contact: React.FC = () => {
-  const { t } = useBank();
+  const { t, language } = useBank();
   const [formData, setFormData] = useState<ContactFormData>({
     firstName: '',
     lastName: '',
@@ -34,7 +34,7 @@ const Contact: React.FC = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ ...formData, language }),
       });
 
       const data = await response.json();

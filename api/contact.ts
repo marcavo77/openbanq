@@ -82,6 +82,131 @@ async function sendEmail({
   });
 }
 
+// 11 languages translations for the contact confirmation email to the client
+const CONTACT_CONFIRMATION_TRANSLATIONS: Record<string, Record<string, string>> = {
+  fr: {
+    subject: 'Confirmation de votre demande - Open Banque',
+    badge: 'Service Client',
+    greeting: 'Bonjour',
+    message1: 'Nous avons bien reçu votre message et nous vous remercions d\'avoir contacté Open Banque.',
+    message2: 'Un conseiller dédié examine actuellement votre demande et reviendra vers vous sous <strong>24 heures ouvrées</strong>.',
+    summaryTitle: 'Récapitulatif de votre message :',
+    footer: 'Cordialement,',
+    footerTeam: 'L\'équipe Relation Client Open Banque',
+    footerNote: 'Ce message automatique confirme la bonne réception de votre demande.'
+  },
+  en: {
+    subject: 'Confirmation of your request - Open Banque',
+    badge: 'Customer Support',
+    greeting: 'Hello',
+    message1: 'We have received your message and thank you for reaching out to Open Banque.',
+    message2: 'A dedicated representative is reviewing your request and will get back to you within <strong>24 business hours</strong>.',
+    summaryTitle: 'Summary of your message:',
+    footer: 'Best regards,',
+    footerTeam: 'The Open Banque Support Team',
+    footerNote: 'This automated email confirms receipt of your inquiry.'
+  },
+  nl: {
+    subject: 'Bevestiging van uw aanvraag - Open Banque',
+    badge: 'Klantenservice',
+    greeting: 'Hallo',
+    message1: 'Wij hebben uw bericht ontvangen en danken u voor uw contact met Open Banque.',
+    message2: 'Een adviseur beoordeelt momenteel uw verzoek en zal binnen <strong>24 werkuren</strong> reageren.',
+    summaryTitle: 'Samenvatting van uw bericht:',
+    footer: 'Met vriendelijke groet,',
+    footerTeam: 'Het Open Banque Klantenserviceteam',
+    footerNote: 'Deze automatische e-mail bevestigt de ontvangst van uw aanvraag.'
+  },
+  de: {
+    subject: 'Bestätigung Ihrer Anfrage - Open Banque',
+    badge: 'Kundenservice',
+    greeting: 'Hallo',
+    message1: 'Wir haben Ihre Nachricht erhalten und danken Ihnen für Ihre Kontaktaufnahme mit Open Banque.',
+    message2: 'Ein Kundenberater prüft derzeit Ihr Anliegen und wird sich innerhalb von <strong>24 Geschäftsstunden</strong> bei Ihnen melden.',
+    summaryTitle: 'Zusammenfassung Ihrer Nachricht:',
+    footer: 'Mit freundlichen Grüßen,',
+    footerTeam: 'Ihr Open Banque Kundenservice',
+    footerNote: 'Diese automatische E-Mail bestätigt den Eingang Ihrer Anfrage.'
+  },
+  es: {
+    subject: 'Confirmación de su solicitud - Open Banque',
+    badge: 'Atención al Cliente',
+    greeting: 'Hola',
+    message1: 'Hemos recibido su mensaje y le agradecemos por ponerse en contacto con Open Banque.',
+    message2: 'Un asesor especializado está revisando su solicitud y se comunicará con usted en un plazo de <strong>24 horas hábiles</strong>.',
+    summaryTitle: 'Resumen de su mensaje:',
+    footer: 'Atentamente,',
+    footerTeam: 'El equipo de Atención al Cliente Open Banque',
+    footerNote: 'Este correo electrónico automático confirma la recepción de su solicitud.'
+  },
+  it: {
+    subject: 'Conferma della tua richiesta - Open Banque',
+    badge: 'Servizio Clienti',
+    greeting: 'Ciao',
+    message1: 'Abbiamo ricevuto il tuo messaggio e ti ringraziamo per aver contattato Open Banque.',
+    message2: 'Un consulente dedicato sta esaminando la tua richiesta e ti risponderà entro <strong>24 ore lavorative</strong>.',
+    summaryTitle: 'Riepilogo del tuo messaggio:',
+    footer: 'Cordiali saluti,',
+    footerTeam: 'Il team Servizio Clienti Open Banque',
+    footerNote: 'Questa email automatica conferma la ricezione della tua richiesta.'
+  },
+  pt: {
+    subject: 'Confirmação da sua solicitação - Open Banque',
+    badge: 'Apoio ao Cliente',
+    greeting: 'Olá',
+    message1: 'Recebemos a sua mensagem e agradecemos o seu contacto com o Open Banque.',
+    message2: 'Um gestor dedicado está a analisar o seu pedido e responderá dentro de <strong>24 horas úteis</strong>.',
+    summaryTitle: 'Resumo da sua mensagem:',
+    footer: 'Atenciosamente,',
+    footerTeam: 'A equipa de Apoio ao Cliente Open Banque',
+    footerNote: 'Este e-mail automático confirma a receção do seu pedido.'
+  },
+  ru: {
+    subject: 'Подтверждение вашего обращения - Open Banque',
+    badge: 'Служба поддержки',
+    greeting: 'Здравствуйте',
+    message1: 'Мы получили ваше сообщение и благодарим вас за обращение в Open Banque.',
+    message2: 'Специалист уже рассматривает ваш запрос и свяжется с вами в течение <strong>24 рабочих часов</strong>.',
+    summaryTitle: 'Краткое содержание вашего сообщения:',
+    footer: 'С уважением,',
+    footerTeam: 'Служба поддержки клиентов Open Banque',
+    footerNote: 'Это автоматическое письмо подтверждает получение вашего обращения.'
+  },
+  zh: {
+    subject: '已收到您的咨询申请 - Open Banque',
+    badge: '客户服务',
+    greeting: '您好',
+    message1: '我们已成功收到您的留言，感谢您联系 Open Banque。',
+    message2: '专属客户顾问正在处理您的咨询，并将在 <strong>24 个工作小时</strong> 内给您答复。',
+    summaryTitle: '您的留言内容：',
+    footer: '此致，',
+    footerTeam: 'Open Banque 客户关系团队',
+    footerNote: '此自动邮件确认已收到您的咨询请求。'
+  },
+  ja: {
+    subject: 'お問い合わせ受付の確認 - Open Banque',
+    badge: 'カスタマーサポート',
+    greeting: 'こんにちは',
+    message1: 'お問い合わせいただきありがとうございます。メッセージを受領いたしました。',
+    message2: '専任スタッフが確認の上、<strong>24営業時間以内</strong>にご返信いたします。',
+    summaryTitle: 'お問い合わせ内容：',
+    footer: '敬具',
+    footerTeam: 'Open Banque カスタマーサポートチーム',
+    footerNote: 'このメールはお問い合わせ受付の自動確認通知です。'
+  },
+  ar: {
+    subject: 'تأكيد استلام رسالتك - Open Banque',
+    badge: 'خدمة العملاء',
+    greeting: 'مرحباً',
+    message1: 'لقد استلمنا رسالتك بنجاح ونشكرك على تواصلك مع Open Banque.',
+    message2: 'يقوم مستشار مخصص حالياً بمراجعة طلبك وسيقوم بالرد عليك في غضون <strong>24 ساعة عمل</strong>.',
+    summaryTitle: 'ملخص رسالتك:',
+    footer: 'مع خالص التحيات،',
+    footerTeam: 'فريق علاقات العملاء في Open Banque',
+    footerNote: 'هذا البريد الآلي يؤكد استلام رسالتك بنجاح.'
+  }
+};
+
 export default async function handler(
   req: VercelRequest,
   res: VercelResponse,
@@ -91,7 +216,7 @@ export default async function handler(
   }
 
   try {
-    const { firstName, lastName, email, message } = req.body;
+    const { firstName, lastName, email, message, language = 'fr' } = req.body;
 
     if (!firstName || !lastName || !email || !message) {
       return res.status(400).json({ 
@@ -105,6 +230,9 @@ export default async function handler(
       return res.status(400).json({ error: 'Invalid email format' });
     }
 
+    const langKey = typeof language === 'string' ? language.toLowerCase() : 'fr';
+    const t = CONTACT_CONFIRMATION_TRANSLATIONS[langKey] || CONTACT_CONFIRMATION_TRANSLATIONS['fr'];
+
     const fromEmail = process.env.FROM_EMAIL || 'Open Banque <contact@openbanque.company>';
     const adminEmail = process.env.ADMIN_ALERT_EMAIL || 'contact@openbanque.company';
 
@@ -113,8 +241,11 @@ export default async function handler(
     const safeEmail = escapeHtml(email);
     const safeMessage = escapeHtml(message).replace(/\n/g, '<br>');
 
+    // Dynamic sender for Admin alert so Zoho Mail displays "Prénom Nom (Contact Web)" instead of "Me"
+    const contactAdminSender = `${safeFirstName} ${safeLastName} (Contact Web) <contact-form@openbanque.company>`;
+
     // 1. Email pour l'administrateur
-    const adminSubject = `📩 Nouveau message de contact - ${safeFirstName} ${safeLastName}`;
+    const adminSubject = `📬 [CONTACT WEB] Nouveau message de ${safeFirstName} ${safeLastName}`;
     const adminHtml = `
       <!DOCTYPE html>
       <html>
@@ -176,11 +307,11 @@ export default async function handler(
       </html>
     `;
 
-    // 2. Email de confirmation pour le client
-    const clientSubject = `Confirmation de votre demande - Open Banque`;
+    // 2. Email de confirmation pour le client (traduit dans sa langue)
+    const clientSubject = t.subject;
     const clientHtml = `
       <!DOCTYPE html>
-      <html>
+      <html lang="${langKey}">
       <head><meta charset="UTF-8"><title>${clientSubject}</title></head>
       <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #0f172a; color: #f8fafc;">
         <table role="presentation" style="width: 100%; border-collapse: collapse; padding: 30px 15px;">
@@ -193,7 +324,7 @@ export default async function handler(
                       OPEN BANQUE
                     </div>
                     <div style="font-size: 13px; color: #a7f3d0; margin-top: 4px; text-transform: uppercase; letter-spacing: 1px;">
-                      Service Client
+                      ${t.badge}
                     </div>
                   </td>
                 </tr>
@@ -201,32 +332,33 @@ export default async function handler(
                 <tr>
                   <td style="padding: 35px 30px;">
                     <h2 style="margin: 0 0 16px 0; color: #ffffff; font-size: 18px; font-weight: 700;">
-                      Bonjour ${safeFirstName},
+                      ${t.greeting} ${safeFirstName},
                     </h2>
 
                     <p style="margin: 0 0 18px 0; color: #cbd5e1; font-size: 15px; line-height: 1.6;">
-                      Nous avons bien reçu votre message et nous vous remercions d'avoir contacté Open Banque.
+                      ${t.message1}
                     </p>
 
                     <p style="margin: 0 0 25px 0; color: #cbd5e1; font-size: 15px; line-height: 1.6;">
-                      Un conseiller dédié examine actuellement votre demande et reviendra vers vous sous <strong>24 heures ouvrées</strong>.
+                      ${t.message2}
                     </p>
 
                     <div style="background-color: #0f172a; border-left: 3px solid #10b981; border-radius: 0 8px 8px 0; padding: 18px; margin-bottom: 25px;">
-                      <div style="color: #94a3b8; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px;">Récapitulatif de votre message :</div>
+                      <div style="color: #94a3b8; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px;">${t.summaryTitle}</div>
                       <div style="color: #e2e8f0; font-size: 13px; line-height: 1.5;">${safeMessage}</div>
                     </div>
 
                     <p style="margin: 0; color: #64748b; font-size: 13px;">
-                      Cordialement,<br>
-                      <strong style="color: #94a3b8;">L'équipe Relation Client Open Banque</strong>
+                      ${t.footer}<br>
+                      <strong style="color: #94a3b8;">${t.footerTeam}</strong>
                     </p>
                   </td>
                 </tr>
 
                 <tr>
                   <td style="background-color: #0f172a; border-top: 1px solid #334155; padding: 20px 30px; text-align: center; color: #64748b; font-size: 11px;">
-                    © ${new Date().getFullYear()} Open Banque Corporation • <a href="https://openbanque.company" style="color: #10b981; text-decoration: none;">openbanque.company</a>
+                    <p style="margin: 0 0 6px 0;">${t.footerNote}</p>
+                    <p style="margin: 0;">© ${new Date().getFullYear()} Open Banque Corporation • <a href="https://openbanque.company" style="color: #10b981; text-decoration: none;">openbanque.company</a></p>
                   </td>
                 </tr>
               </table>
@@ -237,9 +369,9 @@ export default async function handler(
       </html>
     `;
 
-    // 1. Envoyer à l'administrateur
+    // 1. Envoyer à l'administrateur avec expéditeur spécifique pour Zoho Mail
     const adminInfo = await sendEmail({
-      from: fromEmail,
+      from: contactAdminSender,
       to: adminEmail,
       replyTo: email,
       subject: adminSubject,
@@ -254,7 +386,7 @@ export default async function handler(
         to: email,
         subject: clientSubject,
         html: clientHtml,
-        text: `Bonjour ${firstName},\n\nNous avons bien reçu votre message et un conseiller vous répondra sous 24h.\n\nCordialement,\nL'équipe Open Banque`
+        text: `${t.greeting} ${firstName},\n\n${t.message1}\n\n${t.footer}\n${t.footerTeam}`
       });
     } catch (err: any) {
       console.warn('⚠️ Erreur envoi confirmation client (non bloquant):', err.message);
