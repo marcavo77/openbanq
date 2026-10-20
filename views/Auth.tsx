@@ -8,8 +8,15 @@ import { Country, AccountType } from '../types';
 import Logo from '../components/Logo';
 
 export const Auth: React.FC = () => {
-  const { view, login, register, setView, t } = useBank();
+  const { view, login, register, setView, t, currentUser } = useBank();
   const [error, setError] = useState('');
+
+  // If already logged in, automatically redirect to dashboard
+  React.useEffect(() => {
+    if (currentUser) {
+      setView(currentUser.role === 'ADMIN' ? 'ADMIN' : 'DASHBOARD', true);
+    }
+  }, [currentUser, setView]);
   
   // Login State
   const [loginEmail, setLoginEmail] = useState('');

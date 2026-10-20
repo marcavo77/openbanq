@@ -135,7 +135,35 @@ export const BankProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     setViewState(newView);
     navigateTo(newView, replace);
   }, []);
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  // Synchronous initialization from localStorage to prevent session flash on refresh
+  const [currentUser, setCurrentUser] = useState<User | null>(() => {
+    if (typeof window === 'undefined') return null;
+    try {
+      const saved = localStorage.getItem('openbanque_session_user');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed && parsed.id) {
+          return parsed;
+        }
+      }
+    } catch (e) {
+      console.warn('Failed to parse cached session user:', e);
+    }
+    return null;
+  });
+
+  // Automatically persist currentUser to localStorage on change
+  useEffect(() => {
+    if (currentUser) {
+      try {
+        localStorage.setItem('openbanque_session_user', JSON.stringify(currentUser));
+      } catch (e) {
+        console.warn('Failed to save session user to localStorage:', e);
+      }
+    } else {
+      localStorage.removeItem('openbanque_session_user');
+    }
+  }, [currentUser]);
   const [users, setUsers] = useState<User[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [adminLogs, setAdminLogs] = useState<AdminLog[]>([]);
@@ -235,18 +263,37 @@ export const BankProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const initializeApp = async () => {
       setIsLoading(true);
       try {
-        // Check if user is already logged in
+        // Check if user is already logged in (Supabase session or cached session)
         const session = await authService.getSession();
-        if (session?.user) {
-          const user = await userService.getUserById(session.user.id);
+        let cachedId: string | null = null;
+        try {
+          const cached = localStorage.getItem('openbanque_session_user');
+          if (cached) {
+            const parsed = JSON.parse(cached);
+            if (parsed && parsed.id) cachedId = parsed.id;
+          }
+        } catch (e) {
+          console.warn('Failed to parse cached session user:', e);
+        }
+
+        const activeUserId = session?.user?.id || currentUser?.id || cachedId;
+
+        if (activeUserId) {
+          const user = await userService.getUserById(activeUserId);
           if (user) {
             setCurrentUser(user);
-            // Only redirect if not already on a protected page
+            try {
+              localStorage.setItem('openbanque_session_user', JSON.stringify(user));
+            } catch (e) {
+              console.warn('Failed to save session user to localStorage:', e);
+            }
+
+            // Sync URL & view
             const currentView = getViewFromURL();
-            if (!isProtectedRoute(currentView)) {
+            if (currentView === 'LOGIN' || currentView === 'REGISTER') {
               setView(user.role === 'ADMIN' ? 'ADMIN' : 'DASHBOARD', true);
-            } else {
-              // User is already on a protected page - just sync URL
+            } else if (isProtectedRoute(currentView)) {
+              // User is already on a protected page - verify target view matches role
               const targetView = user.role === 'ADMIN' ? 'ADMIN' : 'DASHBOARD';
               if (currentView !== targetView) {
                 setView(targetView, true);
@@ -332,6 +379,14 @@ export const BankProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
               // Load user-specific data (this won't overwrite users list now)
               await loadUserData(user.id);
             }
+          } else {
+            console.warn('Active user not found in database, clearing session');
+            setCurrentUser(null);
+            localStorage.removeItem('openbanque_session_user');
+            const currentView = getViewFromURL();
+            if (isProtectedRoute(currentView)) {
+              setView('LOGIN', true);
+            }
           }
         } else {
           // No session, but still load users for landing page (if needed)
@@ -352,14 +407,19 @@ export const BankProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     initializeApp();
 
     // Listen for auth state changes
-    const { data: { subscription } } = authService.onAuthStateChange(async (user) => {
+    const { data: { subscription } } = authService.onAuthStateChange(async (user, event) => {
       if (user) {
         const userData = await userService.getUserById(user.id);
         if (userData) {
           setCurrentUser(userData);
           await loadUserData(user.id);
         }
-      } else {
+      } else if (event === 'SIGNED_OUT') {
+        try {
+          localStorage.removeItem('openbanque_session_user');
+        } catch (e) {
+          console.warn('Failed to clear session user from localStorage:', e);
+        }
         setCurrentUser(null);
         setMessages([]);
         setTransactions([]);
@@ -402,6 +462,9 @@ export const BankProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   useEffect(() => {
     if (typeof window === 'undefined') return;
     
+    // Do not redirect while initial authentication check is still loading
+    if (isLoading && !currentUser) return;
+
     const currentView = getViewFromURL();
     
     if (isProtectedRoute(currentView) && !currentUser) {
@@ -415,7 +478,7 @@ export const BankProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         setView('ADMIN', true);
       }
     }
-  }, [currentUser, view]);
+  }, [currentUser, view, isLoading]);
 
   // Load user-specific data (does NOT overwrite users list, only updates individual user)
   const loadUserData = async (userId: string) => {
@@ -967,9 +1030,14 @@ export const BankProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
       if (data.user) {
         const user = await userService.getUserById(data.user.id);
-    if (user) {
-      setCurrentUser(user);
-      setView(user.role === 'ADMIN' ? 'ADMIN' : 'DASHBOARD', true);
+        if (user) {
+          try {
+            localStorage.setItem('openbanque_session_user', JSON.stringify(user));
+          } catch (e) {
+            console.warn('Failed to save session user to localStorage:', e);
+          }
+          setCurrentUser(user);
+          setView(user.role === 'ADMIN' ? 'ADMIN' : 'DASHBOARD', true);
           
           // Load data based on user role
           if (user.role === 'ADMIN') {
@@ -1125,14 +1193,20 @@ export const BankProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const logout = async () => {
     try {
       await authService.signOut();
-    setCurrentUser(null);
-    setView('LANDING', true);
-    setIsChatOpen(false);
+    } catch (error) {
+      console.error('Logout error:', error);
+    } finally {
+      try {
+        localStorage.removeItem('openbanque_session_user');
+      } catch (e) {
+        console.warn('Failed to clear session user from localStorage:', e);
+      }
+      setCurrentUser(null);
+      setView('LANDING', true);
+      setIsChatOpen(false);
       setMessages([]);
       setTransactions([]);
       setAllTransfers({});
-    } catch (error) {
-      console.error('Logout error:', error);
     }
   };
 
