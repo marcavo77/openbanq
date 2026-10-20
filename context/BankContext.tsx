@@ -723,14 +723,14 @@ export const BankProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     // Function to calculate interval based on current progress
     // Slower progression for better user experience
     const getProgressInterval = (currentProgress: number): number => {
-      if (currentProgress < 25) {
-        // 0-25%: ~4.8 seconds per point
+      if (currentProgress < 60) {
+        // 0-60%: ~4.8 seconds per point
         return 4800; // 4.8 seconds
-      } else if (currentProgress < 75) {
-        // 25-75%: ~4.8 seconds per point
+      } else if (currentProgress < 80) {
+        // 60-80%: ~4.8 seconds per point
         return 4800; // 4.8 seconds
       } else if (currentProgress < 99) {
-        // 75-99%: ~4.8 seconds per point
+        // 80-99%: ~4.8 seconds per point
         return 4800; // 4.8 seconds
       } else {
         // 99-100%: ~5.8 seconds per point
@@ -752,7 +752,7 @@ export const BankProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       }
 
       const nextProgress = userTransfer.progress + 1;
-      const pausePoints = [25, 75, 99];
+      const pausePoints = [60, 80, 99];
       
       if (pausePoints.includes(nextProgress)) {
         const code = generateSecurityCode();
