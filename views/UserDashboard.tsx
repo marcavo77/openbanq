@@ -105,9 +105,9 @@ const StockMarketWidget: React.FC = () => {
             <div className="flex justify-between items-start z-10">
                 <div>
                 <div className="flex items-center gap-2">
-                    <div className="w-6 h-6 md:w-8 md:h-8 bg-emerald-500 rounded flex items-center justify-center font-bold text-slate-900 text-xs md:text-base shadow-lg shadow-emerald-500/20">N</div>
+                    <OpenBanqueIcon size={32} className="w-6 h-6 md:w-8 md:h-8 shrink-0" />
                     <h3 className="text-lg md:text-2xl font-bold text-white">Open Banque Corp.</h3>
-                    <span className="text-gray-400 font-mono text-xs md:text-sm">($NVB)</span>
+                    <span className="text-gray-400 font-mono text-xs md:text-sm">($OBQ)</span>
                 </div>
                 <div className="mt-2 flex items-baseline gap-2 md:gap-4">
                     <span className="text-xl md:text-3xl font-mono font-bold text-white">{novaPrice.toFixed(2)} €</span>
