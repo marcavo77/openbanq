@@ -3,8 +3,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useBank } from '../context/BankContext';
 import { messageService } from '../services/supabaseService';
-import { Send, X, MessageSquare, User as UserIcon, ShieldCheck, Check, CheckCheck, Settings, ToggleLeft, ToggleRight, MoreVertical, ArrowLeft } from 'lucide-react';
+import { Send, X, MessageSquare, User as UserIcon, ShieldCheck, Check, CheckCheck, Settings, ToggleLeft, ToggleRight, MoreVertical, ArrowLeft, Bell, BellOff } from 'lucide-react';
 import { OpenBanqueIcon } from './Logo';
+import { notificationService } from '../services/notificationService';
 
 const TypingIndicator = () => (
   <div className="flex gap-1 items-center p-2 rounded-xl bg-slate-700 w-fit">
@@ -96,6 +97,117 @@ const ChatWidget: React.FC = () => {
   const adminShouldAutoScrollRef = useRef(true); // Separate ref for admin view
   const previousMessagesLengthRef = useRef(0);
   const previousAdminMessagesLengthRef = useRef(0); // Track admin messages separately
+
+  // Push Notification & Sound states
+  const [pushPermission, setPushPermission] = useState<NotificationPermission | 'unsupported'>('default');
+  const [isPushEnabled, setIsPushEnabled] = useState(true);
+  const [isSoundEnabled, setIsSoundEnabled] = useState(true);
+  const [showPermissionBanner, setShowPermissionBanner] = useState(false);
+
+  const knownMessageIdsRef = useRef<Set<string>>(new Set());
+  const isInitialLoadRef = useRef(true);
+
+  // Initialize notification preferences and check permission
+  useEffect(() => {
+    notificationService.init();
+    const perm = notificationService.getPermission();
+    setPushPermission(perm);
+    setIsPushEnabled(notificationService.isPushEnabled());
+    setIsSoundEnabled(notificationService.isSoundEnabled());
+
+    if (perm === 'default') {
+      setShowPermissionBanner(true);
+    }
+  }, []);
+
+  // Listen to open-chat custom events from push notifications / service worker
+  useEffect(() => {
+    const handleOpenChat = (event: any) => {
+      const targetUserId = event.detail?.userId;
+      if (!isChatOpen) {
+        toggleChat();
+      }
+      if (currentUser?.role === 'ADMIN' && targetUserId) {
+        setSelectedUserId(targetUserId);
+      }
+    };
+
+    window.addEventListener('openbanque:open-chat', handleOpenChat);
+    return () => window.removeEventListener('openbanque:open-chat', handleOpenChat);
+  }, [isChatOpen, toggleChat, currentUser?.role]);
+
+  // Detect incoming messages and trigger WhatsApp-style notifications
+  useEffect(() => {
+    if (!currentUser) return;
+
+    // On initial mount/load of messages, cache IDs without playing notifications
+    if (isInitialLoadRef.current) {
+      if (messages.length > 0) {
+        messages.forEach(m => knownMessageIdsRef.current.add(m.id));
+        isInitialLoadRef.current = false;
+      }
+      return;
+    }
+
+    // Identify new incoming messages
+    const newIncomingMessages = messages.filter(
+      m => !knownMessageIdsRef.current.has(m.id) && m.senderId !== currentUser.id
+    );
+
+    if (newIncomingMessages.length > 0) {
+      newIncomingMessages.forEach(msg => {
+        knownMessageIdsRef.current.add(msg.id);
+
+        const isCurrentChatActive = currentUser.role === 'ADMIN'
+          ? (isChatOpen && selectedUserId === msg.senderId)
+          : isChatOpen;
+
+        let senderName = 'Support Open Banque';
+        let senderAvatar: string | undefined = undefined;
+
+        if (currentUser.role === 'ADMIN') {
+          const senderUser = users.find(u => u.id === msg.senderId);
+          senderName = senderUser?.name || 'Client';
+          senderAvatar = senderUser?.avatarUrl;
+        }
+
+        notificationService.notifyIncomingMessage({
+          id: msg.id,
+          senderId: msg.senderId,
+          senderName,
+          senderAvatar,
+          content: msg.content,
+          isCurrentChatActive,
+          onOpenChat: () => {
+            if (!isChatOpen) {
+              toggleChat();
+            }
+            if (currentUser.role === 'ADMIN') {
+              setSelectedUserId(msg.senderId);
+            }
+          }
+        });
+      });
+    }
+  }, [messages, currentUser, isChatOpen, selectedUserId, users, toggleChat]);
+
+  const handleEnablePush = async () => {
+    const granted = await notificationService.requestPermission();
+    setPushPermission(notificationService.getPermission());
+    setIsPushEnabled(granted);
+    if (granted) {
+      setShowPermissionBanner(false);
+    }
+  };
+
+  const handleToggleSound = () => {
+    const next = !isSoundEnabled;
+    notificationService.setSoundEnabled(next);
+    setIsSoundEnabled(next);
+    if (next) {
+      notificationService.playIncomingMessageSound();
+    }
+  };
 
   // Check if user is near bottom of scroll area
   const isNearBottom = (element: HTMLElement): boolean => {
@@ -448,7 +560,28 @@ const ChatWidget: React.FC = () => {
                     ) : (
                         <span className="text-gray-400 text-sm">{t('chat.selectUser')}</span>
                     )}
-                    <div className="flex gap-2">
+                    <div className="flex items-center gap-1.5">
+                         {/* Notification & Sound Toggle Button */}
+                         <button 
+                            onClick={pushPermission === 'granted' ? handleToggleSound : handleEnablePush}
+                            className={`p-1.5 rounded-lg transition-colors ${
+                              isSoundEnabled && pushPermission === 'granted'
+                                ? 'text-emerald-400 hover:text-emerald-300 hover:bg-slate-700'
+                                : 'text-gray-400 hover:text-white hover:bg-slate-700'
+                            }`}
+                            title={
+                              pushPermission === 'granted'
+                                ? (isSoundEnabled ? 'Notifications WhatsApp actives (cliquer pour couper)' : 'Son en sourdine (cliquer pour activer)')
+                                : 'Activer les notifications push du chat'
+                            }
+                         >
+                            {isSoundEnabled && pushPermission === 'granted' ? (
+                              <Bell className="h-5 w-5" />
+                            ) : (
+                              <BellOff className="h-5 w-5 text-gray-400" />
+                            )}
+                         </button>
+
                          <button 
                             onClick={() => setShowAdminSettings(!showAdminSettings)}
                             className={`text-gray-400 hover:text-white p-1 rounded hover:bg-slate-700 ${showAdminSettings ? 'bg-slate-700 text-white' : ''}`}
@@ -461,6 +594,33 @@ const ChatWidget: React.FC = () => {
                         </button>
                     </div>
                 </div>
+
+                {/* WhatsApp-style Push Permission Prompt Banner */}
+                {showPermissionBanner && pushPermission === 'default' && (
+                    <div className="bg-gradient-to-r from-emerald-950 via-slate-800 to-slate-900 border-b border-emerald-500/30 p-3 flex items-center justify-between gap-3 text-xs shadow-md">
+                        <div className="flex items-center gap-2 text-emerald-200">
+                            <Bell className="h-4 w-4 text-emerald-400 shrink-0 animate-bounce" />
+                            <span>
+                                Activez les notifications push pour être averti(e) instantanément des messages clients comme sur WhatsApp.
+                            </span>
+                        </div>
+                        <div className="flex items-center gap-2 shrink-0">
+                            <button
+                                onClick={handleEnablePush}
+                                className="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-3 py-1 rounded-lg text-xs transition-colors shadow"
+                            >
+                                Activer
+                            </button>
+                            <button
+                                onClick={() => setShowPermissionBanner(false)}
+                                className="text-gray-400 hover:text-white p-1"
+                                title="Ignorer"
+                            >
+                                <X className="h-4 w-4" />
+                            </button>
+                        </div>
+                    </div>
+                )}
 
                 <div ref={adminMessagesContainerRef} className="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar bg-slate-900">
                     {!selectedUserId ? (
@@ -583,10 +743,58 @@ const ChatWidget: React.FC = () => {
                 </div>
             </div>
         </div>
-        <button onClick={toggleChat} className="text-emerald-100 hover:text-white bg-white/10 hover:bg-white/20 rounded-full p-1.5 transition-colors">
-            <X className="h-5 w-5"/>
-        </button>
+        <div className="flex items-center gap-1.5">
+          <button 
+            onClick={pushPermission === 'granted' ? handleToggleSound : handleEnablePush}
+            className={`p-1.5 rounded-full transition-colors ${
+              isSoundEnabled && pushPermission === 'granted'
+                ? 'text-white bg-emerald-700/80 hover:bg-emerald-700'
+                : 'text-emerald-200 hover:text-white bg-white/10 hover:bg-white/20'
+            }`}
+            title={
+              pushPermission === 'granted'
+                ? (isSoundEnabled ? 'Notifications actives' : 'Son en sourdine')
+                : 'Activer les notifications push'
+            }
+          >
+            {isSoundEnabled && pushPermission === 'granted' ? (
+              <Bell className="h-4 w-4" />
+            ) : (
+              <BellOff className="h-4 w-4" />
+            )}
+          </button>
+          <button onClick={toggleChat} className="text-emerald-100 hover:text-white bg-white/10 hover:bg-white/20 rounded-full p-1.5 transition-colors">
+              <X className="h-5 w-5"/>
+          </button>
+        </div>
       </div>
+
+      {/* WhatsApp-style Push Permission Prompt Banner */}
+      {showPermissionBanner && pushPermission === 'default' && (
+          <div className="bg-gradient-to-r from-emerald-950 via-slate-800 to-slate-900 border-b border-emerald-500/30 p-3 flex items-center justify-between gap-3 text-xs shadow-md">
+              <div className="flex items-center gap-2 text-emerald-200">
+                  <Bell className="h-4 w-4 text-emerald-400 shrink-0 animate-bounce" />
+                  <span>
+                      Activez les notifications pour recevoir les alertes comme sur WhatsApp.
+                  </span>
+              </div>
+              <div className="flex items-center gap-2 shrink-0">
+                  <button
+                      onClick={handleEnablePush}
+                      className="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-3 py-1 rounded-lg text-xs transition-colors shadow"
+                  >
+                      Activer
+                  </button>
+                  <button
+                      onClick={() => setShowPermissionBanner(false)}
+                      className="text-gray-400 hover:text-white p-1"
+                      title="Ignorer"
+                  >
+                      <X className="h-4 w-4" />
+                  </button>
+              </div>
+          </div>
+      )}
 
       {/* Messages */}
       <div ref={messagesContainerRef} className="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar bg-slate-800/50">

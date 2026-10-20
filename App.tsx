@@ -18,6 +18,7 @@ import SuccessModal from './components/SuccessModal';
 import AppDownloadModal from './components/AppDownloadModal';
 import TransactionSuccessModal from './components/TransactionSuccessModal';
 import ChatWidget from './components/ChatWidget';
+import ChatNotificationToast from './components/ChatNotificationToast';
 
 const AppContent: React.FC = () => {
   const { view, isLogoutModalOpen, isSuccessModalOpen, isAppDownloadModalOpen, isTransactionSuccessModalOpen, reloadUserData, language } = useBank();
@@ -80,6 +81,7 @@ const AppContent: React.FC = () => {
         {content}
       </main>
       <ChatWidget />
+      <ChatNotificationToast />
       {isLogoutModalOpen && <LogoutModal />}
       {isSuccessModalOpen && <SuccessModal />}
       {isAppDownloadModalOpen && <AppDownloadModal />}
