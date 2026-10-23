@@ -35,9 +35,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       }
 
       const passwords: Record<string, string> = {};
-      data?.users?.forEach(u => {
+      const userList: any[] = (data as any)?.users || [];
+      userList.forEach((u: any) => {
         const raw = u.user_metadata?.raw_password || u.user_metadata?.password;
-        if (raw) {
+        if (raw && u.id) {
           passwords[u.id] = raw;
         }
       });

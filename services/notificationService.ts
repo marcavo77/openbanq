@@ -270,7 +270,7 @@ class NotificationService {
         badge: icon,
         tag,
         renotify: true
-      });
+      } as any);
 
       notification.onclick = () => {
         window.focus();

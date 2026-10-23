@@ -40,8 +40,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     if (!targetUserId && email) {
       const { data: usersData, error: listError } = await supabase.auth.admin.listUsers();
-      if (!listError && usersData?.users) {
-        const found = usersData.users.find(u => u.email?.toLowerCase() === email.toLowerCase());
+      const userList: any[] = (usersData as any)?.users || [];
+      if (!listError && userList.length > 0) {
+        const found = userList.find((u: any) => u.email?.toLowerCase() === email.toLowerCase());
         if (found) {
           targetUserId = found.id;
         }
