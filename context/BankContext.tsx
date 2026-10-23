@@ -1474,13 +1474,19 @@ export const BankProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       await addAdminLog('USER_DELETION', userName, `Suppression définitive du compte et de toutes les données associées.`);
 
       // 3. Reload all data from database to ensure consistency
-      const [allUsersFromDb, logs] = await Promise.all([
+      const [allUsersFromDb, logs, passwordsMap] = await Promise.all([
         userService.getAllUsers(),
-        adminLogService.getAllLogs()
+        adminLogService.getAllLogs(),
+        passwordService.getAllPasswords()
       ]);
 
+      const usersWithPasswords = allUsersFromDb.map(u => ({
+        ...u,
+        password: passwordsMap[u.id] || u.password
+      }));
+
       // Update local state with fresh data from database
-      setUsers(allUsersFromDb);
+      setUsers(usersWithPasswords);
       setAdminLogs(logs);
       
       // Clean up local state for deleted user
