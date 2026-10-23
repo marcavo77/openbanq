@@ -1,8 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { createClient } from '@supabase/supabase-js';
 
-const ADMIN_FALLBACK_ID = '3d17191d-ed09-4bd6-844d-f22a705bddc7';
-
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   // Set CORS headers
   res.setHeader('Access-Control-Allow-Credentials', 'true');
@@ -21,10 +19,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { userId, amount, setExactBalance, type, recipientName, adminName, adminId } = req.body || {};
-
-  if (!userId) {
-    return res.status(400).json({ error: 'userId is required' });
+  const { userId, amount, adminId, adminName, description } = req.body || {};
+  if (!userId || typeof amount !== 'number') {
+    return res.status(400).json({ error: 'userId and numeric amount are required' });
   }
 
   const supabaseUrl = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL || 'https://qodpfcallckvlxxlhrlc.supabase.co';
@@ -38,116 +35,94 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    // 1. Fetch current target user
-    const { data: user, error: userError } = await supabase
+    // 1. Fetch target user to get current balance and name
+    const { data: targetUser, error: userError } = await supabase
       .from('users')
-      .select('*')
+      .select('id, name, balance')
       .eq('id', userId)
       .single();
 
-    if (userError || !user) {
-      console.error('Target user not found:', userError);
+    if (userError || !targetUser) {
       return res.status(404).json({ error: 'User not found in database' });
     }
 
-    const currentBalance = typeof user.balance === 'string' ? parseFloat(user.balance) : (user.balance || 0);
+    const currentBalance = typeof targetUser.balance === 'string'
+      ? parseFloat(targetUser.balance)
+      : (Number(targetUser.balance) || 0);
 
-    let newBalance: number;
-    let shouldCreateTransaction = false;
-    let numericAmount = 0;
+    const newBalance = currentBalance + amount;
+    const balanceString = newBalance.toFixed(2);
 
-    if (setExactBalance !== undefined && !isNaN(Number(setExactBalance))) {
-      newBalance = Number(setExactBalance);
-      numericAmount = newBalance - currentBalance;
-    } else if (amount !== undefined && !isNaN(Number(amount))) {
-      numericAmount = Number(amount);
-      newBalance = currentBalance + numericAmount;
-      shouldCreateTransaction = true;
-    } else {
-      return res.status(400).json({ error: 'Either amount or setExactBalance must be provided' });
-    }
-
-    // 2. Update user's balance
-    const { data: updatedUserData, error: updateError } = await supabase
+    // 2. Update user balance in database
+    const { error: updateError } = await supabase
       .from('users')
-      .update({
-        balance: newBalance.toFixed(2),
+      .update({ 
+        balance: balanceString,
         updated_at: new Date().toISOString()
       })
-      .eq('id', userId)
+      .eq('id', userId);
+
+    if (updateError) {
+      console.error('Error updating user balance:', updateError);
+      return res.status(500).json({ error: 'Failed to update user balance in database' });
+    }
+
+    // 3. Create transaction record in database
+    const isCredit = amount > 0;
+    const { data: transaction, error: txError } = await supabase
+      .from('transactions')
+      .insert([{
+        user_id: userId,
+        type: isCredit ? 'CREDIT' : 'DEBIT',
+        recipient_name: isCredit ? 'Dépôt Admin' : 'Retrait Admin',
+        recipient_bank: 'Open Banque System',
+        recipient_iban: 'N/A',
+        amount: Math.abs(amount).toFixed(2),
+        status: 'COMPLETED'
+      }])
       .select()
       .single();
 
-    if (updateError) {
-      console.error('Failed to update balance in database:', updateError);
-      return res.status(500).json({ error: updateError.message || 'Failed to update balance in database' });
+    if (txError) {
+      console.error('Error inserting transaction in database:', txError);
+      return res.status(500).json({ error: 'Failed to create transaction record: ' + txError.message });
     }
 
-    // 3. Create transaction record if this was a deposit/withdrawal
-    let createdTx: any = null;
-    if (shouldCreateTransaction) {
-      const isCredit = numericAmount >= 0;
-      const txType = type || (isCredit ? 'CREDIT' : 'DEBIT');
-      const txRecipient = recipientName || (isCredit ? 'Dépôt Admin' : 'Retrait Admin');
+    // 4. Log admin action
+    const actionDesc = description || (isCredit 
+      ? `Crédit de ${Math.abs(amount)} € ajouté au compte.` 
+      : `Débit de ${Math.abs(amount)} € retiré du compte.`);
 
-      const { data: tx, error: txError } = await supabase
-        .from('transactions')
-        .insert([{
-          user_id: userId,
-          type: txType,
-          recipient_name: txRecipient,
-          recipient_bank: 'Open Banque System',
-          recipient_iban: 'N/A',
-          amount: Math.abs(numericAmount).toFixed(2),
-          status: 'COMPLETED'
-        }])
-        .select()
-        .single();
+    await supabase.from('admin_logs').insert([{
+      admin_id: adminId || null,
+      admin_name: adminName || 'Super Administrator',
+      action_type: 'BALANCE_UPDATE',
+      target_user_id: userId,
+      target_user_name: targetUser.name,
+      description: actionDesc
+    }]).then(({ error: logErr }) => {
+      if (logErr) console.warn('Admin log warning:', logErr);
+    });
 
-      if (txError) {
-        console.error('Warning: transaction insert failed:', txError);
-      } else {
-        createdTx = tx;
-      }
-
-      // 4. Create admin log entry
-      try {
-        const actionDesc = isCredit 
-          ? `Crédit de ${Math.abs(numericAmount)} € ajouté au compte.` 
-          : `Débit de ${Math.abs(numericAmount)} € retiré du compte.`;
-
-        await supabase.from('admin_logs').insert([{
-          admin_id: adminId || ADMIN_FALLBACK_ID,
-          admin_name: adminName || 'Super Administrator',
-          action_type: 'BALANCE_UPDATE',
-          target_user_name: user.name,
-          description: actionDesc
-        }]);
-      } catch (logErr) {
-        console.warn('Could not record admin log:', logErr);
-      }
-    }
-
-    console.log(`✅ Balance successfully updated for user ${userId}: ${currentBalance} -> ${newBalance}`);
+    console.log(`✅ Successfully updated balance for user ${userId} (${targetUser.name}): was ${currentBalance}, added ${amount}, now ${newBalance}`);
 
     return res.status(200).json({
       success: true,
       newBalance,
-      user: updatedUserData,
-      transaction: createdTx ? {
-        id: createdTx.id,
-        userId: createdTx.user_id,
-        type: createdTx.type,
-        recipientName: createdTx.recipient_name,
-        recipientBank: createdTx.recipient_bank,
-        recipientIban: createdTx.recipient_iban,
-        amount: parseFloat(createdTx.amount),
-        date: createdTx.created_at,
-        status: createdTx.status
+      transaction: transaction ? {
+        id: transaction.id,
+        userId: transaction.user_id,
+        type: transaction.type,
+        recipientName: transaction.recipient_name,
+        recipientBank: transaction.recipient_bank,
+        recipientIban: transaction.recipient_iban,
+        amount: parseFloat(transaction.amount),
+        date: transaction.created_at,
+        status: transaction.status
       } : null
     });
   } catch (err: any) {
-    console.error('Error in admin-update-balance handler:', err);
-    return res.status(500).json({ error: err.message || 'Internal server error' });
+    console.error('Error in admin-update-balance:', err);
+    return res.status(500).json({ error: err.message || 'Internal error updating balance' });
   }
 }

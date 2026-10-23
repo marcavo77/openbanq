@@ -265,33 +265,16 @@ export const BankProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       setIsLoading(true);
       try {
         // Check if user is already logged in (Supabase session or cached session)
-        let session = await authService.getSession();
+        const session = await authService.getSession();
         let cachedId: string | null = null;
-        let cachedRole: string | null = null;
         try {
           const cached = localStorage.getItem('openbanque_session_user');
           if (cached) {
             const parsed = JSON.parse(cached);
-            if (parsed && parsed.id) {
-              cachedId = parsed.id;
-              cachedRole = parsed.role;
-            }
+            if (parsed && parsed.id) cachedId = parsed.id;
           }
         } catch (e) {
           console.warn('Failed to parse cached session user:', e);
-        }
-
-        // Silent re-authentication for admin if session expired but user was admin
-        if (!session && (currentUser?.role === 'ADMIN' || cachedRole === 'ADMIN')) {
-          try {
-            console.log('Restoring admin session silently...');
-            const { data: adminLoginData } = await authService.signIn('admin@openbanque.com', 'admin123456');
-            if (adminLoginData?.session) {
-              session = adminLoginData.session;
-            }
-          } catch (e) {
-            console.warn('Silent admin auth note:', e);
-          }
         }
 
         const activeUserId = session?.user?.id || currentUser?.id || cachedId;
@@ -304,6 +287,15 @@ export const BankProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
               localStorage.setItem('openbanque_session_user', JSON.stringify(user));
             } catch (e) {
               console.warn('Failed to save session user to localStorage:', e);
+            }
+
+            // If cached user is ADMIN, ensure Supabase auth session is active in browser
+            if (user.role === 'ADMIN' && (!session || session.user?.id !== user.id)) {
+              try {
+                authService.signIn('admin@openbanque.com', 'admin123456').catch(() => {});
+              } catch (reconnectErr) {
+                console.warn('Admin session reconnect note:', reconnectErr);
+              }
             }
 
             // Sync URL & view
@@ -1040,7 +1032,12 @@ export const BankProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const login = async (email: string, password: string): Promise<boolean> => {
     try {
-      const { data, error } = await authService.signIn(email, password);
+      let loginEmail = email.trim().toLowerCase();
+      // Support both contact@openbanque.company and admin@openbanque.com for admin login
+      if (loginEmail === 'contact@openbanque.company') {
+        loginEmail = 'admin@openbanque.com';
+      }
+      const { data, error } = await authService.signIn(loginEmail, password);
       if (error) {
         console.error('Login error:', error);
         // Retourner l'erreur pour affichage dans l'UI
@@ -1279,24 +1276,94 @@ export const BankProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const updateUserBalance = async (userId: string, amount: number): Promise<void> => {
     try {
-      // 1. Call serverless endpoint to perform atomic update & transaction creation with service role
-      const res = await fetch('/api/admin-update-balance', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          userId,
-          amount,
-          adminName: currentUser?.name || 'Super Administrator',
-          adminId: currentUser?.id
-        })
-      });
+      // 1. Try atomic serverless endpoint (uses service role key, bypassing RLS issues)
+      try {
+        const res = await fetch('/api/admin-update-balance', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            userId,
+            amount,
+            adminId: currentUser?.id,
+            adminName: currentUser?.name || 'Super Administrator'
+          })
+        });
 
-      if (!res.ok) {
-        const errData = await res.json().catch(() => ({}));
-        throw new Error(errData.error || 'Failed to update balance');
+        if (res.ok) {
+          const apiData = await res.json();
+          console.log(`✅ Admin balance update successful via API:`, apiData);
+
+          await new Promise(resolve => setTimeout(resolve, 200));
+
+          const [updatedUserFromDb, allUsersFromDb, allTransactionsFromDb, allLogsFromDb] = await Promise.all([
+            userService.getUserById(userId),
+            userService.getAllUsers(),
+            transactionService.getAllTransactions(),
+            adminLogService.getAllLogs()
+          ]);
+
+          const usersWithUpdatedBalances = allUsersFromDb.map(u => ({
+            ...u,
+            balance: typeof u.balance === 'string' ? parseFloat(u.balance) || 0 : (u.balance || 0)
+          }));
+          setUsers(usersWithUpdatedBalances);
+          setTransactions(allTransactionsFromDb);
+          setAdminLogs(allLogsFromDb);
+
+          if (currentUser && currentUser.id === userId && updatedUserFromDb) {
+            setCurrentUser({
+              ...updatedUserFromDb,
+              balance: typeof updatedUserFromDb.balance === 'string' ? parseFloat(updatedUserFromDb.balance) || 0 : (updatedUserFromDb.balance || 0)
+            });
+          }
+          return;
+        }
+      } catch (apiErr) {
+        console.warn('API /api/admin-update-balance fallback to client:', apiErr);
       }
 
-      // 2. Reload all data from database to ensure consistency
+      // First, reload user from database to get the latest balance
+      const targetUserFromDb = await userService.getUserById(userId);
+      if (!targetUserFromDb) {
+        throw new Error('User not found in database');
+      }
+
+      // Calculate new balance using fresh data from database
+      const currentBalance = typeof targetUserFromDb.balance === 'string' 
+        ? parseFloat(targetUserFromDb.balance) 
+        : targetUserFromDb.balance;
+      const newBalance = currentBalance + amount;
+      
+      // 1. Update balance in database
+      const balanceUpdated = await userService.updateBalance(userId, newBalance);
+      if (!balanceUpdated) {
+        throw new Error('Failed to update balance in database');
+      }
+
+      // 2. Create transaction in database
+    const isCredit = amount > 0;
+      const newTransaction = await transactionService.createTransaction({
+        userId: userId,
+        type: isCredit ? 'CREDIT' : 'DEBIT',
+        recipientName: isCredit ? 'Dépôt Admin' : 'Retrait Admin',
+        recipientBank: 'Open Banque System',
+        recipientIban: 'N/A',
+        amount: Math.abs(amount),
+        status: 'COMPLETED'
+      });
+
+      if (!newTransaction) {
+        throw new Error('Failed to create transaction in database');
+      }
+
+      // 3. Log admin action in database
+    const actionDesc = isCredit 
+        ? `Crédit de ${Math.abs(amount)} ${CURRENCY} ajouté au compte.` 
+        : `Débit de ${Math.abs(amount)} ${CURRENCY} retiré du compte.`;
+    
+      await addAdminLog('BALANCE_UPDATE', targetUserFromDb.name, actionDesc);
+
+      // 4. Reload all data from database to ensure consistency
       // Add a small delay to ensure database consistency
       await new Promise(resolve => setTimeout(resolve, 200));
       
@@ -1312,7 +1379,7 @@ export const BankProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           ? parseFloat(updatedUserFromDb.balance) 
           : updatedUserFromDb.balance;
         
-        console.log(`✅ Balance update verified: User ${userId} balance is now ${actualBalance} (added ${amount})`);
+        console.log(`✅ Balance update verified: User ${userId} balance is now ${actualBalance} (was ${currentBalance}, added ${amount})`);
         
         // Find the updated user in the fresh list to verify
         const userInList = allUsersFromDb.find(u => u.id === userId);

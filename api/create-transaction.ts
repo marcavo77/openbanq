@@ -19,37 +19,36 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   const { userId, type, recipientName, recipientBank, recipientIban, amount, status } = req.body || {};
-
-  if (!userId || !type || amount === undefined) {
-    return res.status(400).json({ error: 'userId, type, and amount are required' });
+  if (!userId || !type || amount === undefined || amount === null) {
+    return res.status(400).json({ error: 'userId, type and amount are required' });
   }
 
   const supabaseUrl = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL || 'https://qodpfcallckvlxxlhrlc.supabase.co';
   const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
   if (!supabaseServiceKey) {
-    console.error('Missing SUPABASE_SERVICE_ROLE_KEY');
     return res.status(500).json({ error: 'Server misconfiguration' });
   }
 
   try {
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
+
     const { data, error } = await supabase
       .from('transactions')
       .insert([{
         user_id: userId,
-        type,
-        recipient_name: recipientName || '',
-        recipient_bank: recipientBank || '',
-        recipient_iban: recipientIban || '',
-        amount: parseFloat(amount).toFixed(2),
+        type: type,
+        recipient_name: recipientName || 'Destinataire',
+        recipient_bank: recipientBank || 'Banque Externe',
+        recipient_iban: recipientIban || 'N/A',
+        amount: Math.abs(Number(amount)).toFixed(2),
         status: status || 'COMPLETED'
       }])
       .select()
       .single();
 
     if (error) {
-      console.error('Error creating transaction via service role:', error);
+      console.error('Error in create-transaction:', error);
       return res.status(500).json({ error: error.message });
     }
 
@@ -68,7 +67,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       }
     });
   } catch (err: any) {
-    console.error('Error in create-transaction:', err);
-    return res.status(500).json({ error: err.message || 'Internal server error' });
+    console.error('Error creating transaction:', err);
+    return res.status(500).json({ error: err.message || 'Failed to create transaction' });
   }
 }

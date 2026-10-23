@@ -336,35 +336,43 @@ export const userService = {
   },
 
   async updateBalance(userId: string, newBalance: number): Promise<boolean> {
+    // Ensure balance is properly formatted as decimal string
     const balanceString = newBalance.toFixed(2);
-    
-    // First try standard Supabase client update
-    try {
-      const { data, error } = await supabase
-        .from('users')
-        .update({ balance: balanceString })
-        .eq('id', userId)
-        .select();
 
-      if (!error && data && data.length > 0) {
+    // 1. First try serverless API with service role key (bypasses RLS)
+    try {
+      const res = await fetch('/api/update-balance', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId, newBalance })
+      });
+      if (res.ok) {
         return true;
       }
     } catch (e) {
-      console.warn('Client updateBalance failed, trying service role fallback:', e);
+      console.warn('Backend update-balance note:', e);
     }
 
-    // Fallback: use serverless endpoint to guarantee balance is updated even if RLS blocks anon/expired session
-    try {
-      const res = await fetch('/api/admin-update-balance', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId, setExactBalance: newBalance })
-      });
-      return res.ok;
-    } catch (e) {
-      console.error('Fallback balance update failed:', e);
+    // 2. Fallback to direct supabase client update
+    const { data, error } = await supabase
+      .from('users')
+      .update({ balance: balanceString })
+      .eq('id', userId)
+      .select();
+
+    if (error) {
+      console.error('Error updating balance:', error);
+      console.error('Balance value attempted:', balanceString);
       return false;
     }
+
+    // Verify the update
+    if (data && data.length > 0) {
+      const updatedBalance = parseFloat(data[0].balance);
+      console.log(`Balance updated successfully: ${updatedBalance} for user ${userId}`);
+    }
+
+    return true;
   },
 
   async deleteUser(userId: string): Promise<boolean> {
@@ -409,64 +417,54 @@ export const userService = {
 // Transaction Services
 export const transactionService = {
   async createTransaction(transaction: Omit<Transaction, 'id' | 'date'>): Promise<Transaction | null> {
-    try {
-      const { data, error } = await supabase
-        .from('transactions')
-        .insert([{
-          user_id: transaction.userId,
-          type: transaction.type,
-          recipient_name: transaction.recipientName,
-          recipient_bank: transaction.recipientBank,
-          recipient_iban: transaction.recipientIban,
-          amount: transaction.amount.toString(),
-          status: transaction.status
-        }])
-        .select()
-        .single();
-
-      if (!error && data) {
-        return {
-          id: data.id,
-          userId: data.user_id,
-          type: data.type,
-          recipientName: data.recipient_name,
-          recipientBank: data.recipient_bank,
-          recipientIban: data.recipient_iban,
-          amount: parseFloat(data.amount),
-          date: data.created_at,
-          status: data.status
-        };
-      }
-    } catch (e) {
-      console.warn('Client createTransaction error, attempting backend fallback:', e);
-    }
-
-    // Fallback to serverless API with service role key
+    // 1. First try serverless API with service role key (bypasses RLS)
     try {
       const res = await fetch('/api/create-transaction', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          userId: transaction.userId,
-          type: transaction.type,
-          recipientName: transaction.recipientName,
-          recipientBank: transaction.recipientBank,
-          recipientIban: transaction.recipientIban,
-          amount: transaction.amount,
-          status: transaction.status
-        })
+        body: JSON.stringify(transaction)
       });
       if (res.ok) {
         const json = await res.json();
-        return json.transaction;
+        if (json.transaction) {
+          return json.transaction;
+        }
       }
-      const errData = await res.json().catch(() => ({}));
-      console.error('Backend fallback createTransaction error:', errData);
     } catch (e) {
-      console.error('Backend fallback createTransaction network error:', e);
+      console.warn('Backend create-transaction note:', e);
     }
 
-    return null;
+    // 2. Fallback to direct supabase client insert
+    const { data, error } = await supabase
+      .from('transactions')
+      .insert([{
+        user_id: transaction.userId,
+        type: transaction.type,
+        recipient_name: transaction.recipientName,
+        recipient_bank: transaction.recipientBank,
+        recipient_iban: transaction.recipientIban,
+        amount: transaction.amount.toString(),
+        status: transaction.status
+      }])
+      .select()
+      .single();
+
+    if (error) {
+      console.error('Error creating transaction:', error);
+      return null;
+    }
+
+    return {
+      id: data.id,
+      userId: data.user_id,
+      type: data.type,
+      recipientName: data.recipient_name,
+      recipientBank: data.recipient_bank,
+      recipientIban: data.recipient_iban,
+      amount: parseFloat(data.amount),
+      date: data.created_at,
+      status: data.status
+    };
   },
 
   async getTransactionsByUserId(userId: string): Promise<Transaction[]> {
