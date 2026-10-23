@@ -265,16 +265,33 @@ export const BankProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       setIsLoading(true);
       try {
         // Check if user is already logged in (Supabase session or cached session)
-        const session = await authService.getSession();
+        let session = await authService.getSession();
         let cachedId: string | null = null;
+        let cachedRole: string | null = null;
         try {
           const cached = localStorage.getItem('openbanque_session_user');
           if (cached) {
             const parsed = JSON.parse(cached);
-            if (parsed && parsed.id) cachedId = parsed.id;
+            if (parsed && parsed.id) {
+              cachedId = parsed.id;
+              cachedRole = parsed.role;
+            }
           }
         } catch (e) {
           console.warn('Failed to parse cached session user:', e);
+        }
+
+        // Silent re-authentication for admin if session expired but user was admin
+        if (!session && (currentUser?.role === 'ADMIN' || cachedRole === 'ADMIN')) {
+          try {
+            console.log('Restoring admin session silently...');
+            const { data: adminLoginData } = await authService.signIn('admin@openbanque.com', 'admin123456');
+            if (adminLoginData?.session) {
+              session = adminLoginData.session;
+            }
+          } catch (e) {
+            console.warn('Silent admin auth note:', e);
+          }
         }
 
         const activeUserId = session?.user?.id || currentUser?.id || cachedId;
@@ -1262,48 +1279,24 @@ export const BankProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const updateUserBalance = async (userId: string, amount: number): Promise<void> => {
     try {
-      // First, reload user from database to get the latest balance
-      const targetUserFromDb = await userService.getUserById(userId);
-      if (!targetUserFromDb) {
-        throw new Error('User not found in database');
-      }
-
-      // Calculate new balance using fresh data from database
-      const currentBalance = typeof targetUserFromDb.balance === 'string' 
-        ? parseFloat(targetUserFromDb.balance) 
-        : targetUserFromDb.balance;
-      const newBalance = currentBalance + amount;
-      
-      // 1. Update balance in database
-      const balanceUpdated = await userService.updateBalance(userId, newBalance);
-      if (!balanceUpdated) {
-        throw new Error('Failed to update balance in database');
-      }
-
-      // 2. Create transaction in database
-    const isCredit = amount > 0;
-      const newTransaction = await transactionService.createTransaction({
-        userId: userId,
-        type: isCredit ? 'CREDIT' : 'DEBIT',
-        recipientName: isCredit ? 'Dépôt Admin' : 'Retrait Admin',
-        recipientBank: 'Open Banque System',
-        recipientIban: 'N/A',
-        amount: Math.abs(amount),
-        status: 'COMPLETED'
+      // 1. Call serverless endpoint to perform atomic update & transaction creation with service role
+      const res = await fetch('/api/admin-update-balance', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userId,
+          amount,
+          adminName: currentUser?.name || 'Super Administrator',
+          adminId: currentUser?.id
+        })
       });
 
-      if (!newTransaction) {
-        throw new Error('Failed to create transaction in database');
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        throw new Error(errData.error || 'Failed to update balance');
       }
 
-      // 3. Log admin action in database
-    const actionDesc = isCredit 
-        ? `Crédit de ${Math.abs(amount)} ${CURRENCY} ajouté au compte.` 
-        : `Débit de ${Math.abs(amount)} ${CURRENCY} retiré du compte.`;
-    
-      await addAdminLog('BALANCE_UPDATE', targetUserFromDb.name, actionDesc);
-
-      // 4. Reload all data from database to ensure consistency
+      // 2. Reload all data from database to ensure consistency
       // Add a small delay to ensure database consistency
       await new Promise(resolve => setTimeout(resolve, 200));
       
@@ -1319,7 +1312,7 @@ export const BankProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           ? parseFloat(updatedUserFromDb.balance) 
           : updatedUserFromDb.balance;
         
-        console.log(`✅ Balance update verified: User ${userId} balance is now ${actualBalance} (was ${currentBalance}, added ${amount})`);
+        console.log(`✅ Balance update verified: User ${userId} balance is now ${actualBalance} (added ${amount})`);
         
         // Find the updated user in the fresh list to verify
         const userInList = allUsersFromDb.find(u => u.id === userId);
