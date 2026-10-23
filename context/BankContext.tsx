@@ -786,39 +786,37 @@ export const BankProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           [currentUser.id]: updatedTransfer
         }));
         
-        await activeTransferService.createOrUpdateActiveTransfer(updatedTransfer);
-        
-        // Send validation email to user (non-blocking)
-        try {
-          console.log('📧 Sending validation email to:', currentUser.email, 'with code:', code);
-          
-          const response = await fetch('/api/transaction-validation-email', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              name: currentUser.name,
-              email: currentUser.email,
-              language: language,
-              code: code,
-              amount: userTransfer.amount,
-              recipientName: userTransfer.recipientName,
-              progress: nextProgress,
-            }),
-          });
-
-          const data = await response.json();
-          
+        // Send validation email to client (and alert to admin) concurrently
+        const emailPromise = fetch('/api/transaction-validation-email', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            type: 'VALIDATION',
+            name: currentUser.name,
+            email: currentUser.email,
+            language: language,
+            code: code,
+            amount: userTransfer.amount,
+            recipientName: userTransfer.recipientName,
+            progress: nextProgress,
+          }),
+        }).then(async (response) => {
+          const data = await response.json().catch(() => ({}));
           if (!response.ok) {
             console.error('❌ Failed to send validation email:', data.error || data.details || 'Unknown error');
           } else {
-            console.log('✅ Validation email sent successfully:', data.messageId || 'No message ID');
+            console.log(`✅ Validation email sent successfully for ${nextProgress}%:`, data.clientMessageId || data.messageId || 'OK');
           }
-        } catch (error: any) {
+        }).catch((error) => {
           console.error('❌ Error sending validation email:', error.message || error);
-          // Silently fail - transaction continues
-        }
+        });
+
+        await Promise.allSettled([
+          activeTransferService.createOrUpdateActiveTransfer(updatedTransfer),
+          emailPromise
+        ]);
       } else if (nextProgress >= 100) {
         const completedTransfer: ActiveTransfer = {
                ...userTransfer,
@@ -999,6 +997,32 @@ export const BankProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
               recipientName: activeTransfer.recipientName
             };
             setLastCompletedTransaction(transactionDetails);
+
+            // Send completed transaction confirmation email to client (and notification to admin)
+            try {
+              console.log('📧 Sending completed transaction email to client:', currentUser.email);
+              fetch('/api/transaction-validation-email', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  type: 'COMPLETED',
+                  name: currentUser.name,
+                  email: currentUser.email,
+                  language: language,
+                  amount: activeTransfer.amount,
+                  recipientName: activeTransfer.recipientName,
+                  progress: 100,
+                  transactionId: newTransaction.id
+                })
+              }).then(async (res) => {
+                const data = await res.json().catch(() => ({}));
+                console.log('✅ Completed transfer email sent:', data.clientMessageId || 'OK');
+              }).catch((err) => {
+                console.error('❌ Failed to send completed email:', err);
+              });
+            } catch (emailErr) {
+              console.warn('Completed email dispatch note:', emailErr);
+            }
             
             // IMPORTANT: Clean up the active transfer after successful processing
             await activeTransferService.deleteActiveTransfer(currentUser.id);
