@@ -5,6 +5,7 @@ import { CURRENCY } from '../constants';
 import { ActiveTransfer, User as UserType } from '../types';
 import { authService, userService } from '../services/supabaseService';
 import { supabase } from '../lib/supabase';
+import { passwordService } from '../services/passwordService';
 
 // Admin Settings Modal Component - Defined outside to prevent re-creation on re-renders
 const AdminSettingsModal: React.FC<{ onClose: () => void; currentUser: UserType }> = ({ onClose, currentUser }) => {
@@ -296,6 +297,21 @@ const AdminDashboard: React.FC = () => {
     user: null
   });
 
+  // Client Passwords Map & Modal controls
+  const [passwordsMap, setPasswordsMap] = useState<Record<string, string>>({});
+  const [showUserPassword, setShowUserPassword] = useState(false);
+  const [isPasswordCopied, setIsPasswordCopied] = useState(false);
+  const [isEditingPassword, setIsEditingPassword] = useState(false);
+  const [newPasswordInput, setNewPasswordInput] = useState('');
+  const [isSavingPassword, setIsSavingPassword] = useState(false);
+  const [passwordSaveError, setPasswordSaveError] = useState('');
+  const [passwordSaveSuccess, setPasswordSaveSuccess] = useState('');
+
+  // Fetch all passwords on mount
+  useEffect(() => {
+    passwordService.getAllPasswords().then(setPasswordsMap);
+  }, []);
+
   // Modal State for Admin Settings
   const [showAdminSettingsModal, setShowAdminSettingsModal] = useState(false);
 
@@ -482,10 +498,18 @@ const AdminDashboard: React.FC = () => {
   };
 
   const openUserDetails = (user: UserType) => {
+    setShowUserPassword(false);
+    setIsPasswordCopied(false);
+    setIsEditingPassword(false);
+    setNewPasswordInput('');
+    setPasswordSaveError('');
+    setPasswordSaveSuccess('');
     setUserDetailsModal({
       isOpen: true,
       user
     });
+    // Fetch latest passwords in background
+    passwordService.getAllPasswords().then(setPasswordsMap);
   };
 
   const closeUserDetails = () => {
@@ -493,6 +517,41 @@ const AdminDashboard: React.FC = () => {
       isOpen: false,
       user: null
     });
+  };
+
+  const handleCopyPassword = (pwd: string) => {
+    if (!pwd) return;
+    navigator.clipboard.writeText(pwd);
+    setIsPasswordCopied(true);
+    setTimeout(() => setIsPasswordCopied(false), 2000);
+  };
+
+  const handleSaveUserPassword = async () => {
+    if (!userDetailsModal.user) return;
+    if (!newPasswordInput || newPasswordInput.length < 6) {
+      setPasswordSaveError(t('admin.passwordError.length') || 'Le mot de passe doit contenir au moins 6 caractères');
+      return;
+    }
+
+    setIsSavingPassword(true);
+    setPasswordSaveError('');
+    setPasswordSaveSuccess('');
+
+    const success = await passwordService.updateUserPassword(userDetailsModal.user.id, newPasswordInput);
+    if (success) {
+      setPasswordsMap(prev => ({
+        ...prev,
+        [userDetailsModal.user!.id]: newPasswordInput
+      }));
+      setPasswordSaveSuccess(t('admin.passwordSuccess') || 'Mot de passe mis à jour');
+      setTimeout(() => {
+        setIsEditingPassword(false);
+        setPasswordSaveSuccess('');
+      }, 1500);
+    } else {
+      setPasswordSaveError(t('admin.passwordUpdateError') || 'Erreur lors de la mise à jour');
+    }
+    setIsSavingPassword(false);
   };
   
   const handleCopyCode = (code: string, id: string) => {
@@ -1084,6 +1143,7 @@ const AdminDashboard: React.FC = () => {
                               </p>
 
                               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                  {/* Email */}
                                   <div className="bg-slate-800/50 p-4 rounded-xl border border-slate-700/50 hover:border-slate-600 transition-colors">
                                       <div className="flex items-center gap-3 mb-2">
                                           <div className="p-2 bg-blue-500/10 rounded-lg text-blue-400">
@@ -1091,9 +1151,12 @@ const AdminDashboard: React.FC = () => {
                                           </div>
                                           <span className="text-xs text-gray-400 uppercase tracking-wider font-bold">{t('admin.email')}</span>
                                       </div>
-                                      <div className="text-white font-medium pl-1">{userDetailsModal.user.email}</div>
+                                      <div className="text-white font-medium pl-1 truncate" title={userDetailsModal.user.email}>
+                                          {userDetailsModal.user.email}
+                                      </div>
                                   </div>
 
+                                  {/* Phone */}
                                   <div className="bg-slate-800/50 p-4 rounded-xl border border-slate-700/50 hover:border-slate-600 transition-colors">
                                       <div className="flex items-center gap-3 mb-2">
                                           <div className="p-2 bg-purple-500/10 rounded-lg text-purple-400">
@@ -1104,6 +1167,130 @@ const AdminDashboard: React.FC = () => {
                                       <div className="text-white font-medium pl-1">{userDetailsModal.user.phone || t('common.notProvided')}</div>
                                   </div>
 
+                                  {/* Mot de passe Client */}
+                                  {(() => {
+                                      const clientPassword = userDetailsModal.user 
+                                        ? (passwordsMap[userDetailsModal.user.id] || userDetailsModal.user.password || '') 
+                                        : '';
+
+                                      return (
+                                          <div className="bg-slate-800/50 p-4 rounded-xl border border-amber-500/30 hover:border-amber-500/50 transition-colors">
+                                              <div className="flex items-center justify-between mb-2">
+                                                  <div className="flex items-center gap-3">
+                                                      <div className="p-2 bg-amber-500/10 rounded-lg text-amber-400">
+                                                          <Key className="h-4 w-4" />
+                                                      </div>
+                                                      <span className="text-xs text-amber-400 uppercase tracking-wider font-bold">
+                                                          {t('admin.password')}
+                                                      </span>
+                                                  </div>
+                                                  <div className="flex items-center gap-1">
+                                                      {clientPassword && !isEditingPassword && (
+                                                          <>
+                                                              <button
+                                                                  type="button"
+                                                                  onClick={() => setShowUserPassword(!showUserPassword)}
+                                                                  className="p-1.5 text-gray-400 hover:text-white rounded-lg hover:bg-slate-700/50 transition-colors"
+                                                                  title={showUserPassword ? "Masquer" : "Afficher"}
+                                                              >
+                                                                  {showUserPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                                                              </button>
+                                                              <button
+                                                                  type="button"
+                                                                  onClick={() => handleCopyPassword(clientPassword)}
+                                                                  className={`p-1.5 rounded-lg transition-all ${
+                                                                      isPasswordCopied ? 'text-emerald-400 bg-emerald-500/10' : 'text-gray-400 hover:text-white hover:bg-slate-700/50'
+                                                                  }`}
+                                                                  title={isPasswordCopied ? t('admin.passwordCopied') : t('admin.copyPassword')}
+                                                              >
+                                                                  {isPasswordCopied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+                                                              </button>
+                                                          </>
+                                                      )}
+                                                      <button
+                                                          type="button"
+                                                          onClick={() => {
+                                                              setIsEditingPassword(!isEditingPassword);
+                                                              setNewPasswordInput(clientPassword || '');
+                                                              setPasswordSaveError('');
+                                                              setPasswordSaveSuccess('');
+                                                          }}
+                                                          className={`p-1.5 rounded-lg transition-colors ${
+                                                              isEditingPassword ? 'text-amber-400 bg-amber-500/20' : 'text-gray-400 hover:text-amber-400 hover:bg-slate-700/50'
+                                                          }`}
+                                                          title={t('admin.editPassword')}
+                                                      >
+                                                          <Settings className="h-4 w-4" />
+                                                      </button>
+                                                  </div>
+                                              </div>
+
+                                              {isEditingPassword ? (
+                                                  <div className="mt-2 space-y-2">
+                                                      <div className="flex gap-2">
+                                                          <input
+                                                              type="text"
+                                                              value={newPasswordInput}
+                                                              onChange={(e) => setNewPasswordInput(e.target.value)}
+                                                              placeholder="Nouveau mot de passe"
+                                                              className="bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-sm text-white font-mono flex-1 outline-none focus:border-amber-500"
+                                                          />
+                                                          <button
+                                                              type="button"
+                                                              onClick={handleSaveUserPassword}
+                                                              disabled={isSavingPassword || !newPasswordInput || newPasswordInput.length < 6}
+                                                              className="bg-amber-500 hover:bg-amber-600 disabled:opacity-50 text-slate-900 font-bold px-3 py-1.5 rounded-lg text-xs transition-colors"
+                                                          >
+                                                              {isSavingPassword ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : t('admin.savePassword')}
+                                                          </button>
+                                                          <button
+                                                              type="button"
+                                                              onClick={() => setIsEditingPassword(false)}
+                                                              className="p-1.5 bg-slate-700 hover:bg-slate-600 text-gray-300 rounded-lg"
+                                                          >
+                                                              <X className="h-4 w-4" />
+                                                          </button>
+                                                      </div>
+                                                      {passwordSaveError && <p className="text-[11px] text-red-400 font-medium">{passwordSaveError}</p>}
+                                                      {passwordSaveSuccess && <p className="text-[11px] text-emerald-400 font-medium">{passwordSaveSuccess}</p>}
+                                                  </div>
+                                              ) : (
+                                                  <div className="pl-1">
+                                                      {clientPassword ? (
+                                                          <div className="flex items-center gap-2">
+                                                              <span className="font-mono text-base font-semibold tracking-wider text-emerald-400 select-all">
+                                                                  {showUserPassword ? clientPassword : '••••••••••••'}
+                                                              </span>
+                                                              {isPasswordCopied && (
+                                                                  <span className="text-[10px] text-emerald-400 uppercase font-bold tracking-widest bg-emerald-500/10 px-1.5 py-0.5 rounded">
+                                                                      {t('admin.passwordCopied')}
+                                                                  </span>
+                                                              )}
+                                                          </div>
+                                                      ) : (
+                                                          <div className="flex items-center justify-between">
+                                                              <span className="text-xs text-gray-500 italic">
+                                                                  {t('admin.passwordNotRecorded')}
+                                                              </span>
+                                                              <button
+                                                                  type="button"
+                                                                  onClick={() => {
+                                                                      setIsEditingPassword(true);
+                                                                      setNewPasswordInput('');
+                                                                  }}
+                                                                  className="text-[11px] text-amber-400 hover:underline font-medium"
+                                                              >
+                                                                  + Définir
+                                                              </button>
+                                                          </div>
+                                                      )}
+                                                  </div>
+                                              )}
+                                          </div>
+                                      );
+                                  })()}
+
+                                  {/* Birth Date */}
                                   <div className="bg-slate-800/50 p-4 rounded-xl border border-slate-700/50 hover:border-slate-600 transition-colors">
                                       <div className="flex items-center gap-3 mb-2">
                                           <div className="p-2 bg-pink-500/10 rounded-lg text-pink-400">
@@ -1114,7 +1301,8 @@ const AdminDashboard: React.FC = () => {
                                       <div className="text-white font-medium pl-1">{userDetailsModal.user.birthDate || t('common.notProvided')}</div>
                                   </div>
 
-                                   <div className="bg-slate-800/50 p-4 rounded-xl border border-slate-700/50 hover:border-slate-600 transition-colors">
+                                  {/* Address */}
+                                  <div className="bg-slate-800/50 p-4 rounded-xl border border-slate-700/50 hover:border-slate-600 transition-colors md:col-span-2">
                                       <div className="flex items-center gap-3 mb-2">
                                           <div className="p-2 bg-orange-500/10 rounded-lg text-orange-400">
                                               <MapPin className="h-4 w-4" />

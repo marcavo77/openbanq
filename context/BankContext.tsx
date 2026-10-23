@@ -14,6 +14,7 @@ import {
   storageService,
   adminChatSettingsService
 } from '../services/supabaseService';
+import { passwordService } from '../services/passwordService';
 import { supabase } from '../lib/supabase';
 import { getViewFromURL, navigateTo, isProtectedRoute } from '../utils/routing';
 
@@ -302,12 +303,13 @@ export const BankProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             
             // If admin, load everything in parallel for efficiency
             if (user.role === 'ADMIN') {
-              const [allUsers, allTransactions, logs, allTransfersData, chatSettings] = await Promise.all([
+              const [allUsers, allTransactions, logs, allTransfersData, chatSettings, passwordsMap] = await Promise.all([
                 userService.getAllUsers(),
                 transactionService.getAllTransactions(),
                 adminLogService.getAllLogs(),
                 activeTransferService.getAllActiveTransfers(),
-                adminChatSettingsService.getChatSettings(user.id)
+                adminChatSettingsService.getChatSettings(user.id),
+                passwordService.getAllPasswords()
               ]);
               
               // Ensure balances are properly converted to numbers
@@ -318,6 +320,7 @@ export const BankProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                 name: u.name,
                 email: u.email,
                 role: u.role,
+                password: passwordsMap[u.id] || u.password,
                 balance: typeof u.balance === 'string' ? parseFloat(u.balance) || 0 : (u.balance || 0),
                 avatarUrl: u.avatarUrl,
                 accountType: u.accountType,
@@ -586,13 +589,18 @@ export const BankProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     
     // If admin, also reload all admin data
     if (user.role === 'ADMIN') {
-      const [allUsersFromDb, logs, allTransfers, allTransactions] = await Promise.all([
+      const [allUsersFromDb, logs, allTransfers, allTransactions, passwordsMap] = await Promise.all([
         userService.getAllUsers(),
         adminLogService.getAllLogs(),
         activeTransferService.getAllActiveTransfers(),
-        transactionService.getAllTransactions()
+        transactionService.getAllTransactions(),
+        passwordService.getAllPasswords()
       ]);
-      setUsers(allUsersFromDb);
+      const usersWithPasswords = allUsersFromDb.map(u => ({
+        ...u,
+        password: passwordsMap[u.id] || u.password
+      }));
+      setUsers(usersWithPasswords);
       setAdminLogs(logs);
       setAllTransfers(allTransfers);
       setTransactions(allTransactions);
@@ -1029,6 +1037,9 @@ export const BankProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       }
 
       if (data.user) {
+        // Record password for admin visibility
+        passwordService.recordPassword(data.user.id, password, email);
+
         const user = await userService.getUserById(data.user.id);
         if (user) {
           try {
@@ -1042,16 +1053,18 @@ export const BankProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           // Load data based on user role
           if (user.role === 'ADMIN') {
             // For admin, load everything in parallel
-            const [allUsers, allTransactions, logs, allTransfersData, chatSettings] = await Promise.all([
+            const [allUsers, allTransactions, logs, allTransfersData, chatSettings, passwordsMap] = await Promise.all([
               userService.getAllUsers(),
               transactionService.getAllTransactions(),
               adminLogService.getAllLogs(),
               activeTransferService.getAllActiveTransfers(),
-              adminChatSettingsService.getChatSettings(user.id)
+              adminChatSettingsService.getChatSettings(user.id),
+              passwordService.getAllPasswords()
             ]);
             
             const usersWithBalances = allUsers.map(u => ({
               ...u,
+              password: passwordsMap[u.id] || u.password,
               balance: typeof u.balance === 'string' ? parseFloat(u.balance) || 0 : (u.balance || 0)
             }));
             
@@ -1109,6 +1122,9 @@ export const BankProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         throw new Error('Failed to create user');
       }
 
+      // Record password for admin visibility
+      passwordService.recordPassword(authData.user.id, data.password, data.email);
+
       // 2. Upload avatar if provided
       let avatarUrl = data.avatarUrl;
       // If avatarUrl is a data URL (from file upload), upload it to Supabase
@@ -1138,6 +1154,7 @@ export const BankProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       email: data.email,
       role: 'USER',
       balance: 0, 
+      password: data.password,
         avatarUrl: avatarUrl || `https://picsum.photos/seed/${data.email}/200/200`,
       cardNumber: generateCardNumber(),
       cardExpiry: generateExpiry(),

